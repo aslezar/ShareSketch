@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,700&display=swap');
+
+:root {
+	/*Social Icons*/
+	--social-icons-color: #fff;
+	--social-icons-hover-color: #00f;
+}
+/* Reset box model */
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+ul,
+ol {
+	list-style: none;
+}
+
+a {
+	text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-size: 1em;
+	font-weight: normal;
+}
+
+button,
+input[type='button'],
+input[type='reset'],
+input[type='submit'] {
+	border: none;
+	background: none;
+	cursor: pointer;
+}
+
+input,
+textarea,
+select {
+	margin: 0;
+	padding: 0;
+	border: none;
+	outline: none;
+}
+
+body {
+	color: #000;
+	font-family: Arial, sans-serif;
+}
+
+a {
+	color: #00f;
+}
