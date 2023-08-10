@@ -9,7 +9,7 @@ import Canvas from '../components/Canvas';
 function App() {
 	return (
 		<div className='App'>
-			<Navbar />
+			{/* <Navbar /> */}
 			{/* <Homepage /> */}
 			<Canvas />
 			{/* <Footer /> */}
