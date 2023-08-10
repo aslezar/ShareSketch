@@ -13,7 +13,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 //Global Context
-import { AppProvider } from '../context';
+import { AppProvider } from './context';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 	<React.StrictMode>

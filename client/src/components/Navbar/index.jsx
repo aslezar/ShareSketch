@@ -1,7 +1,7 @@
 import Style from './navbar.module.css';
 import React from 'react';
-import Logo from '../../src/assets/sharesketch.svg';
-import LogoDark from '../../src/assets/sharesketch_dark.svg';
+import Logo from '../../assets/sharesketch.svg';
+import LogoDark from '../../assets/sharesketch_dark.svg';
 import { useGlobalContext } from '../../context';
 import { FaBars } from 'react-icons/fa';
 import { Link } from 'react-router-dom';

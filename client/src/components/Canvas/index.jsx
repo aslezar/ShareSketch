@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
-import rough from 'roughjs/bundled/rough.esm.js';
 
-const FabricCanvas = () => {
+const FabricCanvas = ({ socket }) => {
 	const [tool, setTool] = useState('pencil');
 	const [color, setColor] = useState('black');
 	const [lineWidth, setLineWidth] = useState(5);
@@ -115,7 +114,6 @@ const FabricCanvas = () => {
 
 	useEffect(() => {
 		const canvas = canvasRef.current;
-		const roughCanvas = rough.canvas(canvas);
 		if (elements.length > 0) {
 			ctx.current.clearRect(
 				0,
