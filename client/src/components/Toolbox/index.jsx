@@ -19,30 +19,15 @@ const Toolbox = ({
 		}));
 	};
 	return (
-		<div
-			className='toolbox'
-			style={{
-				border: 'solid red 2px',
-				minWidth: '200px',
-				display: 'flex',
-				flexDirection: 'column',
-				justifyContent: 'space-evenly',
-			}}>
-			<div className='status'>
+		<div className={Style.toolbox}>
+			<div className={Style.status}>
 				<button
-					style={{
-						backgroundColor: isConnected ? 'green' : 'red',
-						color: 'white',
-						fontWeight: 'bold',
-						borderRadius: '5px',
-						padding: '5px',
-						border: 'none',
-					}}
+					className={isConnected ? Style.connected : Style.disconnected}
 					onClick={toogleConnection}>
 					{isConnected ? 'Connected' : 'Disconnected'}
 				</button>
 			</div>
-			<div className='tool'>
+			<div className={Style.tool}>
 				<label htmlFor='tool'>Tool: </label>
 				<select
 					name='tool'
@@ -53,9 +38,7 @@ const Toolbox = ({
 					<option value='circle'>Circle</option>
 				</select>
 			</div>
-			<div
-				className='lineWidth'
-				style={{ display: 'flex', flexDirection: 'column' }}>
+			<div className={Style.lineWidth}>
 				<label htmlFor='lineWidth'>Line Width</label>
 				<input
 					type='number'
@@ -64,7 +47,6 @@ const Toolbox = ({
 					min={1}
 					max={100}
 					onChange={handleChange}
-					style={{ width: '50px' }}
 				/>
 				<input
 					type='range'
@@ -75,9 +57,7 @@ const Toolbox = ({
 					onChange={handleChange}
 				/>
 			</div>
-			<div
-				className='color'
-				style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+			<div className={Style.color}>
 				<label htmlFor='color'>Color:</label>
 				<input
 					type='color'
@@ -85,9 +65,7 @@ const Toolbox = ({
 					onChange={handleChange}
 				/>
 			</div>
-			<div
-				className='fillStyle'
-				style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+			<div className={Style.fillStyle}>
 				<label htmlFor='fillStyle'>Fill Color:</label>
 				<input
 					type='color'

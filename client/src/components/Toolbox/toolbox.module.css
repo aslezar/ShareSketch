@@ -1,0 +1,87 @@
+.toolbox {
+	display: flex;
+	flex-direction: column;
+	min-width: 300px;
+	height: 100vh;
+	border: 1px solid #ccc;
+	padding: 10px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.toolbox .status {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 10px; /* Add some margin to separate from the next section */
+}
+
+.toolbox .status button {
+	background-color: green;
+	color: white;
+	font-weight: bold;
+	border-radius: 5px;
+	padding: 5px;
+	border: none;
+	cursor: pointer;
+}
+
+.toolbox .status button.disconnected {
+	background-color: red;
+}
+
+.toolbox .tool {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.toolbox .tool label {
+	margin-right: 5px;
+}
+
+.toolbox .tool select {
+	width: 100px;
+	padding: 3px;
+	border-radius: 3px;
+}
+
+.toolbox .lineWidth {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 10px;
+}
+
+.toolbox .lineWidth label {
+	margin-bottom: 5px;
+}
+
+.toolbox .lineWidth input[type='number'],
+.toolbox .lineWidth input[type='range'] {
+	width: 100px;
+}
+
+.toolbox .color,
+.toolbox .fillStyle {
+	display: flex;
+	justify-content: space-evenly;
+	margin-bottom: 10px;
+}
+
+.toolbox .color label,
+.toolbox .fillStyle label {
+	align-self: center;
+}
+
+.toolbox button {
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	padding: 5px 10px;
+	margin-top: 5px;
+	cursor: pointer;
+}
+
+.toolbox button:disabled {
+	background-color: gray;
+	cursor: not-allowed;
+}

@@ -19,8 +19,7 @@ module.exports = (io) => {
 
 		socket.on('canvas:draw', (data) => {
 			console.log(`User ${socket.id} drew on room ${data.roomId}`);
-			console.log(data);
-			socket.broadcast.to(data.roomId).emit('canvas:draw', data.curElement);
+			socket.broadcast.to(data.roomId).emit('canvas:draw', data.element);
 		});
 		socket.on('chat:message', (data) => {
 			console.log(

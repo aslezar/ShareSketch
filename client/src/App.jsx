@@ -7,14 +7,14 @@ import { socket } from './socket';
 import Navbar from './components/Navbar';
 import Homepage from './components/Homepage';
 import Footer from './components/Footer';
-import Canvas from './components/Canvas';
-
+import WhiteBoard from './Pages/WhiteBoard';
 function App() {
 	return (
 		<div className='App'>
 			{/* <Navbar /> */}
 			{/* <Homepage /> */}
-			<Canvas socket={socket} />
+			{/* <Canvas socket={socket} /> */}
+			<WhiteBoard socket={socket} />
 			{/* <Footer /> */}
 		</div>
 	);
