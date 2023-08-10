@@ -21,10 +21,13 @@ const server = http.createServer(app);
 //scoket.io
 const io = require('socket.io')(server, {
 	cors: {
-		origin: '*',
+		origin: ['http://localhost:5173', 'https://admin.socket.io', '*'],
 	},
 });
 require('./socketio')(io);
+//Admin UI
+const { instrument } = require('@socket.io/admin-ui');
+instrument(io, { auth: false });
 
 //Setting Environment
 const PORT = process.env.PORT || 5000;
@@ -62,8 +65,8 @@ app.get('/*', (req, res) => {
 //Function Start
 async function start() {
 	try {
-		await connectDB(process.env.MONGO_URL);
-		console.log('Connected to the DataBase Sucessfully');
+		// await connectDB(process.env.MONGO_URL);
+		// console.log('Connected to the DataBase Sucessfully');
 		server.listen(PORT, () => {
 			console.log(`Server is listening on http://localhost:${PORT}`);
 		});

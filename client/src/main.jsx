@@ -5,6 +5,7 @@ import App from './App';
 
 //Styles
 import './global.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 //Router
 import { BrowserRouter } from 'react-router-dom';
@@ -20,7 +21,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 		<AppProvider>
 			<BrowserRouter>
 				<ToastContainer
-					position='top-center'
+					position='top-right'
 					theme='dark'
 					autoClose={2500}
 				/>

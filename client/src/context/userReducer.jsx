@@ -39,6 +39,12 @@ const reducer = (state, action) => {
 	if (action.type === 'SET_COLOR_MODE') {
 		return { ...state, colorMode: action.payload };
 	}
+	if (action.type === 'UPDATE_ROOM_ID') {
+		return { ...state, roomId: action.payload };
+	}
+	if (action.type === 'UPDATE_ID') {
+		return { ...state, id: action.payload };
+	}
 	throw new Error('No matching action type');
 };
 export default reducer;

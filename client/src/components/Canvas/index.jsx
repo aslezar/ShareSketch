@@ -1,72 +1,97 @@
 import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
+import Toolbox from '../Toolbox';
+import Chat from '../Chat';
+import { toast } from 'react-toastify';
+import { useGlobalContext } from '../../context';
+
+const defaultToolbox = {
+	tool: 'pencil',
+	strokeStyle: 'black',
+	lineWidth: 5,
+	fillStyle: null,
+};
 
 const FabricCanvas = ({ socket }) => {
-	const [tool, setTool] = useState('pencil');
-	const [color, setColor] = useState('black');
-	const [lineWidth, setLineWidth] = useState(5);
-	const [fillStyle, setfillStyle] = useState(null);
+	const [toolbox, setToolbox] = useState(defaultToolbox);
 
 	const [isDrawing, setIsDrawing] = useState(false);
 	const [elements, setElements] = useState([]);
 	const [history, setHistory] = useState([]);
+	const [curElement, setCurElement] = useState({});
+
+	const [isConnected, setIsConnected] = useState(false); //For socket.io connection status
 
 	const canvasRef = useRef(null);
 	const canvasDivRef = useRef(null);
 	const scaleRef = useRef(null);
 	const ctx = useRef(null);
 
-	const drawAll = () => {
-		elements.forEach((element) => {
-			ctx.current.strokeStyle = element.strokeStyle;
-			ctx.current.lineWidth = element.lineWidth;
-			ctx.current.fillStyle = element.fillStyle;
-			switch (element.tool) {
-				case 'pencil':
-					ctx.current.beginPath();
-					ctx.current.moveTo(element.path[0][0], element.path[0][1]);
-					element.path.forEach((point) => {
-						ctx.current.lineTo(point[0], point[1]);
-					});
-					ctx.current.stroke();
-					break;
-				case 'line':
-					ctx.current.moveTo(element.x, element.y);
-					ctx.current.lineTo(element.x2, element.y2);
-					ctx.current.stroke();
-					break;
-				case 'rectangle':
-					element.fillStyle &&
-						ctx.current.fillRect(
-							element.x,
-							element.y,
-							element.width,
-							element.height
-						);
-					ctx.current.strokeRect(
+	const roomId = useGlobalContext().getRoomId();
+
+	const draw = (ctx, element) => {
+		switch (element.tool) {
+			case 'pencil':
+				ctx.current.beginPath();
+				ctx.current.moveTo(element.path[0][0], element.path[0][1]);
+				element.path.forEach((point) => {
+					ctx.current.lineTo(point[0], point[1]);
+				});
+				ctx.current.stroke();
+				break;
+			case 'line':
+				ctx.current.moveTo(element.x, element.y);
+				ctx.current.lineTo(element.x2, element.y2);
+				ctx.current.stroke();
+				break;
+			case 'rectangle':
+				element.fillStyle &&
+					ctx.current.fillRect(
 						element.x,
 						element.y,
 						element.width,
 						element.height
 					);
-					break;
-				case 'circle':
-					const center = {
-						x: (element.x + element.x2) / 2,
-						y: (element.y + element.y2) / 2,
-					};
-					const radius =
-						Math.sqrt(
-							Math.pow(element.x - element.x2, 2) +
-								Math.pow(element.y - element.y2, 2)
-						) / 2;
+				ctx.current.strokeRect(
+					element.x,
+					element.y,
+					element.width,
+					element.height
+				);
+				break;
+			case 'circle':
+				const center = {
+					x: (element.x + element.x2) / 2,
+					y: (element.y + element.y2) / 2,
+				};
+				const radius =
+					Math.sqrt(
+						Math.pow(element.x - element.x2, 2) +
+							Math.pow(element.y - element.y2, 2)
+					) / 2;
 
-					ctx.current.beginPath();
-					ctx.current.arc(center.x, center.y, radius, 0, 2 * Math.PI);
-					element.fillStyle && ctx.current.fill();
-					ctx.current.stroke();
-					break;
-			}
+				ctx.current.beginPath();
+				ctx.current.arc(center.x, center.y, radius, 0, 2 * Math.PI);
+				element.fillStyle && ctx.current.fill();
+				ctx.current.stroke();
+				break;
+		}
+	};
+	const drawAll = () => {
+		clearAll();
+		elements.forEach((element) => {
+			ctx.current.strokeStyle = element.strokeStyle;
+			ctx.current.lineWidth = element.lineWidth;
+			ctx.current.fillStyle = element.fillStyle;
+			draw(ctx, element);
 		});
+	};
+	const clearAll = () => {
+		ctx.current.clearRect(
+			0,
+			0,
+			canvasRef.current.width,
+			canvasRef.current.height
+		);
 	};
 
 	useEffect(() => {
@@ -96,6 +121,10 @@ const FabricCanvas = ({ socket }) => {
 			canvas.style.width = `${width}px`;
 			canvas.style.height = `${height}px`;
 
+			ctx.current.strokeStyle = toolbox.strokeStyle;
+			ctx.current.lineWidth = toolbox.lineWidth;
+			ctx.current.fillStyle = toolbox.fillStyle;
+
 			// Calculate the scale factor for high-resolution displays
 			// ctx.current.scale(scaleFactor, scaleFactor);
 		}
@@ -104,8 +133,6 @@ const FabricCanvas = ({ socket }) => {
 		setSize();
 		window.addEventListener('resize', setSize);
 
-		// Set up canvas context properties
-
 		// Cleanup event listener on component unmount
 		return () => {
 			window.removeEventListener('resize', setSize);
@@ -113,17 +140,68 @@ const FabricCanvas = ({ socket }) => {
 	}, []);
 
 	useEffect(() => {
-		const canvas = canvasRef.current;
-		if (elements.length > 0) {
-			ctx.current.clearRect(
-				0,
-				0,
-				canvasRef.current.width,
-				canvasRef.current.height
-			);
+		function joinRoom() {
+			socket.emit('joinRoom', roomId, (response) => {
+				if (response.success) {
+					toast.success(response.message);
+					setIsConnected(true);
+				} else {
+					toast.error(response.message);
+				}
+			});
 		}
+
+		function onConnect() {
+			if (roomId) {
+				joinRoom();
+			} else {
+				socket.disconnect();
+				toast.error('No room name provided');
+			}
+		}
+
+		function onDisconnect() {
+			setIsConnected(false);
+			toast.error('Server disconnected...');
+		}
+
+		function canvasDraw(newElements) {
+			console.log('canvas Draw event received', newElements);
+			setElements((previous) => [...previous, newElements]);
+			// setElements((previous) => [...previous, newElements]);
+		}
+
+		function onError(error) {
+			toast.error('Error: ' + error);
+			console.log(error);
+		}
+
+		socket.on('connect', onConnect);
+		socket.on('disconnect', onDisconnect);
+		socket.on('canvas:draw', canvasDraw);
+		socket.on('error', onError);
+
+		socket.connect();
+
+		return () => {
+			socket.off('connect', onConnect);
+			socket.off('disconnect', onDisconnect);
+			socket.off('canvas:draw', canvasDraw);
+			socket.off('error', onError);
+			socket.emit('leaveRoom', roomId);
+			socket.disconnect();
+		};
+	}, []);
+
+	useEffect(() => {
 		drawAll();
 	}, [elements]);
+
+	useEffect(() => {
+		drawAll();
+		draw(ctx, curElement);
+	}, [curElement]);
+
 	const getCoordinatedFromEvent = (e) => {
 		// console.log(e);
 		const { offsetX, offsetY } = e.nativeEvent;
@@ -131,48 +209,47 @@ const FabricCanvas = ({ socket }) => {
 		const y = offsetY * scaleRef.current;
 		return [x, y];
 	};
-
 	const handleMouseDown = (e) => {
 		const [x, y] = getCoordinatedFromEvent(e);
 
 		const element = {
-			tool,
+			...toolbox,
 			x,
 			y,
-			strokeStyle: color,
-			lineWidth: lineWidth,
-			fillStyle: fillStyle,
 		};
 
-		switch (tool) {
+		switch (toolbox.tool) {
 			case 'pencil':
-				setElements((prevState) => [
-					...prevState,
-					{
-						...element,
-						path: [[x, y]],
-					},
-				]);
+				setCurElement({ ...element, path: [[x, y]] });
+				// setElements((prevState) => [
+				// 	...prevState,
+				// 	{
+				// 		...element,
+				// 		path: [[x, y]],
+				// 	},
+				// ]);
 				break;
 			case 'circle':
-				setElements((prevState) => [
-					...prevState,
-					{
-						...element,
-						x2: x,
-						y2: y,
-					},
-				]);
+				setCurElement({ ...element, x2: x, y2: y });
+				// setElements((prevState) => [
+				// 	...prevState,
+				// 	{
+				// 		...element,
+				// 		x2: x,
+				// 		y2: y,
+				// 	},
+				// ]);
 				break;
 			default:
-				setElements((prevState) => [
-					...prevState,
-					{
-						...element,
-						width: 0,
-						height: 0,
-					},
-				]);
+				setCurElement({ ...element, width: 0, height: 0 });
+				// setElements((prevState) => [
+				// 	...prevState,
+				// 	{
+				// 		...element,
+				// 		width: 0,
+				// 		height: 0,
+				// 	},
+				// ]);
 				break;
 		}
 		setIsDrawing(true);
@@ -180,61 +257,93 @@ const FabricCanvas = ({ socket }) => {
 	const handleMouseMove = (e) => {
 		if (!isDrawing) return;
 		const [x, y] = getCoordinatedFromEvent(e);
-		switch (tool) {
+		switch (toolbox.tool) {
 			case 'pencil':
-				setElements((prevState) => {
-					const index = prevState.length - 1;
-					const path = prevState[index].path;
-					path.push([x, y]);
-					return [
-						...prevState.slice(0, index),
-						{
-							...prevState[index],
-							path,
-						},
-					];
+				setCurElement((prevState) => {
+					return {
+						...prevState,
+						path: [...prevState.path, [x, y]],
+					};
 				});
+
+				// setElements((prevState) => {
+				// 	const index = prevState.length - 1;
+				// 	const path = prevState[index].path;
+				// 	path.push([x, y]);
+				// 	return [
+				// 		...prevState.slice(0, index),
+				// 		{
+				// 			...prevState[index],
+				// 			path,
+				// 		},
+				// 	];
+				// });
 				break;
 			case 'line':
-				setElements((prevState) => {
-					const index = prevState.length - 1;
-					return [
-						...prevState.slice(0, index),
-						{
-							...prevState[index],
-							x2: x,
-							y2: y,
-						},
-					];
+				setCurElement((prevState) => {
+					return {
+						...prevState,
+						x2: x,
+						y2: y,
+					};
 				});
+				// setElements((prevState) => {
+				// 	const index = prevState.length - 1;
+				// 	return [
+				// 		...prevState.slice(0, index),
+				// 		{
+				// 			...prevState[index],
+				// 			x2: x,
+				// 			y2: y,
+				// 		},
+				// 	];
+				// });
 				break;
 			case 'rectangle':
-				setElements((prevState) => {
-					const index = prevState.length - 1;
-					const width = x - prevState[index].x;
-					const height = y - prevState[index].y;
-					return [
-						...prevState.slice(0, index),
-						{
-							...prevState[index],
-							width,
-							height,
-						},
-					];
+				setCurElement((prevState) => {
+					const width = x - prevState.x;
+					const height = y - prevState.y;
+					return {
+						...prevState,
+						width,
+						height,
+					};
 				});
+				// setElements((prevState) => {
+				// 	const index = prevState.length - 1;
+				// 	const width = x - prevState[index].x;
+				// 	const height = y - prevState[index].y;
+				// 	return [
+				// 		...prevState.slice(0, index),
+				// 		{
+				// 			...prevState[index],
+				// 			width,
+				// 			height,
+				// 		},
+				// 	];
+				// });
 				break;
 			case 'circle':
-				setElements((prevState) => {
-					const index = prevState.length - 1;
-					return [
-						...prevState.slice(0, index),
-						{
-							...prevState[index],
-							x2: x,
-							y2: y,
-						},
-					];
+				setCurElement((prevState) => {
+					const width = x - prevState.x;
+					const height = y - prevState.y;
+					return {
+						...prevState,
+						x2: x,
+						y2: y,
+					};
 				});
+				// setElements((prevState) => {
+				// 	const index = prevState.length - 1;
+				// 	return [
+				// 		...prevState.slice(0, index),
+				// 		{
+				// 			...prevState[index],
+				// 			x2: x,
+				// 			y2: y,
+				// 		},
+				// 	];
+				// });
 				break;
 			default:
 				console.log(`Error Occured unknown tool value ${element.tool}`);
@@ -242,8 +351,10 @@ const FabricCanvas = ({ socket }) => {
 	};
 	const handleMouseUp = (e) => {
 		setIsDrawing(false);
+		setElements((prevState) => [...prevState, curElement]);
+		socket.emit('canvas:draw', { roomId, curElement });
+		setCurElement({});
 	};
-
 	const handleUndo = () => {
 		// console.log('undo');
 		if (elements.length === 0) return;
@@ -257,105 +368,29 @@ const FabricCanvas = ({ socket }) => {
 		setHistory((prevState) => prevState.slice(0, prevState.length - 1)); // remove last element from history
 	};
 	const clearCanvas = () => {
-		ctx.current.clearRect(
-			0,
-			0,
-			canvasRef.current.width,
-			canvasRef.current.height
-		);
 		setElements([]);
 		setHistory([]);
+	};
+	const toogleConnection = () => {
+		if (isConnected === true) socket.disconnect();
+		else socket.connect();
 	};
 
 	return (
 		<div
 			className='container'
 			style={{ display: 'flex' }}>
-			<div
-				className='toolbox'
-				style={{
-					border: 'solid red 2px',
-					minWidth: '200px',
-					display: 'flex',
-					flexDirection: 'column',
-					justifyContent: 'space-evenly',
-				}}>
-				<div className='tool'>
-					<label htmlFor='tool'>Tool: </label>
-					<select
-						name='tool'
-						id='tool'
-						onChange={(e) => setTool(e.target.value)}>
-						<option value='pencil'>Pencil</option>
-						<option value='line'>Line</option>
-						<option value='rectangle'>Rectangle</option>
-						<option value='circle'>Circle</option>
-					</select>
-				</div>
-				<div
-					className='lineWidth'
-					style={{ display: 'flex', flexDirection: 'column' }}>
-					<label htmlFor='lineWidth'>Line Width</label>
-					<input
-						type='number'
-						value={lineWidth}
-						min={1}
-						max={100}
-						style={{ width: '50px' }}
-						name={'lineWidth'}
-						onChange={(e) => {
-							let value = parseInt(e.target.value);
-							if (value > 100) value = 100;
-							else if (value < 1) value = 1;
-							setLineWidth(value);
-						}}
-					/>
-					<input
-						type='range'
-						min={1}
-						max={100}
-						value={lineWidth}
-						name='lineWidth'
-						onChange={(e) => setLineWidth(e.target.value)}
-					/>
-				</div>
-				<div
-					className='color'
-					style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-					<label htmlFor='color'>Color:</label>
-					<input
-						type='color'
-						onChange={(e) => setColor(e.target.value)}
-					/>
-				</div>
-				<div
-					className='fillStyle'
-					style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-					<label htmlFor='fillStyle'>Fill Color:</label>
-					<input
-						type='color'
-						onChange={(e) => setfillStyle(e.target.value)}
-					/>
-				</div>
-				<button
-					type='button'
-					disabled={elements.length < 1}
-					onClick={handleUndo}>
-					Undo
-				</button>
-				<button
-					type='button'
-					disabled={history.length < 1}
-					onClick={handleRedo}>
-					Redo
-				</button>
-				<button
-					type='button'
-					disabled={elements.length < 1}
-					onClick={clearCanvas}>
-					Clear Canvas
-				</button>
-			</div>
+			<Toolbox
+				isConnected={isConnected}
+				toogleConnection={toogleConnection}
+				elements={elements}
+				history={history}
+				handleUndo={handleUndo}
+				handleRedo={handleRedo}
+				clearCanvas={clearCanvas}
+				toolbox={toolbox}
+				setToolbox={setToolbox}
+			/>
 
 			<div
 				className='canvas'
@@ -370,6 +405,10 @@ const FabricCanvas = ({ socket }) => {
 				onMouseMove={handleMouseMove}>
 				<canvas ref={canvasRef} />
 			</div>
+			<Chat
+				socket={socket}
+				isConnected={isConnected}
+			/>
 		</div>
 	);
 };

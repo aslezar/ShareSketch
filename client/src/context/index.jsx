@@ -6,9 +6,11 @@ const AppContext = React.createContext();
 const userInitialState = {
 	signedIn: 'false',
 	token: '',
-	name: '',
+	name: 'Raman',
+	id: '',
 	permissions: [], //view, edit, delete
 	colorMode: 'dark', //dark, light
+	roomId: 'hello',
 };
 
 const AppProvider = ({ children }) => {
@@ -54,6 +56,12 @@ const AppProvider = ({ children }) => {
 	const isSignedIn = () => {
 		return user.signedIn;
 	};
+	const getRoomId = () => {
+		return user.roomId;
+	};
+	const getUserId = () => {
+		return user.id;
+	};
 
 	//update functions
 	const updateToken = (newtoken) => {
@@ -84,6 +92,12 @@ const AppProvider = ({ children }) => {
 	const signOut = () => {
 		dispatch({ type: 'SIGN_OUT' });
 	};
+	const updateRoomId = (newRoomId) => {
+		dispatch({ type: 'UPDATE_ROOM_ID', payload: newRoomId });
+	};
+	const updateId = (newId) => {
+		dispatch({ type: 'UPDATE_ID', payload: newId });
+	};
 
 	return (
 		<AppContext.Provider
@@ -104,6 +118,9 @@ const AppProvider = ({ children }) => {
 				setColorMode,
 				signIn,
 				signOut,
+				getRoomId,
+				updateRoomId,
+				getUserId,
 			}}>
 			{children}
 		</AppContext.Provider>
