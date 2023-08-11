@@ -4,30 +4,47 @@ import Canvas from '../../components/Canvas';
 import Chat from '../../components/Chat';
 import { toast } from 'react-toastify';
 import { useGlobalContext } from '../../context';
+import { useNavigate } from 'react-router-dom';
 
 //Styles
 import Style from './whiteboard.module.css';
+import { Navigate, useParams } from 'react-router-dom';
 
-const WhiteBoard = ({ socket }) => {
+const WhiteBoard = () => {
 	const [toolbox, setToolbox] = useState(defaultToolbox);
 
 	const [elements, setElements] = useState([]);
 	const [history, setHistory] = useState([]);
 
-	const [isConnected, setIsConnected] = useState(false); //For socket.io connection status
+	const [messages, setMessages] = useState([]);
+
+	const [isConnected, setIsConnected] = useState(false); //Is socket io connected to any room, room name is provided in the url and in global Context
 
 	const ctx = useRef(null);
 
-	const roomId = useGlobalContext().getRoomId();
+	const roomId = useParams().roomId;
+
+	const roomId2 = useGlobalContext().getRoomId();
+	const isSignedIn = useGlobalContext().isSignedIn();
+	const socket = useGlobalContext().socket;
+	const userId = useGlobalContext().getUserId();
+	const userName = useGlobalContext().getUserName();
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		function joinRoom() {
-			socket.emit('joinRoom', roomId, (response) => {
+			socket.emit('joinRoom', { roomId, userId }, (response) => {
 				if (response.success) {
-					toast.success(response.message);
+					toast.success(response.msg);
+					console.log(response.data);
+					setElements(response.data.elements);
+					setMessages(response.data.messages);
 					setIsConnected(true);
 				} else {
-					toast.error(response.message);
+					console.log(response);
+					toast.error(response.msg);
+					navigate('/');
 				}
 			});
 		}
@@ -43,13 +60,17 @@ const WhiteBoard = ({ socket }) => {
 
 		function onDisconnect() {
 			setIsConnected(false);
-			toast.error('Server disconnected...');
+			toast.error('Server disconnected.');
 		}
 
 		function canvasDraw(newElements) {
 			console.log('canvas Draw event received', newElements);
 			setElements((previous) => [...previous, newElements]);
 			// setElements((previous) => [...previous, newElements]);
+		}
+		function onMessage(msg) {
+			// Update the messages state with the new message
+			setMessages((prevMessages) => [...prevMessages, msg]);
 		}
 
 		function onError(error) {
@@ -60,16 +81,24 @@ const WhiteBoard = ({ socket }) => {
 		socket.on('connect', onConnect);
 		socket.on('disconnect', onDisconnect);
 		socket.on('canvas:draw', canvasDraw);
+		socket.on('chat:message', onMessage);
 		socket.on('error', onError);
-
-		socket.connect();
+		if (!socket.connected) socket.connect();
+		else onConnect();
 
 		return () => {
 			socket.off('connect', onConnect);
 			socket.off('disconnect', onDisconnect);
 			socket.off('canvas:draw', canvasDraw);
+			socket.off('chat:message', onMessage);
 			socket.off('error', onError);
-			socket.emit('leaveRoom', roomId);
+			socket.emit('leaveRoom', { roomId }, (response) => {
+				if (response.success) {
+					toast.info(response.msg);
+				} else {
+					toast.error(response.msg);
+				}
+			});
 			socket.disconnect();
 		};
 	}, []);
@@ -91,13 +120,39 @@ const WhiteBoard = ({ socket }) => {
 		setHistory([]);
 	};
 	const toogleConnection = () => {
-		if (isConnected === true) socket.disconnect();
-		else socket.connect();
+		if (isConnected === true) {
+			toast.info('Disconnecting from server...');
+			socket.disconnect();
+		} else {
+			toast.info('Connecting to server...');
+			socket.connect();
+		}
 	};
 
 	const addElement = (element) => {
+		if (isSignedIn === false)
+			return toast.error('You must be signed in to draw');
 		setElements((previous) => [...previous, element]);
-		socket.emit('canvas:draw', { roomId, element });
+		socket.emit('canvas:draw', { roomId, userId, element }, (response) => {
+			if (!response.success) {
+				toast.error(response.msg);
+			}
+		});
+	};
+
+	const sendMessage = (message) => {
+		if (!isSignedIn)
+			return toast.error('You must be signed in to send messages');
+		setMessages((previous) => [...previous, { userId, userName, message }]);
+		socket.emit(
+			'chat:message',
+			{ roomId, userId, userName, message },
+			(response) => {
+				if (!response.success) {
+					toast.error(response.msg);
+				}
+			}
+		);
 	};
 
 	return (
@@ -121,8 +176,9 @@ const WhiteBoard = ({ socket }) => {
 				addElement={addElement}
 			/>
 			<Chat
-				socket={socket}
 				isConnected={isConnected}
+				messages={messages}
+				sendMessage={sendMessage}
 			/>
 		</div>
 	);

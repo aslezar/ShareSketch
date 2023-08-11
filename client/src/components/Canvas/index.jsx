@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
-import { toast } from 'react-toastify';
 import Style from './canvas.module.css';
 
 const Canvas = ({ ctx, elements, toolbox, addElement }) => {

@@ -1,5 +1,6 @@
 //Express App Imports
 const express = require('express');
+const path = require('path');
 const http = require('http');
 
 const helmet = require('helmet');
@@ -52,8 +53,10 @@ app.use('/assests', express.static('../client/dist/assests'));
 
 //Define Routes Here
 
+app.use('/api/auth', require('./routes/auth'));
+
 app.get('/*', (req, res) => {
-	res.sendFile('../client/dist/index.html', (err) => {
+	res.sendFile(path.join(__dirname, '../client/dist/index.html'), (err) => {
 		if (err) {
 			console.error('Error sending file:', err);
 		}
@@ -61,12 +64,13 @@ app.get('/*', (req, res) => {
 });
 
 //Error Handling Middleware
+app.use(require('./middleware/error-handler'));
 
 //Function Start
 async function start() {
 	try {
-		// await connectDB(process.env.MONGO_URL);
-		// console.log('Connected to the DataBase Sucessfully');
+		await connectDB(process.env.MONGO_URL);
+		console.log('Connected to the DataBase Sucessfully');
 		server.listen(PORT, () => {
 			console.log(`Server is listening on http://localhost:${PORT}`);
 		});

@@ -1,21 +1,32 @@
 import { useState } from 'react';
-
-//Socket
-import { socket } from './socket';
+import { Routes, Route } from 'react-router-dom';
+import PrivateRoute from './components/PrivateRoute';
 
 //Components
 import Navbar from './components/Navbar';
-import Homepage from './components/Homepage';
-import Footer from './components/Footer';
+
+//Pages
+import Homepage from './Pages/HomePage';
 import WhiteBoard from './Pages/WhiteBoard';
+import ErrorPage from './Pages/ErrorPage';
 function App() {
 	return (
 		<div className='App'>
-			{/* <Navbar /> */}
-			{/* <Homepage /> */}
-			{/* <Canvas socket={socket} /> */}
-			<WhiteBoard socket={socket} />
-			{/* <Footer /> */}
+			<Navbar />
+			<Routes>
+				<Route
+					path='/'
+					element={<Homepage />}
+				/>
+				<Route
+					path='/room/:roomId'
+					element={<WhiteBoard />}
+				/>
+				<Route
+					path='/*'
+					element={<ErrorPage />}
+				/>
+			</Routes>
 		</div>
 	);
 }

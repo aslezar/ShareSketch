@@ -1,0 +1,18 @@
+.btn {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	border: none;
+	width: 100%;
+	padding: 15px;
+	border-radius: 0.5rem;
+	background-color: red;
+	color: white;
+	transition: all 0.4s;
+}
+
+.btn:hover {
+	background-color: white;
+	border: 1px solid red;
+	color: black;
+}

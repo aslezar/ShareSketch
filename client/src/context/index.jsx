@@ -2,35 +2,59 @@ import React, { useContext, useReducer, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import * as api from '../api/index.js';
 import reducer from './userReducer.jsx';
+import { socket } from '../socket';
+
 const AppContext = React.createContext();
 const userInitialState = {
-	signedIn: 'false',
+	signedIn: false,
+	userId: '',
+	name: '',
+	email: '',
 	token: '',
-	name: 'Raman',
-	id: '',
-	permissions: [], //view, edit, delete
 	colorMode: 'dark', //dark, light
-	roomId: 'hello',
+	roomId: '64d659886727614d5eae9dd1',
+	// permissions: [], //view, edit, delete
 };
 
 const AppProvider = ({ children }) => {
 	const [user, dispatch] = useReducer(reducer, userInitialState);
+	// const [isLoading, setIsLoading] = useState(false);
+
+	const initialFromLocalStorage = async (tokenValue) => {
+		try {
+			const res = await api.signinToken(tokenValue);
+			const { userId, name, email, token } = res.data.data;
+			if (!userId || !name || !email || !token)
+				throw new Error('Invalid token');
+			console.log(res.data);
+			dispatch({
+				type: 'SIGN_IN',
+				payload: { userId, name, email, token },
+			});
+		} catch (error) {
+			localStorage.removeItem('token');
+			console.log(error);
+			toast.error(error?.data?.msg);
+		}
+	};
 
 	useEffect(() => {
 		const token = JSON.parse(localStorage.getItem('token')) || null;
-		try {
-			if (token) {
-				const { name, token, permissions } = api.signInFromToken(token);
-			}
-			dispatch({
-				type: 'SIGN_IN',
-				payload: { name, token, permissions },
-			});
-		} catch (error) {
-			toast.error(error?.data?.msg || error);
-		}
+		if (token) initialFromLocalStorage(token);
 	}, []);
 
+	useEffect(() => {
+		socket.on('connect', () => {
+			console.log('socket connected');
+		});
+		socket.on('disconnect', () => {
+			console.log('socket disconnected');
+		});
+		return () => {
+			socket.off('connect');
+			socket.off('disconnect');
+		};
+	}, []);
 	//get functions
 	const getUserName = () => {
 		return user.name;
@@ -60,7 +84,7 @@ const AppProvider = ({ children }) => {
 		return user.roomId;
 	};
 	const getUserId = () => {
-		return user.id;
+		return user.userId;
 	};
 
 	//update functions
@@ -82,14 +106,17 @@ const AppProvider = ({ children }) => {
 	const setColorMode = (newmode) => {
 		dispatch({ type: 'SET_COLOR_MODE', payload: newmode });
 	};
-	const signIn = ({ name, token, permissions }) => {
-		if (!name || !token || !permissions) return console.log('Error Code : 1');
+	const signIn = ({ userId, name, token, email }) => {
+		if (!userId || !name || !token || !email)
+			return console.log('Error Code : 1');
 		dispatch({
 			type: 'SIGN_IN',
-			payload: { name, token, permissions, signedIn },
+			payload: { userId, name, token, email },
 		});
 	};
-	const signOut = () => {
+	const signOut = async () => {
+		if (socket.connected) socket.disconnect();
+		const res = await api.signOut();
 		dispatch({ type: 'SIGN_OUT' });
 	};
 	const updateRoomId = (newRoomId) => {
@@ -98,11 +125,16 @@ const AppProvider = ({ children }) => {
 	const updateId = (newId) => {
 		dispatch({ type: 'UPDATE_ID', payload: newId });
 	};
+	const getUserEmail = () => {
+		return user.email;
+	};
 
 	return (
 		<AppContext.Provider
 			value={{
+				socket,
 				getUserName,
+				getUserEmail,
 				getUserToken,
 				canRead,
 				canEdit,

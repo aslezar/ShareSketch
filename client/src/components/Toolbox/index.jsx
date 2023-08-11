@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import Style from './toolbox.module.css';
 
 const Toolbox = ({

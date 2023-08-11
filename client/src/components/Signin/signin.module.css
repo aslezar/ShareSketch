@@ -1,0 +1,59 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 50px;
+	flex-grow: 1; /* This makes .wrapper take up the available vertical space */
+}
+
+.headContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+.heading {
+	text-align: center;
+	font-size: 1.5rem;
+}
+
+.dummyLogin {
+	margin: 0; /* Reset default margin */
+	flex-grow: 1; /* Allow the element to take up remaining space */
+	text-align: right; /* Align the content to the right */
+	cursor: pointer;
+}
+
+.dummyLogin:hover {
+	text-decoration: underline;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	flex-grow: 1;
+}
+
+.inputContainer {
+	margin: 10px;
+}
+
+.inputContainer input {
+	width: 100%;
+	background-color: #e8f0fe;
+	color: black;
+	padding: 10px;
+	border-radius: 0.5rem;
+	display: block;
+	border: 0px none;
+}
+.actoinContainer {
+	text-align: right;
+}
+
+.actoinContainer a {
+	color: black;
+}
+.hoverUnderline:hover {
+	text-decoration: underline;
+}

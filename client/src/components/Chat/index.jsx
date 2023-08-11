@@ -2,35 +2,18 @@ import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import Style from './chat.module.css';
 import { useGlobalContext } from '../../context';
 
-const Chat = ({ socket, isConnected }) => {
+const Chat = ({ isConnected, messages, sendMessage }) => {
 	const [message, setMessage] = useState('');
-	const [messages, setMessages] = useState([]);
 
 	const messageRef = useRef(null);
 
-	const roomId = useGlobalContext().getRoomId();
-	const user = useGlobalContext().getUserId();
-
-	useEffect(() => {
-		const onMessage = (msg) => {
-			// Update the messages state with the new message
-			setMessages((prevMessages) => [...prevMessages, msg]);
-		};
-
-		socket.on('chat:message', onMessage);
-
-		return () => {
-			socket.off('chat:message', onMessage);
-		};
-	}, [socket]);
+	const isSignedIn = useGlobalContext().isSignedIn();
+	const userId = useGlobalContext().getUserId();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (message) {
-			setMessages((prevMessages) => [...prevMessages, { user, message }]);
-			// Emit the message to the server
-			socket.emit('chat:message', { roomId, message, user });
-			// Clear the input field
+			sendMessage(message);
 			setMessage('');
 		}
 	};
@@ -38,7 +21,7 @@ const Chat = ({ socket, isConnected }) => {
 		if (messageRef.current) {
 			messageRef.current.scrollTop = messageRef.current.scrollHeight;
 		}
-	});
+	}, [messages]);
 
 	return (
 		<div className={Style.chat}>
@@ -47,7 +30,7 @@ const Chat = ({ socket, isConnected }) => {
 				ref={messageRef}>
 				{messages.map((msg, index) => (
 					<li key={index}>
-						{msg.user === user ? 'You:' : msg.user + ':'}
+						{msg.userId === userId ? 'You:' : msg.userName + ':'}
 						{msg.message}
 					</li>
 				))}
@@ -57,14 +40,14 @@ const Chat = ({ socket, isConnected }) => {
 				onSubmit={handleSubmit}>
 				<input
 					className={Style.input}
-					placeholder='Type your message'
+					placeholder={isSignedIn ? 'Type your message' : 'Sign in to chat'}
 					value={message}
 					onChange={(e) => setMessage(e.target.value)}
 					autoComplete='off'
 				/>
 				<button
 					className={Style.btn}
-					disabled={!isConnected}
+					disabled={!isConnected || !isSignedIn}
 					type='submit'>
 					Send
 				</button>
