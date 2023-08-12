@@ -55,6 +55,7 @@ const AppProvider = ({ children }) => {
 			socket.off('disconnect');
 		};
 	}, []);
+
 	//get functions
 	const getUserName = () => {
 		return user.name;
@@ -103,8 +104,8 @@ const AppProvider = ({ children }) => {
 	const clearPermissions = () => {
 		dispatch({ type: 'CLEAR_PERMISSIONS' });
 	};
-	const setColorMode = (newmode) => {
-		dispatch({ type: 'SET_COLOR_MODE', payload: newmode });
+	const toggleColorMode = () => {
+		dispatch({ type: 'TOGGLE_COLOR_MODE' });
 	};
 	const signIn = ({ userId, name, token, email }) => {
 		if (!userId || !name || !token || !email)
@@ -121,9 +122,6 @@ const AppProvider = ({ children }) => {
 	};
 	const updateRoomId = (newRoomId) => {
 		dispatch({ type: 'UPDATE_ROOM_ID', payload: newRoomId });
-	};
-	const updateId = (newId) => {
-		dispatch({ type: 'UPDATE_ID', payload: newId });
 	};
 	const getUserEmail = () => {
 		return user.email;
@@ -147,7 +145,7 @@ const AppProvider = ({ children }) => {
 				addPermission,
 				removePermission,
 				clearPermissions,
-				setColorMode,
+				toggleColorMode,
 				signIn,
 				signOut,
 				getRoomId,

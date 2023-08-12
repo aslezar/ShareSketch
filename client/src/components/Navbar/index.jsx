@@ -6,10 +6,11 @@ import { useGlobalContext } from '../../context';
 import { FaBars } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Sign from '../../components/Sign';
-import Button from '../Button';
+import { MdDarkMode, MdLightMode } from 'react-icons/md';
 
 const Navbar = () => {
 	const colorMode = useGlobalContext().getColorMode();
+	const toggleColorMode = useGlobalContext().toggleColorMode;
 
 	return (
 		<nav className={Style.navCenter}>
@@ -24,6 +25,13 @@ const Navbar = () => {
 				</button>
 			</div>
 			<ul className={Style.links}>
+				<li onClick={toggleColorMode}>
+					{colorMode === 'dark' ? (
+						<MdLightMode className={Style.icon} />
+					) : (
+						<MdDarkMode className={Style.icon} />
+					)}
+				</li>
 				<li>
 					<Link to='/'>Home</Link>
 				</li>

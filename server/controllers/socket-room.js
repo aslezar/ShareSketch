@@ -103,11 +103,46 @@ const joinRoom = async (data, cb, socket) => {
 	}
 };
 
-const leaveRoom = (data, cb, socket) => {
-	const { roomId } = data;
-	console.log(`${socket.id} left room: ${roomId}`);
-	socket.leave(roomId);
-	cb({ msg: 'Room Left', success: true });
+const leaveRoom = async (data, cb, socket) => {
+	const { roomId, userId } = data;
+	if (!mongoose.Types.ObjectId.isValid(roomId)) {
+		cb({ msg: 'Invalid Room ID2', success: false });
+		return;
+	}
+
+	try {
+		if (userId) {
+			if (!mongoose.Types.ObjectId.isValid(userId)) {
+				cb({ msg: 'Invalid User ID', success: false });
+				return;
+			}
+			const user = await User.findById(userId).select('-password');
+			if (!user) {
+				cb({
+					msg: `User not found with user ID ${userId}`,
+					success: false,
+				});
+				const room = await Room.findById(roomId);
+				if (!room) {
+					cb({
+						msg: `Room not found with room ID ${roomId}`,
+						success: false,
+					});
+					return;
+				}
+				room.users = room.users.filter((id) => id !== userId);
+				user.rooms = user.rooms.filter((id) => id !== roomId);
+				await user.save();
+				await room.save();
+			}
+		}
+		socket.leave(roomId);
+		console.log(`${socket.id} left room: ${roomId}`);
+		cb({ msg: 'Room Left', success: true });
+	} catch (error) {
+		console.log(error);
+		cb({ msg: 'Server: Error leaving room', success: false });
+	}
 };
 
 module.exports = { createRoom, joinRoom, leaveRoom };

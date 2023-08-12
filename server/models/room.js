@@ -13,7 +13,10 @@ const RoomSchema = new mongoose.Schema(
 	{
 		chat: [chatMessageSchema],
 		elements: [],
-		users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+		users: {
+			type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+			unique: true,
+		},
 		admin: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 	},
 	{ timestamps: true }

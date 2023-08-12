@@ -47,8 +47,11 @@ const reducer = (state, action) => {
 		if (action.type === 'CLEAR_PERMISSIONS') {
 			return { ...state, permissions: [] };
 		}
-		if (action.type === 'SET_COLOR_MODE') {
-			return { ...state, colorMode: action.payload };
+		if (action.type === 'TOGGLE_COLOR_MODE') {
+			return {
+				...state,
+				colorMode: state.colorMode === 'dark' ? 'light' : 'dark',
+			};
 		}
 		if (action.type === 'UPDATE_ROOM_ID') {
 			return { ...state, roomId: action.payload };

@@ -1,14 +1,18 @@
 import { useState, useRef, useEffect } from 'react';
-import Toolbox from '../../components/Toolbox';
-import Canvas from '../../components/Canvas';
-import Chat from '../../components/Chat';
 import { toast } from 'react-toastify';
 import { useGlobalContext } from '../../context';
 import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+import { Navigate, useParams } from 'react-router-dom';
+
+//Components
+import Toolbox from '../../components/Toolbox';
+import Canvas from '../../components/Canvas';
+import CanvasUpper from '../../components/CanvasUpper';
+import Chat from '../../components/Chat';
 
 //Styles
 import Style from './whiteboard.module.css';
-import { Navigate, useParams } from 'react-router-dom';
 
 const WhiteBoard = () => {
 	const [toolbox, setToolbox] = useState(defaultToolbox);
@@ -18,13 +22,13 @@ const WhiteBoard = () => {
 
 	const [messages, setMessages] = useState([]);
 
-	const [isConnected, setIsConnected] = useState(false); //Is socket io connected to any room, room name is provided in the url and in global Context
+	const [isConnected, setIsConnected] = useState(false); //Is socketio is connected to any room, room name is provided in the url and in global Context
 
-	const ctx = useRef(null);
+	const canvasRef = useRef(null);
 
 	const roomId = useParams().roomId;
 
-	const roomId2 = useGlobalContext().getRoomId();
+	// const roomId2 = useGlobalContext().getRoomId();
 	const isSignedIn = useGlobalContext().isSignedIn();
 	const socket = useGlobalContext().socket;
 	const userId = useGlobalContext().getUserId();
@@ -64,15 +68,25 @@ const WhiteBoard = () => {
 		}
 
 		function canvasDraw(newElements) {
-			console.log('canvas Draw event received', newElements);
+			// console.log('canvas Draw event received', newElements);
 			setElements((previous) => [...previous, newElements]);
-			// setElements((previous) => [...previous, newElements]);
+		}
+		function clrCanvas() {
+			setElements([]);
+			setHistory([]);
+		}
+		function undoCanvas(id) {
+			setElements((prevElements) => {
+				const newElements = prevElements.filter(
+					(element) => element.elementId !== id
+				);
+				return newElements;
+			});
 		}
 		function onMessage(msg) {
 			// Update the messages state with the new message
 			setMessages((prevMessages) => [...prevMessages, msg]);
 		}
-
 		function onError(error) {
 			toast.error('Error: ' + error);
 			console.log(error);
@@ -80,9 +94,15 @@ const WhiteBoard = () => {
 
 		socket.on('connect', onConnect);
 		socket.on('disconnect', onDisconnect);
+
 		socket.on('canvas:draw', canvasDraw);
+		socket.on('canvas:clear', clrCanvas);
+		socket.on('canvas:undo', undoCanvas);
+
 		socket.on('chat:message', onMessage);
+
 		socket.on('error', onError);
+
 		if (!socket.connected) socket.connect();
 		else onConnect();
 
@@ -90,9 +110,11 @@ const WhiteBoard = () => {
 			socket.off('connect', onConnect);
 			socket.off('disconnect', onDisconnect);
 			socket.off('canvas:draw', canvasDraw);
+			socket.off('canvas:clear', clrCanvas);
+			socket.off('canvas:undo', undoCanvas);
 			socket.off('chat:message', onMessage);
 			socket.off('error', onError);
-			socket.emit('leaveRoom', { roomId }, (response) => {
+			socket.emit('leaveRoom', { roomId, userId }, (response) => {
 				if (response.success) {
 					toast.info(response.msg);
 				} else {
@@ -105,19 +127,54 @@ const WhiteBoard = () => {
 
 	const handleUndo = () => {
 		// console.log('undo');
+		if (isSignedIn === false)
+			return toast.error('You must be signed in to edit canvas');
 		if (elements.length === 0) return;
-		setHistory((prevState) => [...prevState, elements[elements.length - 1]]); // add last element from elements
+		const lastElement = elements[elements.length - 1];
+		setHistory((prevState) => [...prevState, lastElement]); // add last element from elements
 		setElements((prevState) => prevState.slice(0, prevState.length - 1)); // remove last element from elements
+		socket.emit(
+			'canvas:undo',
+			{ roomId, userId, elementId: lastElement.elementId },
+			(response) => {
+				if (!response.success) {
+					toast.error(response.msg);
+				}
+			}
+		);
 	};
 	const handleRedo = () => {
 		// console.log('redo');
+		if (isSignedIn === false)
+			return toast.error('You must be signed in to edit canvas');
 		if (history.length === 0) return;
-		setElements((prevState) => [...prevState, history[history.length - 1]]); // add last element from history
+		const lastElement = history[history.length - 1];
+		setElements((prevState) => [...prevState, lastElement]); // add last element from history
 		setHistory((prevState) => prevState.slice(0, prevState.length - 1)); // remove last element from history
+		socket.emit(
+			'canvas:redo',
+			{
+				roomId,
+				userId,
+				element: lastElement,
+			},
+			(response) => {
+				if (!response.success) {
+					toast.error(response.msg);
+				}
+			}
+		);
 	};
 	const clearCanvas = () => {
+		if (isSignedIn === false)
+			return toast.error('You must be signed in to edit canvas');
 		setElements([]);
 		setHistory([]);
+		socket.emit('canvas:clear', { roomId, userId }, (response) => {
+			if (!response.success) {
+				toast.error(response.msg);
+			}
+		});
 	};
 	const toogleConnection = () => {
 		if (isConnected === true) {
@@ -129,9 +186,12 @@ const WhiteBoard = () => {
 		}
 	};
 
-	const addElement = (element) => {
+	const addElement = (ele) => {
 		if (isSignedIn === false)
 			return toast.error('You must be signed in to draw');
+		const elementId = uuidv4();
+		console.log(elementId);
+		const element = { elementId, ...ele };
 		setElements((previous) => [...previous, element]);
 		socket.emit('canvas:draw', { roomId, userId, element }, (response) => {
 			if (!response.success) {
@@ -170,8 +230,11 @@ const WhiteBoard = () => {
 			/>
 
 			<Canvas
-				ctx={ctx}
 				elements={elements}
+				canvasRef={canvasRef}
+			/>
+			<CanvasUpper
+				canvasRef={canvasRef}
 				toolbox={toolbox}
 				addElement={addElement}
 			/>
