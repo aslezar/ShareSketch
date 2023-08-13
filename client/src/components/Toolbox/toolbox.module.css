@@ -1,92 +1,201 @@
-.toolbox {
+.container {
 	display: flex;
 	flex-direction: column;
-	min-width: 300px;
+	min-width: 200px;
+	max-width: 300px;
 	height: 100%;
 	border: 1px solid #ccc;
 	padding: 10px;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 	border-radius: 0 10px 0 0;
+	gap: 10px;
+	overflow: auto;
 }
-
-.toolbox .status {
-	display: flex;
-	justify-content: center;
-	margin-bottom: 10px; /* Add some margin to separate from the next section */
-}
-
-.toolbox .status button {
-	background-color: green;
-	color: white;
-	font-weight: bold;
-	border-radius: 5px;
-	padding: 5px;
-	border: none;
-	cursor: pointer;
-}
-
-.toolbox .status button.disconnected {
-	background-color: red;
-}
-
-.toolbox .tool {
-	display: flex;
-	align-items: center;
-	margin-bottom: 10px;
-}
-
-.toolbox .tool label {
-	margin-right: 5px;
-}
-
-.toolbox .tool select {
-	width: 100px;
-	padding: 3px;
-	border-radius: 3px;
-}
-
-.toolbox .lineWidth {
+.heading {
 	display: flex;
 	flex-direction: column;
-	margin-bottom: 10px;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: 1;
+	border: 1px solid #ccc;
+	padding: 10px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+	border-radius: 10px;
 }
-
-.toolbox .lineWidth label {
-	margin-bottom: 5px;
-}
-
-.toolbox .lineWidth input[type='number'],
-.toolbox .lineWidth input[type='range'] {
-	width: 100px;
-}
-
-.toolbox .color,
-.toolbox .fillStyle {
-	display: flex;
-	justify-content: space-evenly;
-	margin-bottom: 10px;
-}
-
-.toolbox .color label,
-.toolbox .fillStyle label {
-	align-self: center;
-}
-
-.toolbox button {
+.button {
 	background-color: #007bff;
-	color: white;
-	border: none;
 	border-radius: 5px;
 	padding: 5px 10px;
-	margin-top: 5px;
+	color: white;
+	border: none;
 	cursor: pointer;
+	width: 100%;
+	transition: background-color 0.3s ease;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+}
+.connected {
+	background-color: green;
+	font-weight: bold;
+}
+.disconnected {
+	background-color: red;
+	font-weight: bold;
+}
+.connected:hover {
+	background-color: #0069d9;
+}
+.disconnected:hover {
+	background-color: #dc3545;
+}
+.roomName {
+	text-align: center;
+	background-color: #ccc;
+	border: none;
+	border-radius: 5px;
+	padding: 5px;
+	width: 90%;
+}
+.share {
+	display: flex;
+	gap: 5px;
+	width: 100%;
+}
+.toolbox {
+	display: flex;
+	flex-direction: column;
+	/* flex-grow: 10; */
+	/* border: 2px solid black; */
+	padding: 10px;
+	gap: 10px;
 }
 
-.toolbox button:disabled {
-	background-color: gray;
+.tools {
+	flex-grow: 5;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	gap: 5px;
+}
+
+.tools > div {
+	display: flex;
+	border: 1px solid black;
+	justify-content: space-evenly;
+	border-radius: 10px;
+	padding: 10px;
+	border: 1px solid #ccc;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+	height: 3.5rem;
+	flex-grow: 1;
+}
+.tools > div :nth-child(1) {
+	margin-bottom: auto;
+	text-align: left;
+	font-weight: bold;
+}
+.tools > div :nth-child(2) {
+	margin-top: auto;
+}
+
+.buttons {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.tool {
+	display: flex;
+	gap: 5px;
+}
+select {
+	border-radius: 5px;
+	font-size: 0.8rem;
+	background-color: black;
+	color: white;
+	min-width: 50%;
+	cursor: pointer;
+	text-align: center;
+	height: 1.5rem;
+	line-height: 1.5rem; /* Vertical centering */
+	display: flex;
+}
+
+select:hover {
+	background-color: white;
+	color: black;
+}
+
+select:focus {
+	background-color: white;
+	color: black;
+	box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.lineWidth > section {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	max-width: 60%;
+}
+.lineWidth > section :nth-child(1) {
+	width: 50px;
+	flex-grow: 1;
+	padding: 2px;
+}
+
+input[type='range'] {
+	flex-grow: 4;
+	width: 100%;
+}
+select,
+input:hover {
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.button:hover {
+	background-color: #0056b3;
+}
+
+input[type='color'] {
+	padding: 0px;
+	border: 2px solid black;
+}
+
+.button:disabled {
+	background-color: #ccc;
 	cursor: not-allowed;
 }
 
-.toolbox button:hover {
-	background-color: #0069d9;
+.userdiv {
+	flex-grow: 5;
+	border: 1px solid #ccc;
+	padding: 10px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+	border-radius: 10px;
+	overflow: auto;
+}
+.users span {
+	font-weight: bold;
+}
+.users {
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
+	justify-content: space-evenly;
+	list-style-type: none;
+	/* flex: 1; Take remaining vertical space */
+}
+
+.users li {
+	padding: 10px;
+	font-size: 0.8rem;
+	margin-bottom: 5px;
+	background-color: #1322adc7;
+	border-radius: 5px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }

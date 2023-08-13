@@ -3,42 +3,46 @@ import { toast } from 'react-toastify';
 import * as api from '../api/index.js';
 import reducer from './userReducer.jsx';
 import { socket } from '../socket';
+import setCSSValues from '../utils/setCSS.js';
 
 const AppContext = React.createContext();
-const userInitialState = {
+export const userInitialState = {
 	signedIn: false,
 	userId: '',
 	name: '',
 	email: '',
+	bio: '',
+	profileImage: '',
 	token: '',
-	colorMode: 'dark', //dark, light
-	roomId: '64d659886727614d5eae9dd1',
-	// permissions: [], //view, edit, delete
 };
 
 const AppProvider = ({ children }) => {
 	const [user, dispatch] = useReducer(reducer, userInitialState);
-	// const [isLoading, setIsLoading] = useState(false);
+	// const [roomId, setRoomId] = React.useState(''); //roomId is used to join room
+	const [colorMode, setColorMode] = React.useState('dark'); //dark, light
 
 	const initialFromLocalStorage = async (tokenValue) => {
 		try {
 			const res = await api.signinToken(tokenValue);
-			const { userId, name, email, token } = res.data.data;
-			if (!userId || !name || !email || !token)
+			// console.log(res.data);
+			if (!signIn(res.data.data)) {
 				throw new Error('Invalid token');
-			console.log(res.data);
-			dispatch({
-				type: 'SIGN_IN',
-				payload: { userId, name, email, token },
-			});
+			}
+			// console.log(res.data);
+			// if (!userId || !name || !email || !token || !bio || !profileImage)
+			// dispatch({
+			// 	type: 'SIGN_IN',
+			// 	payload: { userId, name, email, token, bio, profileImage },
+			// });
 		} catch (error) {
 			localStorage.removeItem('token');
-			console.log(error);
+			// console.log(error);
 			toast.error(error?.data?.msg);
 		}
 	};
 
 	useEffect(() => {
+		setCSSValues(colorMode);
 		const token = JSON.parse(localStorage.getItem('token')) || null;
 		if (token) initialFromLocalStorage(token);
 	}, []);
@@ -56,101 +60,55 @@ const AppProvider = ({ children }) => {
 		};
 	}, []);
 
-	//get functions
-	const getUserName = () => {
-		return user.name;
-	};
-	const getUserToken = () => {
-		return user.token;
-	};
-	const canRead = () => {
-		return user.permissions.includes('read');
-	};
-	const canEdit = () => {
-		return user.permissions.includes('edit');
-	};
-	const canDelete = () => {
-		return user.permissions.includes('delete');
-	};
-	const getUserPermissions = () => {
-		return user.permissions;
-	};
-	const getColorMode = () => {
-		return user.colorMode;
-	};
-	const isSignedIn = () => {
-		return user.signedIn;
-	};
-	const getRoomId = () => {
-		return user.roomId;
-	};
-	const getUserId = () => {
-		return user.userId;
-	};
-
 	//update functions
-	const updateToken = (newtoken) => {
-		dispatch({ type: 'UPDATE_TOKEN', payload: newtoken });
+	const updateUser = (newUser) => {
+		dispatch({ type: 'UPDATE_USER', payload: newUser });
 	};
-	const updateName = (newname) => {
-		dispatch({ type: 'UPDATE_NAME', payload: newname });
-	};
-	const addPermission = (newpermission) => {
-		dispatch({ type: 'ADD_PERMISSION', payload: newpermission });
-	};
-	const removePermission = (newpermission) => {
-		dispatch({ type: 'REMOVE_PERMISSION', payload: newpermission });
-	};
-	const clearPermissions = () => {
-		dispatch({ type: 'CLEAR_PERMISSIONS' });
-	};
-	const toggleColorMode = () => {
-		dispatch({ type: 'TOGGLE_COLOR_MODE' });
-	};
-	const signIn = ({ userId, name, token, email }) => {
-		if (!userId || !name || !token || !email)
-			return console.log('Error Code : 1');
+	const signIn = ({ userId, name, token, email, bio, profileImage }) => {
+		// console.log('signing in');
+		if (!userId || !name || !token || !email || !profileImage) {
+			console.error('Error Signing in, invalid data');
+			return false;
+		}
 		dispatch({
 			type: 'SIGN_IN',
-			payload: { userId, name, token, email },
+			payload: { userId, name, token, email, bio, profileImage },
 		});
+		return true;
 	};
 	const signOut = async () => {
 		if (socket.connected) socket.disconnect();
 		const res = await api.signOut();
 		dispatch({ type: 'SIGN_OUT' });
 	};
-	const updateRoomId = (newRoomId) => {
-		dispatch({ type: 'UPDATE_ROOM_ID', payload: newRoomId });
-	};
-	const getUserEmail = () => {
-		return user.email;
+	// const updateRoomId = (newRoomId) => {
+	// 	setRoomId(newRoomId);
+	// };
+	const toggleColorMode = () => {
+		setColorMode((prevMode) => {
+			if (prevMode === 'dark') setCSSValues('light');
+			else setCSSValues('dark');
+			return prevMode === 'dark' ? 'light' : 'dark';
+		});
 	};
 
 	return (
 		<AppContext.Provider
 			value={{
 				socket,
-				getUserName,
-				getUserEmail,
-				getUserToken,
-				canRead,
-				canEdit,
-				canDelete,
-				getUserPermissions,
-				getColorMode,
-				isSignedIn,
-				updateToken,
-				updateName,
-				addPermission,
-				removePermission,
-				clearPermissions,
+				userId: user.userId,
+				name: user.name,
+				email: user.email,
+				profileImage: user.profileImage,
+				bio: user.bio,
+				colorMode,
+				isSignedIn: user.signedIn,
+				updateUser,
 				toggleColorMode,
 				signIn,
 				signOut,
-				getRoomId,
-				updateRoomId,
-				getUserId,
+				// getRoomId,
+				// updateRoomId,
 			}}>
 			{children}
 		</AppContext.Provider>

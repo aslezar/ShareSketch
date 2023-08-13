@@ -54,6 +54,8 @@ app.use('/assests', express.static('../client/dist/assests'));
 //Define Routes Here
 
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/room', require('./routes/room'));
+app.use('/api/user', require('./middleware/auth'), require('./routes/user'));
 
 app.get('/*', (req, res) => {
 	res.sendFile(path.join(__dirname, '../client/dist/index.html'), (err) => {

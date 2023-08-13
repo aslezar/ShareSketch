@@ -6,17 +6,37 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
-	const user = await User.create({ ...req.body });
+	const { name, email, password } = req.body;
+	if (!name || !email || !password) {
+		throw new BadRequestError('Please provide all details');
+	}
+	const userExist = await User.findOne({ email }); // Using findOne
+
+	if (userExist) {
+		return res.status(StatusCodes.CONFLICT).json({
+			success: false,
+			msg: 'User with this email already exists',
+		}); // Conflict status
+	}
+	const user = await User.create({ name, email, password });
 	const token = user.generateToken();
+
+	const profileImage = {
+		base64Image: user.profileImage.data.toString('base64'),
+		contentType: user.profileImage.contentType,
+	};
+
 	res.status(StatusCodes.CREATED).json({
 		data: {
 			userId: user._id,
-			name: user.getName(),
+			name: user.name,
 			email: user.email,
+			bio: user.bio,
+			profileImage,
 			token,
 		},
-		succuess: true,
-		msg: 'User Created Successfully',
+		success: true,
+		msg: 'User Registratioin Successfully',
 	});
 };
 
@@ -42,14 +62,22 @@ const login = async (req, res) => {
 	}
 
 	const token = user.generateToken();
+
+	const profileImage = {
+		base64Image: user.profileImage.data.toString('base64'),
+		contentType: user.profileImage.contentType,
+	};
+
 	res.status(StatusCodes.OK).json({
 		data: {
 			userId: user._id,
-			name: user.getName(),
+			name: user.name,
 			email: user.email,
+			bio: user.bio,
+			profileImage,
 			token,
 		},
-		succuess: true,
+		success: true,
 		msg: 'User Login Successfully',
 	});
 };
@@ -62,26 +90,27 @@ const tokenLogin = async (req, res) => {
 		const decoded = jwt.verify(token, process.env.JWT_SECRET);
 		// console.log(decoded);
 
-		const newToken = jwt.sign(
-			{
-				userId: decoded.userId,
-				name: decoded.name,
-				email: decoded.email,
-			},
-			process.env.JWT_SECRET,
-			{
-				expiresIn: process.env.JWT_LIFETIME,
-			}
-		);
+		const user = await User.findById(decoded.userId);
+		if (!user) {
+			throw new UnauthenticatedError('Invalid Token');
+		}
+		const newToken = user.generateToken();
+
+		const profileImage = {
+			base64Image: user.profileImage.data.toString('base64'),
+			contentType: user.profileImage.contentType,
+		};
 
 		res.status(StatusCodes.OK).json({
 			data: {
-				userId: decoded.userId,
-				name: decoded.name,
-				email: decoded.email,
+				userId: user._id,
+				name: user.name,
+				email: user.email,
+				bio: user.bio,
+				profileImage,
 				token: newToken,
 			},
-			succuess: true,
+			success: true,
 			msg: 'User Login Successfully',
 		});
 	} catch (error) {
@@ -90,7 +119,7 @@ const tokenLogin = async (req, res) => {
 };
 const signOut = async (req, res) => {
 	res.status(StatusCodes.OK).json({
-		succuess: true,
+		success: true,
 		msg: 'User Logout Successfully',
 	});
 };

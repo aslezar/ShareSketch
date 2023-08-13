@@ -2,58 +2,48 @@ import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../../context';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-
+import Button from '../Button';
+import Style from './joinroom.module.css';
+import * as api from '../../api/index.js';
 const JoinRoom = () => {
-	const [buttonClicked, setButtonClicked] = useState(false);
-
+	const [roomId, setRoomId] = useState('');
 	const navigate = useNavigate();
 
-	const isSignedIn = useGlobalContext().isSignedIn();
-	const userId = useGlobalContext().getUserId();
-	const socket = useGlobalContext().socket;
-	const updateRoomId = useGlobalContext().updateRoomId;
-
-	const joinRoom = () => {
-		setButtonClicked(true);
+	const joinRoom = async (e) => {
+		e.preventDefault();
+		console.log('join room called');
 		try {
-			if (!socket.connected) {
-				socket.connect();
+			const res = await api.isRoomIdValid(roomId);
+			console.log(res.data);
+			if (res.data.success) {
+				navigate(`/room/${roomId}`);
+			} else {
+				toast.error(res.data.msg);
 			}
-			socket.emit('createRoom', { userId }, (response) => {
-				if (response.success) {
-					toast.success(response.msg);
-					updateRoomId(response.data.roomId);
-					navigate(`/room/${response.data.roomId}`);
-				} else {
-					toast.error(response.msg);
-				}
-			});
 		} catch (error) {
 			console.log(error);
-			toast.error('Unexpected Error Occured.');
-			if (socket.connected) socket.disconnect();
-			navigate('/');
+			toast.error(error.response.data.msg);
 		}
-		setButtonClicked(false);
 	};
 	return (
-		<div>
-			<button
-				style={{
-					border: '2px solid red',
-					position: 'absolute',
-					top: '50%',
-					left: '50%',
-					width: '200px',
-					height: '50px',
-					transform: 'translate(-50%,-50%)',
-					hover: 'pointer',
-				}}
-				disabled={buttonClicked || !isSignedIn}
-				type='submit'
-				onClick={joinRoom}>
-				Create Room
-			</button>
+		<div className={Style.wrapper}>
+			<h1 className={Style.heading}>Join Room</h1>
+			<form
+				action=''
+				onSubmit={joinRoom}
+				className={Style.form}>
+				<div className={Style.inputContainer}>
+					<input
+						name='roomId'
+						onChange={(e) => setRoomId(e.target.value)}
+						placeholder='Enter room ID to join...'
+						type='text'
+					/>
+				</div>
+				<div className={Style.actoinContainer}>
+					<Button>Join Room</Button>
+				</div>
+			</form>
 		</div>
 	);
 };

@@ -10,6 +10,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	color: var(--clr-primary);
 }
 
 .navToggle {
@@ -119,14 +120,14 @@
 	justify-content: center;
 	border: none;
 	width: 100%;
-	border-radius: 10px;
+	border-radius: 5px;
 	background-color: red;
 	color: white;
 	transition: all 0.4s;
 }
 
 .signOutButton:hover {
-	background-color: rgb(207, 203, 203);
+	background-color: #b11414;
 	border: 1px solid red;
 	color: black;
 	text-decoration: underline;
@@ -134,4 +135,5 @@
 .icon {
 	font-size: 1.5rem;
 	display: flex;
+	color: var(--icon-color);
 }

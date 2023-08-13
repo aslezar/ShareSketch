@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import { AiOutlineUser } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import * as api from '../../api/index.js';
@@ -13,9 +12,7 @@ const Signin = ({ toogleSignIn, closeSign }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	const navigate = useNavigate();
-
-	const signIn = useGlobalContext().signIn;
+	const { signIn } = useGlobalContext();
 
 	const handleDemoLogin = () => {
 		setEmail('temp@temp.com');
@@ -44,11 +41,20 @@ const Signin = ({ toogleSignIn, closeSign }) => {
 		}
 		try {
 			const res = await api.signIn({ email, password });
-			signIn(res.data.data);
+			if (res.data.success) {
+				if (signIn(res.data.data)) {
+					toast.success(res.data.msg);
+					closeSign();
+				} else {
+					toast.error('Error signing in');
+					return;
+				}
+			} else {
+				toast.error(res.data.msg);
+			}
 			// console.log(data);
-			toast.success(res.data.msg);
-			closeSign();
 		} catch (error) {
+			// console.log(error);
 			console.log(error);
 			toast.error(error.response.data.msg);
 		}

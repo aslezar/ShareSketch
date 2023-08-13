@@ -1,5 +1,5 @@
 import Style from './navbar.module.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Logo from '../../assets/sharesketch.svg';
 import LogoDark from '../../assets/sharesketch_dark.svg';
 import { useGlobalContext } from '../../context';
@@ -7,19 +7,34 @@ import { FaBars } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Sign from '../../components/Sign';
 import { MdDarkMode, MdLightMode } from 'react-icons/md';
+import PopUp from '../PopUp';
+import JoinRoom from '../JoinRoom';
+import Button from '../Button';
+import { AiOutlineUserAdd } from 'react-icons/ai';
 
 const Navbar = () => {
-	const colorMode = useGlobalContext().getColorMode();
-	const toggleColorMode = useGlobalContext().toggleColorMode;
+	const [joinRoom, setJoinRoom] = React.useState(false);
+
+	const { isSignedIn, colorMode, toggleColorMode } = useGlobalContext();
+	useEffect(() => {
+		return () => {
+			setJoinRoom(false);
+		};
+	}, []);
 
 	return (
 		<nav className={Style.navCenter}>
 			<div className={Style.navHeader}>
-				<img
+				{/* <img
 					src={colorMode === 'dark' ? LogoDark : Logo}
 					className={Style.logo}
 					alt='logo'
-				/>
+				/> */}
+				<span>
+					<b>
+						<i style={{ fontSize: '1.2rem' }}> ShareSketch</i>
+					</b>
+				</span>
 				<button className={Style.navToggle}>
 					<FaBars style={colorMode === 'dark' && { color: 'black' }} />
 				</button>
@@ -35,9 +50,8 @@ const Navbar = () => {
 				<li>
 					<Link to='/'>Home</Link>
 				</li>
-				<li>
-					<Link to='/room'>Join Room</Link>
-				</li>
+				{isSignedIn && <Link to='/dashboard'>DashBoard</Link>}
+				<li onClick={() => setJoinRoom((prev) => !prev)}>Join Room</li>
 				<li>
 					<Link to='/about'>About Us</Link>
 				</li>
@@ -45,6 +59,14 @@ const Navbar = () => {
 					<User />
 				</li>
 			</ul>
+			{joinRoom && (
+				<PopUp
+					closeSign={() => {
+						setJoinRoom(false);
+					}}>
+					<JoinRoom />
+				</PopUp>
+			)}
 		</nav>
 	);
 };
@@ -52,33 +74,33 @@ const Navbar = () => {
 const User = () => {
 	const [showSign, setShowSign] = React.useState(false);
 
-	const isSignedIn = useGlobalContext().isSignedIn();
-
-	const name = useGlobalContext().getUserName();
-	const email = useGlobalContext().getUserEmail();
-	const signOut = useGlobalContext().signOut;
+	const { isSignedIn, name, signOut } = useGlobalContext();
 
 	return (
-		<div className={Style.user}>
+		<>
 			{isSignedIn ? (
-				<>
+				<div
+					action=''
+					className={Style.user}>
 					<p>{name}</p>
-					<p>{email}</p>
 					<button
 						onClick={signOut}
 						className={Style.signOutButton}>
 						Sign Out
 					</button>
-				</>
+				</div>
 			) : (
 				<>
-					<button
-						className={Style.signInButton} // Apply the correct class for styling
+					<div
+						action=''
 						onClick={() => {
 							setShowSign(!showSign);
 						}}>
-						Sign Up/Sign In
-					</button>
+						<Button>
+							<AiOutlineUserAdd />
+							Sign Up/Sign In
+						</Button>
+					</div>
 					{showSign && (
 						<Sign
 							closeSign={() => {
@@ -88,7 +110,7 @@ const User = () => {
 					)}
 				</>
 			)}
-		</div>
+		</>
 	);
 };
 

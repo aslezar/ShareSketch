@@ -8,7 +8,7 @@ import { useGlobalContext } from '../../context';
 const Sign = ({ closeSign }) => {
 	const [isSignin, setIsSignin] = React.useState('signin');
 
-	const isSignedIn = useGlobalContext().isSignedIn();
+	const { isSignedIn } = useGlobalContext();
 	if (isSignedIn === true) closeSign();
 
 	const toogleSignIn = (value) => {

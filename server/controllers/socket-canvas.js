@@ -25,7 +25,7 @@ const createElement = async (data, cb, socket) => {
 			return;
 		}
 		room.elements.push(data.element);
-		room.save();
+		await room.save();
 		socket.broadcast.to(data.roomId).emit('canvas:draw', data.element);
 		cb({ msg: 'Server: Element created', success: true });
 		console.log(`User ${socket.id} drew on room ${data.roomId}`);
@@ -47,6 +47,14 @@ const clearCanvas = async (data, cb, socket) => {
 			return;
 		}
 		const room = await Room.findById(roomId);
+		// const room = Room.findOneAndUpdate(
+		// 	{ _id: roomId },
+		// 	{ elements: [] },
+		// 	{
+		// 		new: true,
+		// 		upsert: false,
+		// 	}
+		// );
 		if (!room) {
 			cb({
 				message: `Room not found with room ID ${roomid}`,
@@ -55,7 +63,7 @@ const clearCanvas = async (data, cb, socket) => {
 			return;
 		}
 		room.elements = [];
-		room.save();
+		await room.save();
 		socket.broadcast.to(data.roomId).emit('canvas:clear');
 		cb({ msg: 'Server: Canvas Cleared', success: true });
 		console.log(`User ${socket.id} cleared canvas on room ${data.roomId}`);
@@ -81,6 +89,10 @@ const undoElement = async (data, cb, socket) => {
 			return;
 		}
 		const room = await Room.findById(roomId);
+		// const room = Room.findOneAndUpdate(filter, update, {
+		// 	new: true,
+		// 	upsert: false,
+		// });
 		if (!room) {
 			cb({
 				message: `Room not found with room ID ${roomid}`,
@@ -91,7 +103,7 @@ const undoElement = async (data, cb, socket) => {
 		room.elements = room.elements.filter(
 			(element) => element.elementId !== elementId
 		);
-		room.save();
+		await room.save();
 		socket.broadcast.to(data.roomId).emit('canvas:undo', elementId);
 		cb({ msg: 'Server: Element undo', success: true });
 		console.log(`User ${socket.id} undid element on room ${data.roomId}`);
@@ -125,7 +137,7 @@ const redoElement = async (data, cb, socket) => {
 			return;
 		}
 		room.elements.push(element);
-		room.save();
+		await room.save();
 		socket.broadcast.to(data.roomId).emit('canvas:draw', data.element);
 		cb({ msg: 'Server: Element Redo', success: true });
 		console.log(`User ${socket.id} redid element on room ${data.roomId}`);

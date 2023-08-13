@@ -8,6 +8,7 @@ import Navbar from './components/Navbar';
 //Pages
 import Homepage from './Pages/HomePage';
 import WhiteBoard from './Pages/WhiteBoard';
+import DashBooard from './Pages/DashBoard';
 import ErrorPage from './Pages/ErrorPage';
 function App() {
 	return (
@@ -21,6 +22,10 @@ function App() {
 				<Route
 					path='/room/:roomId'
 					element={<WhiteBoard />}
+				/>
+				<Route
+					path='/dashboard'
+					element={<DashBooard />}
 				/>
 				<Route
 					path='/*'

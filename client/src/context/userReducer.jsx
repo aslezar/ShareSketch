@@ -1,78 +1,38 @@
+import { userInitialState } from '.';
 const reducer = (state, action) => {
 	try {
 		if (action.type === 'SIGN_IN') {
 			localStorage.setItem('token', JSON.stringify(action.payload.token));
+			const dataUrl = `data:${action.payload.profileImage.contentType};base64,${action.payload.profileImage.base64Image}`;
 			return {
-				...state,
 				signedIn: true,
 				userId: action.payload.userId,
-				token: action.payload.token,
 				name: action.payload.name,
 				email: action.payload.email,
+				bio: action.payload.bio,
+				profileImage: dataUrl,
+				token: action.payload.token,
 			};
 		}
 		if (action.type === 'SIGN_OUT') {
 			localStorage.removeItem('token');
 			return {
-				...state,
-				signedIn: false,
-				userId: null,
-				token: null,
-				name: null,
-				email: null,
-				permissions: [],
+				...userInitialState,
 			};
 		}
-		if (action.type === 'UPDATE_TOKEN') {
-			localStorage.setItem('token', JSON.stringify(action.payload));
-			return { ...state, token: action.payload };
-		}
-		if (action.type === 'UPDATE_NAME') {
-			return { ...state, name: action.payload };
-		}
-		if (action.type === 'ADD_PERMISSION') {
+		if (action.type === 'UPDATE_USER') {
+			if (action.payload.profileImage) {
+				const dataUrl = `data:${action.payload.profileImage.contentType};base64,${action.payload.profileImage.base64Image}`;
+				action.payload.profileImage = dataUrl;
+			}
 			return {
 				...state,
-				permissions: [...state.permissions, action.payload],
+				...action.payload,
 			};
-		}
-		if (action.type === 'REMOVE_PERMISSION') {
-			return {
-				...state,
-				permissions: state.permissions.filter(
-					(permission) => permission !== action.payload
-				),
-			};
-		}
-		if (action.type === 'CLEAR_PERMISSIONS') {
-			return { ...state, permissions: [] };
-		}
-		if (action.type === 'TOGGLE_COLOR_MODE') {
-			return {
-				...state,
-				colorMode: state.colorMode === 'dark' ? 'light' : 'dark',
-			};
-		}
-		if (action.type === 'UPDATE_ROOM_ID') {
-			return { ...state, roomId: action.payload };
-		}
-		if (action.type === 'UPDATE_ID') {
-			return { ...state, userId: action.payload };
 		}
 	} catch (error) {
 		console.log(error);
 	}
 	throw new Error('No matching action type');
-};
-
-const userInitialState = {
-	signedIn: false,
-	userId: '',
-	name: '',
-	email: '',
-	token: '',
-	colorMode: 'dark', //dark, light
-	roomId: '',
-	// permissions: [], //view, edit, delete
 };
 export default reducer;

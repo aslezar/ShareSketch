@@ -1,0 +1,39 @@
+/* Style for the chat container */
+.room {
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
+	justify-content: space-evenly;
+	list-style-type: none;
+	flex: 1; /* Take remaining vertical space */
+	flex-wrap: wrap;
+}
+
+/* Style for each individual message */
+.room li {
+	padding: 10px;
+	font-size: 0.8rem;
+	margin-bottom: 5px;
+	background-color: #d1d0d0;
+	border-radius: 5px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.room li:hover {
+	text-decoration: underline;
+}
+.room > li:nth-child(odd) {
+	background: #1323ad;
+	color: #ccc;
+}
+.room > li:nth-child(odd):hover {
+	background: #1322adc9;
+	color: #000;
+}
+.room > li:nth-child(even):hover {
+	background: #bdbbbb;
+	color: #fff;
+}

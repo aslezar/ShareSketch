@@ -12,8 +12,6 @@ const authenticate = (req, res, next) => {
 		const payload = jwt.verify(token, process.env.JWT_SECRET);
 		req.user = {
 			userId: payload.userId,
-			name: payload.name,
-			email: payload.email,
 		};
 		next();
 	} catch (error) {

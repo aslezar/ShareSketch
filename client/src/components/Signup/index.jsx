@@ -19,7 +19,7 @@ const InitState = {
 function Signup({ toogleSignIn, closeSign }) {
 	const [sForm, setsForm] = useState(InitState);
 
-	const signIn = useGlobalContext().signIn;
+	const { signIn } = useGlobalContext();
 
 	const navigate = useNavigate();
 

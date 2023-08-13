@@ -1,11 +1,27 @@
 import React from 'react';
 import Style from './home.module.css';
-import JoinRoom from '../../components/JoinRoom';
+import CreateRoom from '../../components/CreateRoom';
 
 const Homepage = () => {
 	return (
-		<div>
-			<JoinRoom />
+		<div
+			style={{
+				width: '100%',
+				height: '92vh',
+				display: 'flex',
+				justifyContent: 'center',
+				alignItems: 'center',
+			}}>
+			<div
+				style={{
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
+					height: '400px',
+					width: '300px',
+				}}>
+				<CreateRoom />
+			</div>
 		</div>
 	);
 };

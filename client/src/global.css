@@ -1,10 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,700&display=swap');
 
-:root {
-	/*Social Icons*/
-	--social-icons-color: #fff;
-	--social-icons-hover-color: #00f;
-}
 /* Reset box model */
 *,
 *::before,

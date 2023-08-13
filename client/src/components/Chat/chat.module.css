@@ -2,7 +2,7 @@
 .chat {
 	display: flex;
 	flex-direction: column;
-	min-width: 300px;
+	min-width: 200px;
 	height: 100%;
 	border: 1px solid #ccc;
 	padding: 10px;

@@ -1,0 +1,111 @@
+/* userpanel.module.css */
+
+.panel {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end;
+	/* border: 2px solid red; */
+	width: 100%;
+	height: 100%;
+}
+
+.profile {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	/* border: 2px solid black; */
+	gap: 10px;
+	width: 100%;
+	margin-bottom: auto;
+	margin-top: auto;
+	min-height: 40%;
+}
+
+.user-image-container {
+	position: relative;
+	margin-right: 20px;
+}
+
+.user-image {
+	width: 10rem;
+	height: 10rem;
+	border-radius: 50%;
+	object-fit: cover;
+	transition: transform 0.3s ease;
+	border: 2px solid black;
+}
+
+.hovered .user-image {
+	transform: scale(1.1);
+}
+
+.edit-icon {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	background-color: rgba(255, 255, 255, 0.8);
+	border-radius: 50%;
+	padding: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	font-size: 1rem;
+}
+
+.user-details {
+	width: 100%;
+}
+.edit-input {
+	border: 1px solid #ccc;
+	padding: 5px;
+	font-size: 1.5rem;
+	border-radius: 5px;
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.user-name {
+	font-size: 2rem;
+	font-weight: bold;
+	margin-bottom: 5px;
+	position: relative;
+	text-align: center;
+	width: 100%;
+}
+.user-email {
+	font-size: 1rem;
+	position: relative;
+	font-style: italic;
+	text-align: center;
+}
+
+.hovered .user-name::after,
+.hovered .user-email::after {
+	content: '';
+	position: absolute;
+	bottom: -2px;
+	left: 0;
+	width: 100%;
+	height: 2px;
+	background-color: #007bff;
+}
+
+.bio {
+	margin-top: 20px;
+	width: 100%;
+	min-height: 150px;
+	border-radius: 10px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+	padding: 20px 15px;
+	font-size: 16px;
+	line-height: 1.5;
+	resize: vertical;
+}
+
+.italic {
+	font-style: italic;
+	color: #999; /* You can adjust the color for italic text */
+}

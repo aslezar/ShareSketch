@@ -24,8 +24,33 @@ const UserSchema = new mongoose.Schema(
 			required: [true, 'Please provide password.'],
 			minlength: 8,
 		},
-		myRooms: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Room' }],
-		rooms: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Room' }],
+		bio: {
+			type: String,
+			maxlength: 150,
+		},
+		profileImage: {
+			data: Buffer,
+			contentType: String,
+			// default: 'https://i.imgur.com/6VBx3io.png',
+		},
+		myRooms: [
+			{
+				roomId: {
+					type: mongoose.Schema.Types.ObjectId,
+					ref: 'Room',
+				},
+				name: String,
+			},
+		],
+		rooms: [
+			{
+				roomId: {
+					type: mongoose.Schema.Types.ObjectId,
+					ref: 'Room',
+				},
+				name: String,
+			},
+		],
 	},
 	{ timestamps: true }
 );
@@ -44,18 +69,10 @@ UserSchema.pre('save', async function (next) {
 	}
 });
 
-UserSchema.methods.getName = function () {
-	return this.name;
-};
-
 UserSchema.methods.generateToken = function () {
-	return jwt.sign(
-		{ userId: this._id, name: this.name, email: this.email },
-		process.env.JWT_SECRET,
-		{
-			expiresIn: process.env.JWT_LIFETIME,
-		}
-	);
+	return jwt.sign({ userId: this._id }, process.env.JWT_SECRET, {
+		expiresIn: process.env.JWT_LIFETIME,
+	});
 };
 
 UserSchema.methods.comparePassword = async function (pswrd) {

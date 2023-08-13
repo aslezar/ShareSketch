@@ -17,6 +17,10 @@ import Style from './whiteboard.module.css';
 const WhiteBoard = () => {
 	const [toolbox, setToolbox] = useState(defaultToolbox);
 
+	//RoomInfo
+	const [roomName, setRoomName] = useState('');
+	const [roomUsers, setRoomUsers] = useState([]); // [{userId,name}
+	const [roomAdmin, setRoomAdmin] = useState(''); //userId
 	const [elements, setElements] = useState([]);
 	const [history, setHistory] = useState([]);
 
@@ -28,20 +32,20 @@ const WhiteBoard = () => {
 
 	const roomId = useParams().roomId;
 
-	// const roomId2 = useGlobalContext().getRoomId();
-	const isSignedIn = useGlobalContext().isSignedIn();
-	const socket = useGlobalContext().socket;
-	const userId = useGlobalContext().getUserId();
-	const userName = useGlobalContext().getUserName();
+	const { isSignedIn, socket, userId, name: userName } = useGlobalContext();
 
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		function joinRoom() {
+			toast.info('Joining room...');
 			socket.emit('joinRoom', { roomId, userId }, (response) => {
 				if (response.success) {
 					toast.success(response.msg);
-					console.log(response.data);
+					// console.log(response.data);
+					setRoomName(response.data.name);
+					setRoomUsers(response.data.users);
+					setRoomAdmin(response.data.admin);
 					setElements(response.data.elements);
 					setMessages(response.data.messages);
 					setIsConnected(true);
@@ -115,15 +119,13 @@ const WhiteBoard = () => {
 			socket.off('chat:message', onMessage);
 			socket.off('error', onError);
 			socket.emit('leaveRoom', { roomId, userId }, (response) => {
-				if (response.success) {
+				if (!response.success) {
 					toast.info(response.msg);
-				} else {
-					toast.error(response.msg);
 				}
 			});
 			socket.disconnect();
 		};
-	}, []);
+	}, [roomId]);
 
 	const handleUndo = () => {
 		// console.log('undo');
@@ -227,6 +229,10 @@ const WhiteBoard = () => {
 				clearCanvas={clearCanvas}
 				toolbox={toolbox}
 				setToolbox={setToolbox}
+				roomId={roomId}
+				roomName={roomName}
+				roomUsers={roomUsers}
+				roomAdmin={roomAdmin}
 			/>
 
 			<Canvas

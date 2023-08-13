@@ -7,8 +7,7 @@ const Chat = ({ isConnected, messages, sendMessage }) => {
 
 	const messageRef = useRef(null);
 
-	const isSignedIn = useGlobalContext().isSignedIn();
-	const userId = useGlobalContext().getUserId();
+	const { isSignedIn, userId } = useGlobalContext();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();

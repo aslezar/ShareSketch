@@ -31,9 +31,6 @@ const Canvas = ({ elements, canvasRef }) => {
 		setSize();
 		window.addEventListener('resize', setSize);
 
-		console.log('drawing rect');
-		canvasRef.current.getContext('2d').strokeRect(10, 20, 100, 100);
-
 		// Cleanup event listener on component unmount
 		return () => {
 			window.removeEventListener('resize', setSize);
