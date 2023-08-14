@@ -21,6 +21,9 @@ const WhiteBoard = () => {
 	const [roomName, setRoomName] = useState('');
 	const [roomUsers, setRoomUsers] = useState([]); // [{userId,name}
 	const [roomAdmin, setRoomAdmin] = useState(''); //userId
+
+	const [curUser, setCurUser] = useState(''); //name of the user
+
 	const [elements, setElements] = useState([]);
 	const [history, setHistory] = useState([]);
 
@@ -32,23 +35,42 @@ const WhiteBoard = () => {
 
 	const roomId = useParams().roomId;
 
-	const { isSignedIn, socket, userId, name: userName } = useGlobalContext();
+	const {
+		isSignedIn,
+		socket,
+		userId,
+		name: userName,
+		token,
+	} = useGlobalContext();
 
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		function joinRoom() {
 			toast.info('Joining room...');
-			socket.emit('joinRoom', { roomId, userId }, (response) => {
+			const guestUser = JSON.parse(localStorage.getItem('guestUser'));
+			console.log(token);
+			socket.emit('room:join', { roomId, token, guestUser }, (response) => {
 				if (response.success) {
 					toast.success(response.msg);
 					// console.log(response.data);
 					setRoomName(response.data.name);
 					setRoomUsers(response.data.users);
 					setRoomAdmin(response.data.admin);
+
 					setElements(response.data.elements);
 					setMessages(response.data.messages);
+
 					setIsConnected(true);
+
+					setCurUser(response.data.curUser);
+
+					if (response.data.curUser.isGuest) {
+						localStorage.setItem(
+							'guestUser',
+							JSON.stringify(response.data.curUser)
+						);
+					}
 				} else {
 					console.log(response);
 					toast.error(response.msg);
@@ -69,6 +91,24 @@ const WhiteBoard = () => {
 		function onDisconnect() {
 			setIsConnected(false);
 			toast.error('Server disconnected.');
+		}
+		function userJoin(user) {
+			setRoomUsers((prevUsers) => [...prevUsers, user]);
+			toast.info(`${user.name} joined the room`);
+		}
+		function userLeft(user) {
+			setRoomUsers((prevUsers) => {
+				if (user.userId)
+					return prevUsers.filter(
+						(prevUser) => prevUser.userId !== user.userId
+					);
+				else {
+					return prevUsers.filter(
+						(prevUser) => prevUser.userName !== user.userName
+					);
+				}
+			});
+			toast.info(`${user.userName} left the room`);
 		}
 
 		function canvasDraw(newElements) {
@@ -99,6 +139,10 @@ const WhiteBoard = () => {
 		socket.on('connect', onConnect);
 		socket.on('disconnect', onDisconnect);
 
+		//room:userJoined
+		socket.on('room:userJoined', userJoin);
+		socket.on('room:userLeft', userLeft);
+
 		socket.on('canvas:draw', canvasDraw);
 		socket.on('canvas:clear', clrCanvas);
 		socket.on('canvas:undo', undoCanvas);
@@ -107,25 +151,31 @@ const WhiteBoard = () => {
 
 		socket.on('error', onError);
 
-		if (!socket.connected) socket.connect();
-		else onConnect();
+		socket.connect();
 
 		return () => {
-			socket.off('connect', onConnect);
-			socket.off('disconnect', onDisconnect);
-			socket.off('canvas:draw', canvasDraw);
-			socket.off('canvas:clear', clrCanvas);
-			socket.off('canvas:undo', undoCanvas);
-			socket.off('chat:message', onMessage);
-			socket.off('error', onError);
-			socket.emit('leaveRoom', { roomId, userId }, (response) => {
+			socket.off('connect');
+			socket.off('disconnect');
+
+			socket.off('room:userJoined');
+			socket.off('room:userLeft');
+
+			socket.off('canvas:draw');
+			socket.off('canvas:clear');
+			socket.off('canvas:undo');
+
+			socket.off('chat:message');
+
+			socket.off('error');
+
+			socket.emit('room:leave', null, (response) => {
 				if (!response.success) {
 					toast.info(response.msg);
 				}
 			});
 			socket.disconnect();
 		};
-	}, [roomId]);
+	}, [roomId, isSignedIn]);
 
 	const handleUndo = () => {
 		// console.log('undo');
@@ -137,7 +187,7 @@ const WhiteBoard = () => {
 		setElements((prevState) => prevState.slice(0, prevState.length - 1)); // remove last element from elements
 		socket.emit(
 			'canvas:undo',
-			{ roomId, userId, elementId: lastElement.elementId },
+			{ elementId: lastElement.elementId },
 			(response) => {
 				if (!response.success) {
 					toast.error(response.msg);
@@ -156,8 +206,6 @@ const WhiteBoard = () => {
 		socket.emit(
 			'canvas:redo',
 			{
-				roomId,
-				userId,
 				element: lastElement,
 			},
 			(response) => {
@@ -172,7 +220,7 @@ const WhiteBoard = () => {
 			return toast.error('You must be signed in to edit canvas');
 		setElements([]);
 		setHistory([]);
-		socket.emit('canvas:clear', { roomId, userId }, (response) => {
+		socket.emit('canvas:clear', null, (response) => {
 			if (!response.success) {
 				toast.error(response.msg);
 			}
@@ -188,16 +236,25 @@ const WhiteBoard = () => {
 		}
 	};
 
+	function undoCanvas(id) {
+		setElements((prevElements) => {
+			const newElements = prevElements.filter(
+				(element) => element.elementId !== id
+			);
+			return newElements;
+		});
+	}
 	const addElement = (ele) => {
 		if (isSignedIn === false)
 			return toast.error('You must be signed in to draw');
-		const elementId = uuidv4();
-		console.log(elementId);
-		const element = { elementId, ...ele };
+		// const elementId = uuidv4();
+		// console.log(elementId);
+		const element = { elementId: uuidv4(), ...ele };
 		setElements((previous) => [...previous, element]);
-		socket.emit('canvas:draw', { roomId, userId, element }, (response) => {
+		socket.emit('canvas:draw', { element }, (response) => {
 			if (!response.success) {
 				toast.error(response.msg);
+				undoCanvas(element.elementId);
 			}
 		});
 	};
@@ -233,6 +290,7 @@ const WhiteBoard = () => {
 				roomName={roomName}
 				roomUsers={roomUsers}
 				roomAdmin={roomAdmin}
+				curUser={curUser}
 			/>
 
 			<Canvas

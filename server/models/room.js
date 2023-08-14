@@ -18,12 +18,12 @@ const RoomSchema = new mongoose.Schema(
 			{
 				userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 				name: String,
+				admin: {
+					type: Boolean,
+					default: false,
+				},
 			},
 		],
-		admin: {
-			userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-			name: String,
-		},
 	},
 	{ timestamps: true }
 );

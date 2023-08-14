@@ -1,0 +1,97 @@
+.errorContainer {
+	background-color: #f1f6fa;
+	flex-grow: 1;
+	margin: 20px;
+	padding: 20px;
+	border: 1px solid #69a3e3;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+	border-radius: 10px;
+	display: grid;
+	grid-template-rows: 1fr 1fr;
+	grid-template-columns: 3fr 1fr;
+	grid-row-gap: 10px;
+	grid-column-gap: 10px;
+	justify-items: center;
+	align-items: center;
+	text-align: center;
+}
+
+.errorHeader {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 2rem;
+	justify-content: space-between;
+	flex-wrap: nowrap;
+}
+
+.errorText {
+	font-size: 4rem;
+	font-weight: bold;
+	color: #1e4fd8;
+	text-transform: uppercase;
+	letter-spacing: 5px;
+	transform: rotate(-5deg);
+}
+
+.errorCode {
+	font-size: 2rem;
+	color: #2769d8;
+	bottom: 0;
+}
+
+.errorMessage {
+	font-size: 1.8rem;
+	text-align: center;
+	color: #2769d8;
+	max-width: 80%;
+	margin-bottom: 2rem;
+}
+
+.homeLink {
+	text-decoration: none;
+}
+
+.homeButton {
+	padding: 0.7rem 2rem;
+	font-size: 1.2rem;
+	background-color: #3e5eff;
+	color: #fff;
+	border: none;
+	cursor: pointer;
+	border-radius: 8px;
+	transition: background-color 0.3s, transform 0.2s;
+	margin: 1rem auto;
+	display: block;
+}
+
+.homeButton:hover {
+	background-color: #1e4fd8;
+	transform: scale(1.1);
+}
+
+.homeButton:focus {
+	outline: none;
+}
+
+.incognitoIcon {
+	font-size: 10rem;
+	color: #1e66b5;
+	margin-bottom: 1rem;
+	transition: color 0.3s, transform 0.5s;
+	transform-origin: center;
+}
+
+.incognitoIcon:hover {
+	color: #ef5a5a;
+}
+
+.errorHeader:hover .errorText {
+	font-size: 2rem;
+	transition: font-size 0.3s;
+}
+
+.errorHeader:hover .errorCode {
+	font-size: 3.5rem;
+	transition: font-size 0.3s;
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Style from './chat.module.css';
 import { useGlobalContext } from '../../context';
 
@@ -28,8 +28,14 @@ const Chat = ({ isConnected, messages, sendMessage }) => {
 				className={Style.messages}
 				ref={messageRef}>
 				{messages.map((msg, index) => (
-					<li key={index}>
-						{msg.userId === userId ? 'You:' : msg.userName + ':'}
+					<li
+						key={index}
+						className={
+							msg.userId === userId ? Style.userMessage : Style.otherMessage
+						}>
+						{msg.userId !== userId && (
+							<i>{msg.userName.split(' ')[0] + ': '}</i>
+						)}
 						{msg.message}
 					</li>
 				))}
@@ -43,6 +49,7 @@ const Chat = ({ isConnected, messages, sendMessage }) => {
 					value={message}
 					onChange={(e) => setMessage(e.target.value)}
 					autoComplete='off'
+					disabled={!isConnected || !isSignedIn}
 				/>
 				<button
 					className={Style.btn}

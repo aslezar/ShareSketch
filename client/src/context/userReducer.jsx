@@ -3,14 +3,16 @@ const reducer = (state, action) => {
 	try {
 		if (action.type === 'SIGN_IN') {
 			localStorage.setItem('token', JSON.stringify(action.payload.token));
-			const dataUrl = `data:${action.payload.profileImage.contentType};base64,${action.payload.profileImage.base64Image}`;
+			const imageURL = action.payload.profileImage
+				? `data:${action.payload.profileImage.contentType};base64,${action.payload.profileImage.base64Image}`
+				: 'https://i.imgur.com/6VBx3io.png';
 			return {
 				signedIn: true,
 				userId: action.payload.userId,
 				name: action.payload.name,
 				email: action.payload.email,
 				bio: action.payload.bio,
-				profileImage: dataUrl,
+				profileImage: imageURL,
 				token: action.payload.token,
 			};
 		}
@@ -21,10 +23,6 @@ const reducer = (state, action) => {
 			};
 		}
 		if (action.type === 'UPDATE_USER') {
-			if (action.payload.profileImage) {
-				const dataUrl = `data:${action.payload.profileImage.contentType};base64,${action.payload.profileImage.base64Image}`;
-				action.payload.profileImage = dataUrl;
-			}
 			return {
 				...state,
 				...action.payload,

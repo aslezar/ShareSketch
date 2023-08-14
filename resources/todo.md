@@ -4,6 +4,7 @@ dark mode sb set krna h
 ek homepage bnana h
 about us
 footer on homepage with socialLinks
+msg on before dleting room and clearing canvas
 
 DONE
 undo redo not working as expected

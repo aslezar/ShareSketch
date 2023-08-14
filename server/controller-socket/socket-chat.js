@@ -3,7 +3,12 @@ const Room = require('../models/room');
 
 const createMessage = async (data, cb, socket) => {
 	try {
-		const { roomId, userId, userName, message } = data;
+		const { message } = data;
+		const { userId, userName, roomId } = socket;
+		if (socket.isGuest) {
+			cb({ msg: 'You must be login to chat, Server', success: false });
+			return;
+		}
 		if (!mongoose.Types.ObjectId.isValid(roomId)) {
 			cb({ msg: 'Invalid Room ID', success: false });
 			return;

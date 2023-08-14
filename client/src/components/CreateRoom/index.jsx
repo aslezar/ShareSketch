@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import Button from '../Button';
 import Style from './createRoom.module.css';
+import * as api from '../../api/index.js';
 
 const CreateRoom = () => {
 	const [roomName, setRoomName] = useState('');
@@ -11,31 +12,25 @@ const CreateRoom = () => {
 
 	const navigate = useNavigate();
 
-	const { isSignedIn, userId, socket } = useGlobalContext();
+	const { isSignedIn } = useGlobalContext();
 
-	const CreateRoom = (e) => {
+	const CreateRoom = async (e) => {
 		e.preventDefault();
 		if (buttonClicked) return;
 		if (!isSignedIn) return toast.error('Please Sign In to create a room.');
 		if (!roomName) return toast.error('Please enter a room name.');
 		setButtonClicked(true);
 		try {
-			if (!socket.connected) {
-				socket.connect();
+			const res = await api.createRoom(roomName);
+			if (res.data.success) {
+				toast.success(res.data.msg);
+				navigate(`/room/${res.data.data.roomId}`);
+			} else {
+				toast.error(res.msg);
 			}
-			socket.emit('createRoom', { userId, roomName }, (response) => {
-				if (response.success) {
-					toast.success(response.msg);
-					navigate(`/room/${response.data.roomId}`);
-				} else {
-					toast.error(response.msg);
-				}
-			});
 		} catch (error) {
 			console.log(error);
 			toast.error('Unexpected Error Occured.');
-			if (socket.connected) socket.disconnect();
-			navigate('/');
 		}
 		setButtonClicked(false);
 	};

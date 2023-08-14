@@ -3,7 +3,12 @@ const Room = require('../models/room');
 
 const createElement = async (data, cb, socket) => {
 	try {
-		const { roomId, userId, element } = data;
+		const { element } = data;
+		const { userId, roomId } = socket;
+		if (socket.isGuest) {
+			cb({ msg: 'You must be login to Draw, Server', success: false });
+			return;
+		}
 		if (!mongoose.Types.ObjectId.isValid(roomId)) {
 			cb({ msg: 'Server:Invalid Room ID', success: false });
 			return;
@@ -26,9 +31,9 @@ const createElement = async (data, cb, socket) => {
 		}
 		room.elements.push(data.element);
 		await room.save();
-		socket.broadcast.to(data.roomId).emit('canvas:draw', data.element);
+		socket.broadcast.to(roomId).emit('canvas:draw', data.element);
 		cb({ msg: 'Server: Element created', success: true });
-		console.log(`User ${socket.id} drew on room ${data.roomId}`);
+		console.log(`User ${socket.id} drew on room ${roomId}`);
 	} catch (error) {
 		console.log(error);
 		cb({ msg: 'Server: Error creating element', success: false });
@@ -37,7 +42,11 @@ const createElement = async (data, cb, socket) => {
 
 const clearCanvas = async (data, cb, socket) => {
 	try {
-		const { roomId, userId } = data;
+		const { userId, roomId } = socket;
+		if (socket.isGuest) {
+			cb({ msg: 'You must be login to clear Canvas, Server', success: false });
+			return;
+		}
 		if (!mongoose.Types.ObjectId.isValid(roomId)) {
 			cb({ msg: 'Server:Invalid Room ID', success: false });
 			return;
@@ -64,9 +73,9 @@ const clearCanvas = async (data, cb, socket) => {
 		}
 		room.elements = [];
 		await room.save();
-		socket.broadcast.to(data.roomId).emit('canvas:clear');
+		socket.broadcast.to(roomId).emit('canvas:clear');
 		cb({ msg: 'Server: Canvas Cleared', success: true });
-		console.log(`User ${socket.id} cleared canvas on room ${data.roomId}`);
+		console.log(`User ${socket.id} cleared canvas on room ${roomId}`);
 	} catch (error) {
 		console.log(error);
 		cb({ msg: 'Server: Error clearing canvas', success: false });
@@ -75,7 +84,12 @@ const clearCanvas = async (data, cb, socket) => {
 
 const undoElement = async (data, cb, socket) => {
 	try {
-		const { roomId, userId, elementId } = data;
+		const { elementId } = data;
+		const { userId, roomId } = socket;
+		if (socket.isGuest) {
+			cb({ msg: 'You must be login to Undo, Server', success: false });
+			return;
+		}
 		if (!mongoose.Types.ObjectId.isValid(roomId)) {
 			cb({ msg: 'Server:Invalid Room ID', success: false });
 			return;
@@ -104,9 +118,9 @@ const undoElement = async (data, cb, socket) => {
 			(element) => element.elementId !== elementId
 		);
 		await room.save();
-		socket.broadcast.to(data.roomId).emit('canvas:undo', elementId);
+		socket.broadcast.to(roomId).emit('canvas:undo', elementId);
 		cb({ msg: 'Server: Element undo', success: true });
-		console.log(`User ${socket.id} undid element on room ${data.roomId}`);
+		console.log(`User ${socket.id} undid element on room ${roomId}`);
 	} catch (error) {
 		console.log(error);
 		cb({ msg: 'Server: Error undoing element', success: false });
@@ -115,7 +129,12 @@ const undoElement = async (data, cb, socket) => {
 
 const redoElement = async (data, cb, socket) => {
 	try {
-		const { roomId, userId, element } = data;
+		const { element } = data;
+		const { userId, roomId } = socket;
+		if (socket.isGuest) {
+			cb({ msg: 'You must be login to redo, Server', success: false });
+			return;
+		}
 		if (!mongoose.Types.ObjectId.isValid(roomId)) {
 			cb({ msg: 'Server:Invalid Room ID', success: false });
 			return;
@@ -138,9 +157,9 @@ const redoElement = async (data, cb, socket) => {
 		}
 		room.elements.push(element);
 		await room.save();
-		socket.broadcast.to(data.roomId).emit('canvas:draw', data.element);
+		socket.broadcast.to(roomId).emit('canvas:draw', data.element);
 		cb({ msg: 'Server: Element Redo', success: true });
-		console.log(`User ${socket.id} redid element on room ${data.roomId}`);
+		console.log(`User ${socket.id} redid element on room ${roomId}`);
 	} catch (error) {
 		console.log(error);
 		cb({ msg: 'Server: Error redoing element', success: false });

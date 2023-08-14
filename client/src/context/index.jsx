@@ -19,7 +19,7 @@ export const userInitialState = {
 const AppProvider = ({ children }) => {
 	const [user, dispatch] = useReducer(reducer, userInitialState);
 	// const [roomId, setRoomId] = React.useState(''); //roomId is used to join room
-	const [colorMode, setColorMode] = React.useState('dark'); //dark, light
+	const [colorMode, setColorMode] = React.useState('light'); //dark, light
 
 	const initialFromLocalStorage = async (tokenValue) => {
 		try {
@@ -28,12 +28,6 @@ const AppProvider = ({ children }) => {
 			if (!signIn(res.data.data)) {
 				throw new Error('Invalid token');
 			}
-			// console.log(res.data);
-			// if (!userId || !name || !email || !token || !bio || !profileImage)
-			// dispatch({
-			// 	type: 'SIGN_IN',
-			// 	payload: { userId, name, email, token, bio, profileImage },
-			// });
 		} catch (error) {
 			localStorage.removeItem('token');
 			// console.log(error);
@@ -66,7 +60,7 @@ const AppProvider = ({ children }) => {
 	};
 	const signIn = ({ userId, name, token, email, bio, profileImage }) => {
 		// console.log('signing in');
-		if (!userId || !name || !token || !email || !profileImage) {
+		if (!userId || !name || !token || !email) {
 			console.error('Error Signing in, invalid data');
 			return false;
 		}
@@ -103,7 +97,7 @@ const AppProvider = ({ children }) => {
 				bio: user.bio,
 				colorMode,
 				isSignedIn: user.signedIn,
-				updateUser,
+				token: user.token,
 				toggleColorMode,
 				signIn,
 				signOut,

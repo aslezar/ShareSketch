@@ -21,6 +21,19 @@ export const getRooms = () => {
 		},
 	});
 };
+export const createRoom = (roomName) => {
+	const token = JSON.parse(localStorage.getItem('token')) || null;
+	return API.post(
+		'/user/createroom',
+		{ roomName },
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}
+	);
+};
+
 export const updateName = (name) => {
 	const token = JSON.parse(localStorage.getItem('token')) || null;
 	return API.patch(

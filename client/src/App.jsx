@@ -1,8 +1,10 @@
-import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import PrivateRoute from './components/PrivateRoute';
+
+//Styles
+import style from './app.module.css';
 
 //Components
+import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
 
 //Pages
@@ -12,7 +14,7 @@ import DashBooard from './Pages/DashBoard';
 import ErrorPage from './Pages/ErrorPage';
 function App() {
 	return (
-		<div className='App'>
+		<div className={style.app}>
 			<Navbar />
 			<Routes>
 				<Route

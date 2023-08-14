@@ -34,8 +34,8 @@ const UserProfile = () => {
 	};
 	const handleNameSaveClick = async () => {
 		setEditingName(false);
-		if (inputName.length < 1) {
-			toast.error('Name cannot be empty');
+		if (inputName.length < 3) {
+			toast.error('Name must be at least 3 characters');
 			return;
 		}
 		if (inputName.length > 20) {
@@ -194,7 +194,9 @@ function ProfileImageUpload() {
 			const res = await api.updateImage(file);
 			if (res.data.success) {
 				toast.success(res.data.msg);
-				window.location.reload();
+				setTimeout(() => {
+					window.location.reload();
+				}, 3000);
 			} else {
 				console.log(res);
 				toast.error(res.data.msg);

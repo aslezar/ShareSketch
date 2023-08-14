@@ -5,6 +5,32 @@ const bcrypt = require('bcryptjs');
 
 const jwt = require('jsonwebtoken');
 
+const sendUserData = (user, res, msg) => {
+	const token = user.generateToken();
+
+	//check if profile image is set or not
+	const profileImage =
+		user.profileImage && user.profileImage.data && user.profileImage.contentType
+			? {
+					base64Image: user.profileImage.data.toString('base64'),
+					contentType: user.profileImage.contentType,
+			  }
+			: null;
+
+	res.status(StatusCodes.CREATED).json({
+		data: {
+			userId: user._id,
+			name: user.name,
+			email: user.email,
+			bio: user.bio,
+			profileImage,
+			token,
+		},
+		success: true,
+		msg,
+	});
+};
+
 const register = async (req, res) => {
 	const { name, email, password } = req.body;
 	if (!name || !email || !password) {
@@ -19,25 +45,7 @@ const register = async (req, res) => {
 		}); // Conflict status
 	}
 	const user = await User.create({ name, email, password });
-	const token = user.generateToken();
-
-	const profileImage = {
-		base64Image: user.profileImage.data.toString('base64'),
-		contentType: user.profileImage.contentType,
-	};
-
-	res.status(StatusCodes.CREATED).json({
-		data: {
-			userId: user._id,
-			name: user.name,
-			email: user.email,
-			bio: user.bio,
-			profileImage,
-			token,
-		},
-		success: true,
-		msg: 'User Registratioin Successfully',
-	});
+	sendUserData(user, res, 'User Registered Successfully');
 };
 
 const login = async (req, res) => {
@@ -61,25 +69,7 @@ const login = async (req, res) => {
 		throw new UnauthenticatedError('Invalid Password.');
 	}
 
-	const token = user.generateToken();
-
-	const profileImage = {
-		base64Image: user.profileImage.data.toString('base64'),
-		contentType: user.profileImage.contentType,
-	};
-
-	res.status(StatusCodes.OK).json({
-		data: {
-			userId: user._id,
-			name: user.name,
-			email: user.email,
-			bio: user.bio,
-			profileImage,
-			token,
-		},
-		success: true,
-		msg: 'User Login Successfully',
-	});
+	sendUserData(user, res, 'User Login Successfully');
 };
 const tokenLogin = async (req, res) => {
 	const { token } = req.body;
@@ -94,25 +84,7 @@ const tokenLogin = async (req, res) => {
 		if (!user) {
 			throw new UnauthenticatedError('Invalid Token');
 		}
-		const newToken = user.generateToken();
-
-		const profileImage = {
-			base64Image: user.profileImage.data.toString('base64'),
-			contentType: user.profileImage.contentType,
-		};
-
-		res.status(StatusCodes.OK).json({
-			data: {
-				userId: user._id,
-				name: user.name,
-				email: user.email,
-				bio: user.bio,
-				profileImage,
-				token: newToken,
-			},
-			success: true,
-			msg: 'User Login Successfully',
-		});
+		sendUserData(user, res, 'User Login Successfully');
 	} catch (error) {
 		throw new UnauthenticatedError('Invalid Token');
 	}

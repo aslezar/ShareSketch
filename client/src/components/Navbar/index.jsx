@@ -91,6 +91,13 @@ const User = () => {
 				</div>
 			) : (
 				<>
+					{showSign && (
+						<Sign
+							closeSign={() => {
+								setShowSign(false);
+							}}
+						/>
+					)}
 					<div
 						action=''
 						onClick={() => {
@@ -101,13 +108,6 @@ const User = () => {
 							Sign Up/Sign In
 						</Button>
 					</div>
-					{showSign && (
-						<Sign
-							closeSign={() => {
-								setShowSign(false);
-							}}
-						/>
-					)}
 				</>
 			)}
 		</>

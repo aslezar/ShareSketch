@@ -31,7 +31,6 @@ const UserSchema = new mongoose.Schema(
 		profileImage: {
 			data: Buffer,
 			contentType: String,
-			// default: 'https://i.imgur.com/6VBx3io.png',
 		},
 		myRooms: [
 			{

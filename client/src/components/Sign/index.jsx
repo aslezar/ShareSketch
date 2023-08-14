@@ -5,8 +5,8 @@ import PopUp from '../PopUp';
 import Style from './sign.module.css';
 import { useGlobalContext } from '../../context';
 
-const Sign = ({ closeSign }) => {
-	const [isSignin, setIsSignin] = React.useState('signin');
+const Sign = ({ closeSign, page }) => {
+	const [isSignin, setIsSignin] = React.useState(page || 'signin');
 
 	const { isSignedIn } = useGlobalContext();
 	if (isSignedIn === true) closeSign();

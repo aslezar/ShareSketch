@@ -62,10 +62,17 @@ function Signup({ toogleSignIn, closeSign }) {
 		) {
 			try {
 				const res = await api.signUp(sForm);
-				// console.log(res);
-				signIn(res.data.data);
-				toast.success(res.data.msg);
-				closeSign();
+				if (res.data.success) {
+					if (signIn(res.data.data)) {
+						toast.success(res.data.msg);
+						closeSign();
+					} else {
+						toast.error('Error signing in');
+						return;
+					}
+				} else {
+					toast.error(res.data.msg);
+				}
 			} catch (err) {
 				console.log(err);
 				toast.error(err.response.data.msg);

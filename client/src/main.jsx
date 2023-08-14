@@ -17,16 +17,14 @@ import { ToastContainer } from 'react-toastify';
 import { AppProvider } from './context';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-	<React.StrictMode>
-		<AppProvider>
-			<BrowserRouter>
-				<ToastContainer
-					position='top-center'
-					theme='dark'
-					autoClose={2500}
-				/>
-				<App />
-			</BrowserRouter>
-		</AppProvider>
-	</React.StrictMode>
+	<AppProvider>
+		<BrowserRouter>
+			<ToastContainer
+				position='top-center'
+				theme='dark'
+				autoClose={2500}
+			/>
+			<App />
+		</BrowserRouter>
+	</AppProvider>
 );

@@ -28,7 +28,6 @@ const isRoomIdValid = async (req, res) => {
 	}
 };
 module.exports = {
-	// createRoom,
 	// getRoom,
 	// getRooms,
 	// updateRoom,

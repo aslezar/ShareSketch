@@ -1,7 +1,6 @@
 .canvas {
-	background-color: #f2f2f2;
+	background-color: #f9f9f9;
 	border-radius: 10px;
-	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 	text-align: center;
-	border: 2px solid #333;
+	box-shadow: 5px 20px 20px rgba(19, 17, 146, 0.2);
 }

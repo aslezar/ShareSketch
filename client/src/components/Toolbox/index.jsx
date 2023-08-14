@@ -4,6 +4,7 @@ import { GrClearOption } from 'react-icons/gr';
 import { MdContentCopy } from 'react-icons/md';
 import { FaShareAlt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import { useGlobalContext } from '../../context';
 const Toolbox = ({
 	isConnected,
 	toogleConnection,
@@ -18,6 +19,7 @@ const Toolbox = ({
 	roomName,
 	roomUsers,
 	roomAdmin,
+	curUser,
 }) => {
 	const handleChange = (e) => {
 		setToolbox((prevState) => ({
@@ -53,16 +55,37 @@ const Toolbox = ({
 						'Unknown'
 					)}
 				</p>
+				<p className={Style.roomName}>
+					Name:{' '}
+					{curUser.name ? (
+						<i>
+							<b>{curUser.name}</b>{' '}
+						</i>
+					) : (
+						'Unknown'
+					)}
+				</p>
 				<div className={Style.share}>
 					<button
 						className={Style.button}
 						onClick={handleCopy}>
-						<MdContentCopy /> Copy Room Id
+						<MdContentCopy
+							style={{
+								width: '1rem',
+								height: '1rem',
+							}}
+						/>{' '}
+						Copy RoomID
 					</button>
 					<button
 						className={Style.button}
 						onClick={handleShare}>
-						<FaShareAlt />
+						<FaShareAlt
+							style={{
+								width: '1rem',
+								height: '1rem',
+							}}
+						/>
 						Share Link
 					</button>
 				</div>
@@ -147,21 +170,28 @@ const Toolbox = ({
 			</div>
 			<Users
 				users={roomUsers}
-				admin={roomAdmin}
+				curUser={curUser}
 			/>
 		</div>
 	);
 };
 
-const Users = ({ users, admin }) => {
+const Users = ({ users, curUser }) => {
 	return (
 		<div className={Style.userdiv}>
 			<h3>Users</h3>
 			<ul className={Style.users}>
 				{users.map((user) => (
-					<li key={user.userId}>
+					<li key={`${user.userId} ${user.name}`}>
 						{user.name}
-						{user.userId === admin.userId && <span> (admin)</span>}
+						{user.userId === curUser.userId ? ' (You)' : ''}
+						{user.isGuest ? (
+							<span> (Guest) </span>
+						) : user.isAdmin ? (
+							<span> (Admin) </span>
+						) : (
+							''
+						)}
 					</li>
 				))}
 			</ul>
