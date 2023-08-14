@@ -2,11 +2,13 @@ const twitter = 'https://twitter.com';
 const facebook = 'https://facebook.com';
 const instagram = 'https://instagram.com';
 const linkedin = 'https://linkedin.com';
+const github = 'https://github.com';
 const socials = {
 	twitter,
 	facebook,
 	instagram,
 	linkedin,
+	github,
 };
 const data = {
 	title: 'ShareSketch',

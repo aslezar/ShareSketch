@@ -47,7 +47,7 @@ const points = [
 const Homepage = () => {
 	const [signup, setSignup] = React.useState(false);
 
-	const { isSignedIn } = useGlobalContext();
+	const { isSignedIn, name, bio, profileImage } = useGlobalContext();
 	return (
 		<>
 			{signup && (
@@ -60,14 +60,25 @@ const Homepage = () => {
 				<div className={Style.container}>
 					<div className={Style.about}>
 						<header className={Style.header}>
-							<h1>
-								Welcome to <b>ShareSketch</b>
-							</h1>
-							<p>
-								<i>
-									An online whiteboard for you and your friends to draw together
-								</i>
-							</p>
+							<div className={Style.headerContent}>
+								<h1>
+									Welcome to <b>ShareSketch</b>
+								</h1>
+								<p>
+									<i>
+										An online whiteboard for you and your friends to draw
+										together
+									</i>
+								</p>
+								<p>
+									Introducing ShareSketch: your hub for collaborative drawing
+									and brainstorming. Harness artistic potential with our
+									versatile canvas and drawing tools. Connect in real time via
+									Socket.io for seamless collaboration. Engage in lively
+									discussions with integrated group chat. Experience boundless
+									creativity with dark and light modes.
+								</p>
+							</div>
 						</header>
 						<section className={Style.features}>
 							{features.map((feature, index) => (
@@ -84,23 +95,43 @@ const Homepage = () => {
 					<section className={Style.cta}>
 						<span className={Style.text}>
 							<h2>Ready to Revolutionize Collaboration?</h2>
-							<p>
-								SignUp for ShareSketch now and unlock the power of collaborative
-								whiteboarding and efficient group chatting.
-							</p>
+							{isSignedIn ? (
+								<p>
+									Join a room now and start collaborating with your friends.
+								</p>
+							) : (
+								<p>
+									SignUp for ShareSketch now and unlock the power of
+									collaborative whiteboarding and efficient group chatting.
+								</p>
+							)}
 						</span>
-						<div onClick={() => setSignup(true)}>
-							<Button>
-								<AiOutlineUserAdd />
-								Sign Up
-							</Button>
-						</div>
+						{!isSignedIn && (
+							<div onClick={() => setSignup(true)}>
+								<Button>
+									<AiOutlineUserAdd />
+									Sign Up
+								</Button>
+							</div>
+						)}
 					</section>
 				</div>
 				{isSignedIn ? (
-					<div className={Style.demo}>
-						<h2>user name</h2>
-						<p>user bio and image</p>
+					<div className={Style.user}>
+						<img
+							src={profileImage ? profileImage : image}
+							alt='profile'
+							className={Style.profileImage}
+						/>
+						<span>
+							<h2>
+								<i>Hi, </i>
+								{name}
+							</h2>
+							<p>{bio}</p>
+						</span>
+						{/* <h2>user name</h2>
+						<p>user bio and image</p> */}
 					</div>
 				) : (
 					<div className={Style.demo}>

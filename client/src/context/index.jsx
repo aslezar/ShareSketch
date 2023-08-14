@@ -79,6 +79,10 @@ const AppProvider = ({ children }) => {
 	// 	setRoomId(newRoomId);
 	// };
 	const toggleColorMode = () => {
+		toast.info('pagal bnaya bda mza aaya 😂');
+		setTimeout(() => {
+			toast.info('rhta h abhi ye');
+		}, 2000);
 		setColorMode((prevMode) => {
 			if (prevMode === 'dark') setCSSValues('light');
 			else setCSSValues('dark');
@@ -101,6 +105,7 @@ const AppProvider = ({ children }) => {
 				toggleColorMode,
 				signIn,
 				signOut,
+				updateUser,
 				// getRoomId,
 				// updateRoomId,
 			}}>

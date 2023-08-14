@@ -63,8 +63,14 @@ const ErrorPage = () => {
 					className={`${styles.incognitoIcon}`}
 					style={{ transform: `scale(${iconScale})` }}>
 					<FaUserSecret
-						onMouseEnter={() => setIconScale(iconScale * 0.8)}
-						onMouseLeave={() => setIconScale(iconScale / 0.8)}
+						onMouseEnter={() => {
+							toast.info('Hey, move your cursor away');
+							setIconScale(iconScale * 0.8);
+						}}
+						onMouseLeave={() => {
+							toast.info('thank god! bach gya');
+							setIconScale(iconScale / 0.8);
+						}}
 						onClick={() =>
 							setClick((c) => {
 								setIconScale(iconScale * 0.8);

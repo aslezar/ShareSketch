@@ -1,6 +1,12 @@
 import Style from './socialIcons.module.css';
-import { FaTwitter, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa';
-import data from '../../data';
+import {
+	FaTwitter,
+	FaFacebook,
+	FaInstagram,
+	FaLinkedin,
+	FaGithub,
+} from 'react-icons/fa';
+import data from '../../../data';
 function SocailIcons() {
 	const socials = data.socials;
 	return (
@@ -30,6 +36,13 @@ function SocailIcons() {
 				<li>
 					<a href={socials.linkedin}>
 						<FaLinkedin />
+					</a>
+				</li>
+			)}
+			{socials.github && (
+				<li>
+					<a href={socials.github}>
+						<FaGithub />
 					</a>
 				</li>
 			)}

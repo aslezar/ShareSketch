@@ -8,6 +8,7 @@ import CreateRoom from '../../components/CreateRoom';
 import JoinRoom from '../../components/JoinRoom';
 import Rooms from '../../components/Rooms';
 import UserPanel from '../../components/UserPanel';
+import { Link } from 'react-router-dom';
 
 const DashBoard = () => {
 	const [myRooms, setMyRooms] = React.useState([]);
@@ -37,7 +38,26 @@ const DashBoard = () => {
 		fetchRooms();
 	}, [userId]);
 
-	if (!isSignedIn) return <h1>Sign In to view your dashboard</h1>;
+	// if (!isSignedIn) return <h1>Sign In to view your dashboard</h1>;
+	if (!isSignedIn)
+		return (
+			<div className={`${Style.dashbaord}`}>
+				<p
+					style={{
+						fontSize: '2rem',
+					}}>
+					<i>Sign In to view your dashboard.</i>
+					<Link
+						to='/'
+						style={{
+							color: 'black',
+						}}>
+						{' '}
+						Home
+					</Link>
+				</p>
+			</div>
+		);
 
 	return (
 		<div className={`${Style.dashbaord}`}>

@@ -1,9 +1,8 @@
 .navCenter {
 	background: var(--clr-white);
-	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+	box-shadow: 0px px 5px rgba(0, 0, 0, 0.2);
 	width: 100vw;
 	height: 8vh;
-	/* margin-bottom: 5px; */
 }
 
 .navHeader {
@@ -12,7 +11,11 @@
 	justify-content: space-between;
 	color: var(--clr-primary);
 }
-
+.profileImage {
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: 50%;
+}
 .navToggle {
 	font-size: 1.5rem;
 	color: var(--clr-primary-5);
@@ -94,7 +97,6 @@
 
 .user {
 	display: flex;
-	flex-direction: column;
 	align-items: center;
 	justify-content: space-between;
 	border: 1px solid black;

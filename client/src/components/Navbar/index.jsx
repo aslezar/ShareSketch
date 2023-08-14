@@ -74,7 +74,7 @@ const Navbar = () => {
 const User = () => {
 	const [showSign, setShowSign] = React.useState(false);
 
-	const { isSignedIn, name, signOut } = useGlobalContext();
+	const { isSignedIn, name, signOut, profileImage } = useGlobalContext();
 
 	return (
 		<>
@@ -82,12 +82,19 @@ const User = () => {
 				<div
 					action=''
 					className={Style.user}>
-					<p>{name}</p>
-					<button
-						onClick={signOut}
-						className={Style.signOutButton}>
-						Sign Out
-					</button>
+					<img
+						src={profileImage}
+						alt={name}
+						className={Style.profileImage}
+					/>
+					<span>
+						<p>{name}</p>
+						<button
+							onClick={signOut}
+							className={Style.signOutButton}>
+							Sign Out
+						</button>
+					</span>
 				</div>
 			) : (
 				<>

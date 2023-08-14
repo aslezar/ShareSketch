@@ -191,6 +191,7 @@ function ProfileImageUpload() {
 			return;
 		}
 		try {
+			toast.info('Updating profile image...');
 			const res = await api.updateImage(file);
 			if (res.data.success) {
 				toast.success(res.data.msg);
