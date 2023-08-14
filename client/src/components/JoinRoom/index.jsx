@@ -12,18 +12,25 @@ const JoinRoom = () => {
 	const joinRoom = async (e) => {
 		e.preventDefault();
 		console.log('join room called');
-		try {
-			const res = await api.isRoomIdValid(roomId);
-			console.log(res.data);
-			if (res.data.success) {
+		api.handler(
+			api.isRoomIdValid,
+			(data) => {
 				navigate(`/room/${roomId}`);
-			} else {
-				toast.error(res.data.msg);
-			}
-		} catch (error) {
-			console.log(error);
-			toast.error(error.response.data.msg);
-		}
+			},
+			roomId
+		);
+		// try {
+		// 	const res = await api.isRoomIdValid(roomId);
+		// 	console.log(res.data);
+		// 	if (res.data.success) {
+		// 		navigate(`/room/${roomId}`);
+		// 	} else {
+		// 		toast.error(res.data.msg);
+		// 	}
+		// } catch (error) {
+		// 	console.log(error);
+		// 	toast.error(error.response.data.msg);
+		// }
 	};
 	return (
 		<div className={Style.wrapper}>

@@ -22,17 +22,27 @@ const AppProvider = ({ children }) => {
 	const [colorMode, setColorMode] = React.useState('light'); //dark, light
 
 	const initialFromLocalStorage = async (tokenValue) => {
-		try {
-			const res = await api.signinToken(tokenValue);
-			// console.log(res.data);
-			if (!signIn(res.data.data)) {
-				throw new Error('Invalid token');
+		api.handler(
+			api.signinToken,
+			(data) => {
+				signIn(data);
+			},
+			tokenValue,
+			(error) => {
+				localStorage.removeItem('token');
 			}
-		} catch (error) {
-			localStorage.removeItem('token');
-			// console.log(error);
-			toast.error(error?.data?.msg);
-		}
+		);
+		// try {
+		// 	const res = await api.signinToken(tokenValue);
+		// 	// console.log(res.data);
+		// 	if (!signIn(res.data.data)) {
+		// 		throw new Error('Invalid token');
+		// 	}
+		// } catch (error) {
+		// 	localStorage.removeItem('token');
+		// 	// console.log(error);
+		// 	toast.error(error?.data?.msg);
+		// }
 	};
 
 	useEffect(() => {

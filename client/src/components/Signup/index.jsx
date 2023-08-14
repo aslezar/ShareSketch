@@ -60,23 +60,14 @@ function Signup({ toogleSignIn, closeSign }) {
 			sForm.email !== '' &&
 			sForm.password.length >= 8
 		) {
-			try {
-				const res = await api.signUp(sForm);
-				if (res.data.success) {
-					if (signIn(res.data.data)) {
-						toast.success(res.data.msg);
-						closeSign();
-					} else {
-						toast.error('Error signing in');
-						return;
-					}
-				} else {
-					toast.error(res.data.msg);
-				}
-			} catch (err) {
-				console.log(err);
-				toast.error(err.response.data.msg);
-			}
+			api.handler(
+				api.signUp,
+				(data) => {
+					signIn(data);
+					closeSign();
+				},
+				sForm
+			);
 		} else {
 			toast.error('Please enter all details');
 		}

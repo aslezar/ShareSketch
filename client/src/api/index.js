@@ -83,3 +83,23 @@ export const updateImage = (profileImage) => {
 // 	.finally(function () {
 // 		// always executed
 // 	});
+export async function handler(task, onSucess, data, onFailure) {
+	try {
+		const res = await task(data);
+		// console.log(res);
+		if (res.data.success) {
+			onSucess(res.data.data);
+		} else {
+			toast.error(res.data.msg);
+			if (onFailure) onFailure(res.data.msg);
+		}
+	} catch (error) {
+		console.log(error);
+		if (error.response) {
+			toast.error(error.response.data.msg);
+			if (onFailure) onFailure(error.response.data.msg);
+		} else {
+			toast.error('Server offline: Network Error');
+		}
+	}
+}

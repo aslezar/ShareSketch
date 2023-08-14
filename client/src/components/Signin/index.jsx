@@ -39,25 +39,15 @@ const Signin = ({ toogleSignIn, closeSign }) => {
 			toast.error('Please enter a valid email');
 			return;
 		}
-		try {
-			const res = await api.signIn({ email, password });
-			if (res.data.success) {
-				if (signIn(res.data.data)) {
-					toast.success(res.data.msg);
-					closeSign();
-				} else {
-					toast.error('Error signing in');
-					return;
-				}
-			} else {
-				toast.error(res.data.msg);
-			}
-			// console.log(data);
-		} catch (error) {
-			// console.log(error);
-			console.log(error);
-			toast.error(error.response.data.msg);
-		}
+		const data = { email, password };
+		api.handler(
+			api.signIn,
+			(data) => {
+				signIn(data);
+				closeSign();
+			},
+			data
+		);
 	};
 
 	return (

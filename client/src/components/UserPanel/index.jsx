@@ -43,19 +43,26 @@ const UserProfile = () => {
 			return;
 		}
 		if (inputName === name) return;
-		try {
-			const res = await api.updateName(inputName);
-			if (res.data.success) {
-				updateUser({ name: res.data.data.name });
-				toast.success(res.data.msg);
-			} else {
-				console.log(res.data);
-				toast.error(res.data.msg);
-			}
-		} catch (error) {
-			console.log(error);
-			toast.error(error?.data?.msg);
-		}
+		api.handler(
+			api.updateName,
+			(data) => {
+				updateUser({ name: data.name });
+			},
+			inputName
+		);
+		// try {
+		// 	const res = await api.updateName(inputName);
+		// 	if (res.data.success) {
+		// 		updateUser({ name: res.data.data.name });
+		// 		toast.success(res.data.msg);
+		// 	} else {
+		// 		console.log(res.data);
+		// 		toast.error(res.data.msg);
+		// 	}
+		// } catch (error) {
+		// 	console.log(error);
+		// 	toast.error(error?.data?.msg);
+		// }
 	};
 
 	return (
@@ -140,19 +147,26 @@ const Bio = () => {
 			return;
 		}
 		if (inputBio.length > 0) {
-			try {
-				const res = await api.updateBio(inputBio);
-				if (res.data.success) {
-					updateUser({ bio: res.data.data.bio });
-					toast.success(res.data.msg);
-				} else {
-					console.log(res);
-					toast.error(res.data.msg);
-				}
-			} catch (error) {
-				console.log(error);
-				toast.error('Error updating bio, server error');
-			}
+			api.handler(
+				api.updateBio,
+				(data) => {
+					updateUser({ bio: data.bio });
+				},
+				inputBio
+			);
+			// try {
+			// 	const res = await api.updateBio(inputBio);
+			// 	if (res.data.success) {
+			// 		updateUser({ bio: res.data.data.bio });
+			// 		toast.success(res.data.msg);
+			// 	} else {
+			// 		console.log(res);
+			// 		toast.error(res.data.msg);
+			// 	}
+			// } catch (error) {
+			// 	console.log(error);
+			// 	toast.error('Error updating bio, server error');
+			// }
 		}
 	};
 
@@ -190,22 +204,37 @@ function ProfileImageUpload() {
 			toast.error('Image size cannot exceed 1MB');
 			return;
 		}
-		try {
-			toast.info('Updating profile image...');
-			const res = await api.updateImage(file);
-			if (res.data.success) {
-				toast.success(res.data.msg);
+		if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
+			toast.error('Image must be of type jpeg or png');
+			return;
+		}
+		api.handler(
+			api.updateImage,
+			(data) => {
+				// updateUser({ profileImage: data.profileImage });
+				toast.success(data.msg);
 				setTimeout(() => {
 					window.location.reload();
 				}, 3000);
-			} else {
-				console.log(res);
-				toast.error(res.data.msg);
-			}
-		} catch (error) {
-			console.log(error);
-			toast.error('Error updating profile image, server error');
-		}
+			},
+			file
+		);
+		// try {
+		// 	toast.info('Updating profile image...');
+		// 	const res = await api.updateImage(file);
+		// 	if (res.data.success) {
+		// 		toast.success(res.data.msg);
+		// 		setTimeout(() => {
+		// 			window.location.reload();
+		// 		}, 3000);
+		// 	} else {
+		// 		console.log(res);
+		// 		toast.error(res.data.msg);
+		// 	}
+		// } catch (error) {
+		// 	console.log(error);
+		// 	toast.error('Error updating profile image, server error');
+		// }
 	};
 
 	return (

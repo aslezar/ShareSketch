@@ -20,18 +20,25 @@ const CreateRoom = () => {
 		if (!isSignedIn) return toast.error('Please Sign In to create a room.');
 		if (!roomName) return toast.error('Please enter a room name.');
 		setButtonClicked(true);
-		try {
-			const res = await api.createRoom(roomName);
-			if (res.data.success) {
-				toast.success(res.data.msg);
-				navigate(`/room/${res.data.data.roomId}`);
-			} else {
-				toast.error(res.msg);
-			}
-		} catch (error) {
-			console.log(error);
-			toast.error('Unexpected Error Occured.');
-		}
+		api.handler(
+			api.createRoom,
+			(data) => {
+				navigate(`/room/${data.roomId}`);
+			},
+			roomName
+		);
+		// try {
+		// 	const res = await api.createRoom(roomName);
+		// 	if (res.data.success) {
+		// 		toast.success(res.data.msg);
+		// 		navigate(`/room/${res.data.data.roomId}`);
+		// 	} else {
+		// 		toast.error(res.msg);
+		// 	}
+		// } catch (error) {
+		// 	console.log(error);
+		// 	toast.error('Unexpected Error Occured.');
+		// }
 		setButtonClicked(false);
 	};
 	return (
