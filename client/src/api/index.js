@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from '../../config';
+import { toast } from 'react-toastify';
 
 const URL =
 	process.env.NODE_ENV === 'production' ? '/api' : config.serverAPIURL;
@@ -83,12 +84,13 @@ export const updateImage = (profileImage) => {
 // 	.finally(function () {
 // 		// always executed
 // 	});
-export async function handler(task, onSucess, data, onFailure) {
+export const handler = async (task, onSucess, data, onFailure) => {
 	try {
 		const res = await task(data);
-		// console.log(res);
+		console.log(res.data);
 		if (res.data.success) {
-			onSucess(res.data.data);
+			onSucess(res.data?.data);
+			toast.success(res.data.msg);
 		} else {
 			toast.error(res.data.msg);
 			if (onFailure) onFailure(res.data.msg);
@@ -102,4 +104,4 @@ export async function handler(task, onSucess, data, onFailure) {
 			toast.error('Server offline: Network Error');
 		}
 	}
-}
+};

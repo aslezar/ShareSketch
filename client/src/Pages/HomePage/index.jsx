@@ -1,13 +1,18 @@
 import React from 'react';
-import Style from './home.module.css';
-import JoinRoom from '../../components/JoinRoom';
+//Style
+// import Style from './home.module.css';
+import Style from './home.module.sass';
+//Components
 import Sign from '../../components/Sign';
-import Footer from '../../components/Footer';
-import image from '../../../public/ShareSketch3.png';
 import Button from '../../components/Button';
-import { AiOutlineUserAdd } from 'react-icons/ai';
-import { MdEmojiEmotions } from 'react-icons/md';
+import Footer from '../../components/Footer';
+import JoinRoom from '../../components/JoinRoom';
+//Images
+import image from '../../../public/ShareSketch3.png';
+//Icons
 import { useGlobalContext } from '../../context';
+import { MdEmojiEmotions } from 'react-icons/md';
+import { AiOutlineUserAdd } from 'react-icons/ai';
 
 const features = [
 	{
@@ -151,6 +156,16 @@ const Homepage = () => {
 					<JoinRoom />
 				</div>
 				<div className={Style.imageDiv}>
+					{/* <img
+						src={image}
+						alt='sharesketch'
+						style={{
+							maxWidth: '100%',
+							height: 'auto',
+							maxHeight: '100%',
+						}}
+						className={image}
+					/> */}
 					<ul className={Style.points}>
 						{points.map((point, index) => (
 							<li

@@ -32,17 +32,6 @@ const AppProvider = ({ children }) => {
 				localStorage.removeItem('token');
 			}
 		);
-		// try {
-		// 	const res = await api.signinToken(tokenValue);
-		// 	// console.log(res.data);
-		// 	if (!signIn(res.data.data)) {
-		// 		throw new Error('Invalid token');
-		// 	}
-		// } catch (error) {
-		// 	localStorage.removeItem('token');
-		// 	// console.log(error);
-		// 	toast.error(error?.data?.msg);
-		// }
 	};
 
 	useEffect(() => {

@@ -1,0 +1,185 @@
+.styleBox 
+	background-color: white 
+	padding: 20px 
+	border-radius: 10px 
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) 
+.flexContainer 
+	display: flex 
+	gap: 20px 
+.flexCenter 
+	display: flex 
+	justify-content: center 
+	align-items: center 
+	gap: 20px 
+.homepage 
+	flex-grow: 1 
+	background-color: #f5f5f5 
+	margin: 25px 
+	padding: 20px 
+	border: 1px solid #ccc 
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2) 
+	border-radius: 10px 
+	display: grid 
+	grid-template-rows: 1fr 1fr 1fr 
+	grid-template-columns: 1fr 1fr 1fr 1fr 
+	grid-row-gap: 20px 
+	grid-column-gap: 20px 
+.container 
+	grid-row: 1 / span 3 
+	grid-column: 1 / span 2 
+	display: flex 
+	flex-direction: column 
+	align-items: center 
+	padding: 20px 
+	display: flex 
+	gap: 20px 
+.user,
+.demo 
+	grid-row: 1 
+	grid-column: 3 
+	background-color: white 
+	padding: 2.5rem 
+	border-radius: 10px 
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) 
+	display: flex 
+.user 
+	gap: 10px 
+	align-items: center 
+	span 
+		height: 100% 
+		display: flex 
+		flex-direction: column 
+		padding: 10px 
+		gap: 5px 
+		justify-content: center 
+		h2 
+			font-size: 1.5rem 
+		p 
+			font-size: 1rem 
+			max-width: 95% 
+			margin-left: auto 
+			color: #555 
+.demo 
+	flex-direction: column 
+	justify-content: space-around 
+	align-items: center 
+	h2 
+		font-size: 1.5rem 
+.joinroom 
+	grid-row: 1 
+	grid-column: 4 
+	background-color: white 
+	padding: 2.5rem 
+	border-radius: 10px 
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) 
+	& > div 
+		height: 100% 
+.imageDiv 
+	grid-row: 2 / span 2 
+	grid-column: 3 / span 2 
+	flex: 2 
+	display: grid 
+	justify-content: center 
+	align-items: center 
+	background-color: white 
+	padding: 20px 
+	border-radius: 50px 
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) 
+.image 
+	max-width: 100% 
+	max-height: 100% 
+.about 
+	flex-grow: 1 
+	display: flex 
+	gap: 20px 
+.header 
+	flex: 1 
+	text-align: center 
+	display: flex 
+	flex-direction: column 
+	justify-content: center 
+	background-color: white 
+	padding: 2.5rem 
+	border-radius: 10px 
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) 
+	h1 
+		font-size: 2rem 
+		margin: 0 
+	b 
+		font-size: 2.5rem 
+	p 
+		margin-top: 20px 
+		text-align: justify 
+		line-height: 1.5rem 
+		color: #555 
+	i 
+		font-size: 1.5rem 
+		color: #ccc 
+		margin-top: 20px 
+		text-align: center 
+.features 
+	flex: 2 
+	display: flex 
+	flex-direction: column 
+	justify-content: space-around 
+	gap: 20px 
+	flex-wrap: nowrap 
+	:nth-child(odd) 
+		margin-right: auto 
+	:nth-child(even) 
+		margin-left: auto 
+.feature 
+	display: flex 
+	flex-direction: column 
+	width: 90% 
+	background-color: white 
+	padding: 20px 
+	border-radius: 10px 
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) 
+	h2 
+		font-size: 1.2rem 
+		margin-top: 0 
+		max-width: 90% 
+		margin-right: auto 
+	p 
+		font-size: 1rem 
+		color: #666 
+		margin-left: auto 
+		max-width: 92% 
+.cta 
+	flex-grow: 1 
+	background-color: white 
+	padding: 20px 
+	width: 100% 
+	border-radius: 10px 
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) 
+	text-align: center 
+	display: flex 
+	justify-content: center 
+	align-items: center 
+	gap: 20px 
+.text 
+	flex: 1 
+	display: flex 
+	flex-direction: column 
+.title 
+	color: #333 
+	margin-bottom: 10px 
+.description 
+	font-size: 1.2rem 
+	color: #666 
+.headerContent 
+	margin-top: 20px 
+.points 
+	display: flex 
+	flex-direction: column 
+.profileImage 
+	border-radius: 50% 
+	object-fit: cover 
+	width: 8rem 
+	height: 8rem 
+	object-fit: cover 
+	transition: transform 0.3s ease 
+	border: 2px solid black 
+	&:hover 
+		transform: scale(1.1) 

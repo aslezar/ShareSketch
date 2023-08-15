@@ -1,17 +1,16 @@
 import { useNavigate } from 'react-router-dom';
-import { useGlobalContext } from '../../context';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
 import Button from '../Button';
 import Style from './joinroom.module.css';
 import * as api from '../../api/index.js';
+import { toast } from 'react-toastify';
 const JoinRoom = () => {
 	const [roomId, setRoomId] = useState('');
 	const navigate = useNavigate();
 
 	const joinRoom = async (e) => {
 		e.preventDefault();
-		console.log('join room called');
+		if (!roomId) return toast.info('Please enter a room ID');
 		api.handler(
 			api.isRoomIdValid,
 			(data) => {
@@ -19,18 +18,6 @@ const JoinRoom = () => {
 			},
 			roomId
 		);
-		// try {
-		// 	const res = await api.isRoomIdValid(roomId);
-		// 	console.log(res.data);
-		// 	if (res.data.success) {
-		// 		navigate(`/room/${roomId}`);
-		// 	} else {
-		// 		toast.error(res.data.msg);
-		// 	}
-		// } catch (error) {
-		// 	console.log(error);
-		// 	toast.error(error.response.data.msg);
-		// }
 	};
 	return (
 		<div className={Style.wrapper}>

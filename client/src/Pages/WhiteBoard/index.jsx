@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { useGlobalContext } from '../../context';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { Navigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 //Components
 import Toolbox from '../../components/Toolbox';
@@ -49,7 +49,6 @@ const WhiteBoard = () => {
 		function joinRoom() {
 			toast.info('Joining room...');
 			const guestUser = JSON.parse(localStorage.getItem('guestUser'));
-			console.log(token);
 			socket.emit('room:join', { roomId, token, guestUser }, (response) => {
 				if (response.success) {
 					toast.success(response.msg);

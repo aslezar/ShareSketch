@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import Style from './dashboard.module.css';
 import { useGlobalContext } from '../../context';
 import * as api from '../../api';
-import { toast } from 'react-toastify';
 
 import CreateRoom from '../../components/CreateRoom';
 import JoinRoom from '../../components/JoinRoom';
@@ -20,27 +19,12 @@ const DashBoard = () => {
 		api.handler(
 			api.getRooms,
 			(data) => {
-				setMyRooms(data.data.myRooms);
-				setOtherRooms(data.data.otherRooms);
+				setMyRooms(data.myRooms);
+				setOtherRooms(data.otherRooms);
 			},
 			userId
 		);
-		// try {
-		// 	if (!userId) return;
-		// 	const res = await api.getRooms(userId);
-		// 	// console.log(res.data);
-		// 	if (res.data.success) {
-		// 		setMyRooms(res.data.data.myRooms);
-		// 		setOtherRooms(res.data.data.otherRooms);
-		// 	} else {
-		// 		toast.error(res.data.msg);
-		// 	}
-		// } catch (err) {
-		// 	console.log(err);
-		// 	toast.error(err.response.data.msg);
-		// }
 	};
-
 	useEffect(() => {
 		// console.log(userId);
 		fetchRooms();

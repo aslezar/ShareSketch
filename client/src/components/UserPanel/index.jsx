@@ -50,19 +50,6 @@ const UserProfile = () => {
 			},
 			inputName
 		);
-		// try {
-		// 	const res = await api.updateName(inputName);
-		// 	if (res.data.success) {
-		// 		updateUser({ name: res.data.data.name });
-		// 		toast.success(res.data.msg);
-		// 	} else {
-		// 		console.log(res.data);
-		// 		toast.error(res.data.msg);
-		// 	}
-		// } catch (error) {
-		// 	console.log(error);
-		// 	toast.error(error?.data?.msg);
-		// }
 	};
 
 	return (
@@ -154,19 +141,6 @@ const Bio = () => {
 				},
 				inputBio
 			);
-			// try {
-			// 	const res = await api.updateBio(inputBio);
-			// 	if (res.data.success) {
-			// 		updateUser({ bio: res.data.data.bio });
-			// 		toast.success(res.data.msg);
-			// 	} else {
-			// 		console.log(res);
-			// 		toast.error(res.data.msg);
-			// 	}
-			// } catch (error) {
-			// 	console.log(error);
-			// 	toast.error('Error updating bio, server error');
-			// }
 		}
 	};
 
@@ -219,22 +193,6 @@ function ProfileImageUpload() {
 			},
 			file
 		);
-		// try {
-		// 	toast.info('Updating profile image...');
-		// 	const res = await api.updateImage(file);
-		// 	if (res.data.success) {
-		// 		toast.success(res.data.msg);
-		// 		setTimeout(() => {
-		// 			window.location.reload();
-		// 		}, 3000);
-		// 	} else {
-		// 		console.log(res);
-		// 		toast.error(res.data.msg);
-		// 	}
-		// } catch (error) {
-		// 	console.log(error);
-		// 	toast.error('Error updating profile image, server error');
-		// }
 	};
 
 	return (

@@ -27,18 +27,6 @@ const CreateRoom = () => {
 			},
 			roomName
 		);
-		// try {
-		// 	const res = await api.createRoom(roomName);
-		// 	if (res.data.success) {
-		// 		toast.success(res.data.msg);
-		// 		navigate(`/room/${res.data.data.roomId}`);
-		// 	} else {
-		// 		toast.error(res.msg);
-		// 	}
-		// } catch (error) {
-		// 	console.log(error);
-		// 	toast.error('Unexpected Error Occured.');
-		// }
 		setButtonClicked(false);
 	};
 	return (

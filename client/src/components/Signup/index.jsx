@@ -1,10 +1,10 @@
 import Style from './signup.module.css';
-import { Link, useNavigate } from 'react-router-dom';
-import * as api from '../../api/index.js';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { AiOutlineUserAdd } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import { useGlobalContext } from '../../context';
+import * as api from '../../api/index.js';
 
 //Components
 import Button from '../Button';

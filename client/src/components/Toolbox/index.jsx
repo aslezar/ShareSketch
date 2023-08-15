@@ -4,7 +4,6 @@ import { GrClearOption } from 'react-icons/gr';
 import { MdContentCopy } from 'react-icons/md';
 import { FaShareAlt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-import { useGlobalContext } from '../../context';
 const Toolbox = ({
 	isConnected,
 	toogleConnection,
