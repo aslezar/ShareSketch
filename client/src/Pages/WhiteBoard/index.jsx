@@ -12,7 +12,7 @@ import CanvasUpper from '../../components/CanvasUpper';
 import Chat from '../../components/Chat';
 
 //Styles
-import Style from './whiteboard.module.css';
+import style from './style.module.scss';
 
 const WhiteBoard = () => {
 	const [toolbox, setToolbox] = useState(defaultToolbox);
@@ -274,7 +274,7 @@ const WhiteBoard = () => {
 	};
 
 	return (
-		<div className={Style.container}>
+		<div className={style.container}>
 			<Toolbox
 				isConnected={isConnected}
 				toogleConnection={toogleConnection}

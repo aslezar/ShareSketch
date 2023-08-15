@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Style from './dashboard.module.css';
+import style from './style.module.scss';
 import { useGlobalContext } from '../../context';
 import * as api from '../../api';
 
@@ -7,6 +7,7 @@ import CreateRoom from '../../components/CreateRoom';
 import JoinRoom from '../../components/JoinRoom';
 import Rooms from '../../components/Rooms';
 import UserPanel from '../../components/UserPanel';
+import Footer from '../../components/Footer';
 import { Link } from 'react-router-dom';
 
 const DashBoard = () => {
@@ -33,7 +34,7 @@ const DashBoard = () => {
 	// if (!isSignedIn) return <h1>Sign In to view your dashboard</h1>;
 	if (!isSignedIn)
 		return (
-			<div className={`${Style.dashbaord}`}>
+			<div className={`${style.dashbaord}`}>
 				<p
 					style={{
 						fontSize: '2rem',
@@ -52,25 +53,28 @@ const DashBoard = () => {
 		);
 
 	return (
-		<div className={`${Style.dashbaord}`}>
-			<div className={`${Style.user} ${Style.child}`}>
-				<UserPanel />
-			</div>
-			<div className={`${Style.rooms} ${Style.child}`}>
-				<div className={`${Style.join}`}>
-					<CreateRoom />
-					<JoinRoom />
+		<>
+			<div className={style.dashbaord}>
+				<div className={style.user}>
+					<UserPanel />
 				</div>
-				<section className={Style.room}>
-					<h2 className={Style.heading}>My Rooms</h2>
-					<Rooms rooms={myRooms} />
-				</section>
-				<section className={Style.room}>
-					<h2 className={Style.heading}>Other Rooms</h2>
-					<Rooms rooms={otherRooms} />
-				</section>
+				<div className={style.rooms}>
+					<div className={`${style.join}`}>
+						<CreateRoom />
+						<JoinRoom />
+					</div>
+					<section className={style.room}>
+						<h2>My Rooms</h2>
+						<Rooms rooms={myRooms} />
+					</section>
+					<section className={style.room}>
+						<h2>Other Rooms</h2>
+						<Rooms rooms={otherRooms} />
+					</section>
+				</div>
 			</div>
-		</div>
+			<Footer />
+		</>
 	);
 };
 

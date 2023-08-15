@@ -1,4 +1,4 @@
-import Style from './signup.module.css';
+import style from './style.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { AiOutlineUserAdd } from 'react-icons/ai';
@@ -74,16 +74,16 @@ function Signup({ toogleSignIn, closeSign }) {
 	};
 
 	return (
-		<div className={Style.wrapper}>
-			<div className={Style.headContainer}>
-				<h1 className={Style.heading}>Create your account</h1>
+		<div className={style.wrapper}>
+			<div className={style.headContainer}>
+				<h1 className={style.heading}>Create your account</h1>
 			</div>
 
 			<form
 				action=''
 				onSubmit={handleSubmit}
-				className={Style.form}>
-				<div className={Style.inputContainer}>
+				className={style.form}>
+				<div className={style.inputContainer}>
 					<label>Full Name</label>
 					<input
 						onChange={handleChange}
@@ -92,7 +92,7 @@ function Signup({ toogleSignIn, closeSign }) {
 						type='text'
 					/>
 				</div>
-				<div className={Style.inputContainer}>
+				<div className={style.inputContainer}>
 					<label>Email</label>
 					<input
 						name='email'
@@ -102,7 +102,7 @@ function Signup({ toogleSignIn, closeSign }) {
 					/>
 				</div>
 
-				<div className={Style.inputContainer}>
+				<div className={style.inputContainer}>
 					<label>Password</label>
 					<input
 						name='password'
@@ -112,7 +112,7 @@ function Signup({ toogleSignIn, closeSign }) {
 					/>
 				</div>
 
-				<div className={Style.inputContainer}>
+				<div className={style.inputContainer}>
 					<label>Confirm Password</label>
 					<input
 						name='confirmPassword'
@@ -122,10 +122,10 @@ function Signup({ toogleSignIn, closeSign }) {
 					/>
 				</div>
 
-				<div className={Style.actoinContainer}>
+				<div className={style.actoinContainer}>
 					<span
 						onClick={() => toogleSignIn('signup')}
-						className={Style.hoverUnderline}>
+						className={style.hoverUnderline}>
 						Forgot Password?
 					</span>
 					<Button>
@@ -136,7 +136,7 @@ function Signup({ toogleSignIn, closeSign }) {
 			</form>
 			<span
 				onClick={() => toogleSignIn('signin')}
-				className={Style.hoverUnderline}>
+				className={style.hoverUnderline}>
 				Already Signed Up? Sign In
 			</span>
 		</div>

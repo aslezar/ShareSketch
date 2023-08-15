@@ -1,0 +1,50 @@
+.app {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100vh;
+	width: 100vw;
+}
+
+//* Basic CSS Reset */
+
+/* Box sizing reset */
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* Remove list styles (optional) */
+ul,
+ol {
+	list-style: none;
+}
+
+/* Remove default margin on body */
+body {
+	margin: 0;
+}
+
+/* Reset anchor (link) styles */
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+/* Reset heading margins */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+}
+
+/* Reset paragraph margins */
+p {
+	margin: 0;
+}

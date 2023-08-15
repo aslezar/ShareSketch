@@ -78,10 +78,16 @@ const AppProvider = ({ children }) => {
 	// 	setRoomId(newRoomId);
 	// };
 	const toggleColorMode = () => {
-		toast.info('pagal bnaya bda mza aaya 😂');
-		setTimeout(() => {
-			toast.info('rhta h abhi ye');
-		}, 2000);
+		// toast.info('pagal bnaya bda mza aaya 😂'),
+		// 	{
+		// 		toastId: 'colorMode',
+		// 	};
+		// setTimeout(() => {
+		// 	toast.info('rhta h abhi ye'),
+		// 		{
+		// 			toastId: 'colorMode2',
+		// 		};
+		// }, 2000);
 		setColorMode((prevMode) => {
 			if (prevMode === 'dark') setCSSValues('light');
 			else setCSSValues('dark');

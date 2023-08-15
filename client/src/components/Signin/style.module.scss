@@ -1,8 +1,12 @@
+/* Variables */
+@import 'variables';
+
+/* Styles */
 .wrapper {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	flex-grow: 1; /* This makes .wrapper take up the available vertical space */
+	flex-grow: 1;
 }
 
 .headContainer {
@@ -10,9 +14,21 @@
 	flex-direction: column;
 	justify-content: space-between;
 }
+
 .heading {
 	text-align: center;
 	font-size: 1.5rem;
+}
+
+.dummyLogin {
+	margin: 0;
+	flex-grow: 1;
+	text-align: right;
+	cursor: pointer;
+
+	&:hover {
+		text-decoration: underline;
+	}
 }
 
 .form {
@@ -24,24 +40,30 @@
 
 .inputContainer {
 	margin: 10px;
+
+	input {
+		width: 100%;
+		background-color: $input-bg-color;
+		color: $text-black;
+		padding: 10px;
+		border-radius: $border-radius;
+		display: block;
+		border: none;
+	}
 }
 
-.inputContainer input {
-	width: 100%;
-	background-color: #e8f0fe;
-	color: black;
-	padding: 10px;
-	border-radius: 0.5rem;
-	display: block;
-	border: 0px none;
-}
 .actoinContainer {
 	text-align: right;
+
+	a {
+		color: $text-black;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
 }
 
-.actoinContainer a {
-	color: black;
-}
 .hoverUnderline:hover {
 	text-decoration: underline;
 }

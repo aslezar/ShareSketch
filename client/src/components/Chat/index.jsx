@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import Style from './chat.module.css';
+import style from './style.module.scss';
 import { useGlobalContext } from '../../context';
 
 const Chat = ({ isConnected, messages, sendMessage }) => {
@@ -23,15 +23,15 @@ const Chat = ({ isConnected, messages, sendMessage }) => {
 	}, [messages]);
 
 	return (
-		<div className={Style.chat}>
+		<div className={style.chat}>
 			<ul
-				className={Style.messages}
+				className={style.messages}
 				ref={messageRef}>
 				{messages.map((msg, index) => (
 					<li
 						key={index}
 						className={
-							msg.userId === userId ? Style.userMessage : Style.otherMessage
+							msg.userId === userId ? style.userMessage : style.otherMessage
 						}>
 						{msg.userId !== userId && (
 							<i>{msg.userName.split(' ')[0] + ': '}</i>
@@ -41,10 +41,10 @@ const Chat = ({ isConnected, messages, sendMessage }) => {
 				))}
 			</ul>
 			<form
-				className={Style.form}
+				className={style.form}
 				onSubmit={handleSubmit}>
 				<input
-					className={Style.input}
+					className={style.input}
 					placeholder={isSignedIn ? 'Type your message' : 'Sign in to chat'}
 					value={message}
 					onChange={(e) => setMessage(e.target.value)}
@@ -52,7 +52,7 @@ const Chat = ({ isConnected, messages, sendMessage }) => {
 					disabled={!isConnected || !isSignedIn}
 				/>
 				<button
-					className={Style.btn}
+					className={style.btn}
 					disabled={!isConnected || !isSignedIn}
 					type='submit'>
 					Send

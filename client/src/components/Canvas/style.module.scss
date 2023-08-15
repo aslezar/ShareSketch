@@ -1,0 +1,10 @@
+/* Variables */
+@import 'variables';
+
+/* Styles */
+.canvas {
+	background-color: $canvas-bg-color;
+	border-radius: $border-radius;
+	text-align: center;
+	box-shadow: $canvas-box-shadow;
+}

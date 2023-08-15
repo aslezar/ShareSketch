@@ -1,0 +1,31 @@
+/* Variables */
+@import 'variables';
+
+/* Styles */
+.popup {
+	min-height: 50vh;
+	width: 80vw;
+	max-width: 400px;
+	background-color: $popup-bg-color;
+	color: $popup-color;
+	border-radius: $border-radius;
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 9999;
+	padding: $popup-padding;
+
+	.close {
+		position: absolute;
+		top: 0.5rem;
+		right: 0.5rem;
+		cursor: pointer;
+		font-size: 1.5rem;
+		color: $close-color;
+		background-color: $close-bg-color;
+		border-radius: $border-radius;
+	}
+}

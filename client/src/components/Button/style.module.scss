@@ -1,0 +1,7 @@
+/* Variables */
+@import 'variables';
+
+/* Styles */
+.btn {
+	@include button-main;
+}

@@ -1,4 +1,4 @@
-import Style from './toolbox.module.css';
+import style from './style.module.scss';
 import { IoIosUndo, IoIosRedo } from 'react-icons/io';
 import { GrClearOption } from 'react-icons/gr';
 import { MdContentCopy } from 'react-icons/md';
@@ -35,16 +35,16 @@ const Toolbox = ({
 		navigator.clipboard.writeText(window.location.href);
 	};
 	return (
-		<div className={Style.container}>
-			<div className={Style.heading}>
+		<div className={style.container}>
+			<div className={style.heading}>
 				<button
-					className={`${Style.button} ${
-						isConnected ? Style.connected : Style.disconnected
+					className={`${style.button} ${
+						isConnected ? style.connected : style.disconnected
 					}`}
 					onClick={toogleConnection}>
 					{isConnected ? 'Connected' : 'Disconnected'}
 				</button>
-				<p className={Style.roomName}>
+				<p className={style.roomName}>
 					Room:{' '}
 					{roomName ? (
 						<i>
@@ -54,7 +54,7 @@ const Toolbox = ({
 						'Unknown'
 					)}
 				</p>
-				<p className={Style.roomName}>
+				<p className={style.roomName}>
 					Name:{' '}
 					{curUser.name ? (
 						<i>
@@ -64,9 +64,9 @@ const Toolbox = ({
 						'Unknown'
 					)}
 				</p>
-				<div className={Style.share}>
+				<div className={style.share}>
 					<button
-						className={Style.button}
+						className={style.button}
 						onClick={handleCopy}>
 						<MdContentCopy
 							style={{
@@ -77,7 +77,7 @@ const Toolbox = ({
 						Copy RoomID
 					</button>
 					<button
-						className={Style.button}
+						className={style.button}
 						onClick={handleShare}>
 						<FaShareAlt
 							style={{
@@ -89,9 +89,9 @@ const Toolbox = ({
 					</button>
 				</div>
 			</div>
-			<div className={Style.toolbox}>
-				<section className={Style.tools}>
-					<div className={Style.tool}>
+			<div className={style.toolbox}>
+				<section className={style.tools}>
+					<div className={style.tool}>
 						<label htmlFor='tool'>Tool: </label>
 						<select
 							name='tool'
@@ -102,7 +102,7 @@ const Toolbox = ({
 							<option value='circle'>Circle</option>
 						</select>
 					</div>
-					<div className={Style.lineWidth}>
+					<div className={style.lineWidth}>
 						<label htmlFor='lineWidth'>Line Width:</label>
 						<section>
 							<input
@@ -123,7 +123,7 @@ const Toolbox = ({
 							/>
 						</section>
 					</div>
-					<div className={Style.color}>
+					<div className={style.color}>
 						<label htmlFor='color'>Color:</label>
 						<input
 							type='color'
@@ -131,7 +131,7 @@ const Toolbox = ({
 							onChange={handleChange}
 						/>
 					</div>
-					<div className={Style.fillStyle}>
+					<div className={style.fillStyle}>
 						<label htmlFor='fillStyle'>Fill Color:</label>
 						<input
 							type='color'
@@ -140,10 +140,10 @@ const Toolbox = ({
 						/>
 					</div>
 				</section>
-				<section className={Style.buttons}>
+				<section className={style.buttons}>
 					<button
 						type='button'
-						className={Style.button}
+						className={style.button}
 						disabled={elements.length < 1}
 						onClick={handleUndo}>
 						<IoIosUndo />
@@ -151,7 +151,7 @@ const Toolbox = ({
 					</button>
 					<button
 						type='button'
-						className={Style.button}
+						className={style.button}
 						disabled={history.length < 1}
 						onClick={handleRedo}>
 						<IoIosRedo />
@@ -159,7 +159,7 @@ const Toolbox = ({
 					</button>
 					<button
 						type='button'
-						className={Style.button}
+						className={style.button}
 						disabled={elements.length < 1}
 						onClick={clearCanvas}>
 						<GrClearOption />
@@ -177,9 +177,9 @@ const Toolbox = ({
 
 const Users = ({ users, curUser }) => {
 	return (
-		<div className={Style.userdiv}>
+		<div className={style.userdiv}>
 			<h3>Users</h3>
-			<ul className={Style.users}>
+			<ul className={style.users}>
 				{users.map((user) => (
 					<li key={`${user.userId} ${user.name}`}>
 						{user.name}

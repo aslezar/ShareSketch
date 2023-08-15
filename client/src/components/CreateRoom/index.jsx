@@ -3,7 +3,7 @@ import { useGlobalContext } from '../../context';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import Button from '../Button';
-import Style from './createRoom.module.css';
+import style from './style.module.scss';
 import * as api from '../../api/index.js';
 
 const CreateRoom = () => {
@@ -30,13 +30,13 @@ const CreateRoom = () => {
 		setButtonClicked(false);
 	};
 	return (
-		<div className={Style.wrapper}>
-			<h1 className={Style.heading}>Create Room</h1>
+		<div className={style.wrapper}>
+			<h1 className={style.heading}>Create Room</h1>
 			<form
 				action=''
 				onSubmit={CreateRoom}
-				className={Style.form}>
-				<div className={Style.inputContainer}>
+				className={style.form}>
+				<div className={style.inputContainer}>
 					<input
 						id='roomName'
 						onChange={(e) => setRoomName(e.target.value)}
@@ -45,7 +45,7 @@ const CreateRoom = () => {
 						value={roomName}
 					/>
 				</div>
-				<div className={Style.actoinContainer}>
+				<div className={style.actoinContainer}>
 					<Button>Create Room</Button>
 				</div>
 			</form>

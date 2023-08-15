@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 
 //Styles
-import './global.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 //Router

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AiOutlineUser } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import * as api from '../../api/index.js';
-import Style from './signin.module.css';
+import style from './style.module.scss';
 import { useGlobalContext } from '../../context';
 
 //Components
@@ -51,11 +51,11 @@ const Signin = ({ toogleSignIn, closeSign }) => {
 	};
 
 	return (
-		<div className={Style.wrapper}>
-			<div className={Style.headContainer}>
-				<h1 className={Style.heading}>Welcome Back</h1>
+		<div className={style.wrapper}>
+			<div className={style.headContainer}>
+				<h1 className={style.heading}>Welcome Back</h1>
 				<h2
-					className={Style.dummyLogin}
+					className={style.dummyLogin}
 					onClick={handleDemoLogin}>
 					<i>Use Demo login</i>
 				</h2>
@@ -63,8 +63,8 @@ const Signin = ({ toogleSignIn, closeSign }) => {
 			<form
 				action=''
 				onSubmit={handleSubmit}
-				className={Style.form}>
-				<div className={Style.inputContainer}>
+				className={style.form}>
+				<div className={style.inputContainer}>
 					<label htmlFor='email'>Email</label>
 					<input
 						id='email'
@@ -75,7 +75,7 @@ const Signin = ({ toogleSignIn, closeSign }) => {
 					/>
 				</div>
 
-				<div className={Style.inputContainer}>
+				<div className={style.inputContainer}>
 					<label htmlFor='password'>Password</label>
 					<input
 						id='password'
@@ -86,7 +86,7 @@ const Signin = ({ toogleSignIn, closeSign }) => {
 					/>
 				</div>
 
-				<div className={Style.actoinContainer}>
+				<div className={style.actoinContainer}>
 					{/* <Link to='/account/forgotpassword'>Forgot password?</Link> */}
 					<Button>
 						<AiOutlineUser />
@@ -97,7 +97,7 @@ const Signin = ({ toogleSignIn, closeSign }) => {
 
 			<span
 				onClick={() => toogleSignIn('signup')}
-				className={Style.hoverUnderline}>
+				className={style.hoverUnderline}>
 				Not registered yet? Sign Up{' '}
 			</span>
 		</div>

@@ -1,5 +1,5 @@
 import { GrFormClose } from 'react-icons/gr';
-import Style from './popUp.module.css';
+import style from './style.module.scss';
 
 const PopUp = ({ closeSign, children }) => {
 	const handleClose = (e) => {
@@ -19,10 +19,10 @@ const PopUp = ({ closeSign, children }) => {
 				bottom: '0',
 				backgroundColor: 'rgba(0,0,0,0.1)',
 			}}>
-			<div className={Style.popup}>
+			<div className={style.popup}>
 				<GrFormClose
 					onClick={closeSign}
-					className={Style.close}
+					className={style.close}
 				/>
 				{children}
 			</div>

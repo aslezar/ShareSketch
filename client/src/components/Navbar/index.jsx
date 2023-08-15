@@ -1,16 +1,16 @@
-import Style from './navbar.module.css';
 import React, { useEffect } from 'react';
-import Logo from '../../assets/sharesketch.svg';
-import LogoDark from '../../assets/sharesketch_dark.svg';
-import { useGlobalContext } from '../../context';
-import { FaBars } from 'react-icons/fa';
+import style from './style.module.scss';
 import { Link } from 'react-router-dom';
-import Sign from '../../components/Sign';
-import { MdDarkMode, MdLightMode } from 'react-icons/md';
+import { useGlobalContext } from '../../context';
+
+import Sign from '../Sign';
 import PopUp from '../PopUp';
-import JoinRoom from '../JoinRoom';
 import Button from '../Button';
+import JoinRoom from '../JoinRoom';
+
+import { FaBars } from 'react-icons/fa';
 import { AiOutlineUserAdd } from 'react-icons/ai';
+import { MdDarkMode, MdLightMode } from 'react-icons/md';
 
 const Navbar = () => {
 	const [joinRoom, setJoinRoom] = React.useState(false);
@@ -23,42 +23,7 @@ const Navbar = () => {
 	}, []);
 
 	return (
-		<nav className={Style.navCenter}>
-			<div className={Style.navHeader}>
-				{/* <img
-					src={colorMode === 'dark' ? LogoDark : Logo}
-					className={Style.logo}
-					alt='logo'
-				/> */}
-				<span>
-					<b>
-						<i style={{ fontSize: '1.2rem' }}> ShareSketch</i>
-					</b>
-				</span>
-				<button className={Style.navToggle}>
-					<FaBars style={colorMode === 'dark' && { color: 'black' }} />
-				</button>
-			</div>
-			<ul className={Style.links}>
-				<li onClick={toggleColorMode}>
-					{colorMode === 'dark' ? (
-						<MdLightMode className={Style.icon} />
-					) : (
-						<MdDarkMode className={Style.icon} />
-					)}
-				</li>
-				<li>
-					<Link to='/'>Home</Link>
-				</li>
-				{isSignedIn && <Link to='/dashboard'>DashBoard</Link>}
-				<li onClick={() => setJoinRoom((prev) => !prev)}>Join Room</li>
-				<li>
-					<Link to='/about'>About Us</Link>
-				</li>
-				<li>
-					<User />
-				</li>
-			</ul>
+		<>
 			{joinRoom && (
 				<PopUp
 					closeSign={() => {
@@ -67,7 +32,37 @@ const Navbar = () => {
 					<JoinRoom />
 				</PopUp>
 			)}
-		</nav>
+			<nav className={style.nav}>
+				<div className={style.navHeader}>
+					<button className={style.navToggle}>
+						<FaBars className={style.icon} />
+					</button>
+					<h1>ShareSketch</h1>
+				</div>
+				<div className={style.action}>
+					<div onClick={toggleColorMode}>
+						{colorMode === 'dark' ? (
+							<MdLightMode className={style.icon} />
+						) : (
+							<MdDarkMode className={style.icon} />
+						)}
+					</div>
+					<ul className={style.links}>
+						<li>
+							<Link to='/'>Home</Link>
+						</li>
+						<li>
+							<Link to='/dashboard'>DashBoard</Link>
+						</li>
+						<li onClick={() => setJoinRoom((prev) => !prev)}>Join Room</li>
+						<li>
+							<Link to='/about'>About Us</Link>
+						</li>
+					</ul>
+					<User />
+				</div>
+			</nav>
+		</>
 	);
 };
 
@@ -81,17 +76,17 @@ const User = () => {
 			{isSignedIn ? (
 				<div
 					action=''
-					className={Style.user}>
+					className={style.user}>
 					<img
 						src={profileImage}
 						alt={name}
-						className={Style.profileImage}
+						className={style.profileImage}
 					/>
 					<span>
-						<p>{name}</p>
+						<p>{name.split(' ')[0]}</p>
 						<button
 							onClick={signOut}
-							className={Style.signOutButton}>
+							className={style.signOutButton}>
 							Sign Out
 						</button>
 					</span>

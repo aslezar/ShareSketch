@@ -1,6 +1,6 @@
 import React from 'react';
-import Style from './rooms.module.css';
-import { Link, useNavigate } from 'react-router-dom';
+import style from './style.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 const Rooms = ({ rooms }) => {
 	// console.log(rooms);
@@ -8,13 +8,13 @@ const Rooms = ({ rooms }) => {
 	if (rooms.length === 0)
 		return (
 			<div
-				className={Style.room}
+				className={style.room}
 				style={{ textAlign: 'center' }}>
 				<i>No Rooms to show</i>
 			</div>
 		);
 	return (
-		<ul className={Style.room}>
+		<ul className={style.room}>
 			{rooms.map((room, index) => {
 				return (
 					<li
@@ -22,8 +22,8 @@ const Rooms = ({ rooms }) => {
 						onClick={() => {
 							navigate(`/room/${room.roomId}`);
 						}}>
-						<p className={Style.name}>{room.name}</p>
-						<p className={Style.id}>{room.roomId}</p>
+						<p className={style.name}>{room.name}</p>
+						<p className={style.id}>{room.roomId}</p>
 					</li>
 				);
 			})}

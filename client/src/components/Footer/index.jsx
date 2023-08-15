@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './footer.module.css';
+import style from './style.module.scss';
 import SocaialIcons from '../SocailIcons';
 
 const Footer = () => {

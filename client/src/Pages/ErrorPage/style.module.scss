@@ -1,0 +1,101 @@
+/* Variables */
+@import 'variables';
+
+/* Mixins */
+@mixin common-box {
+	background-color: $error-bg-color;
+	flex-grow: 1;
+	margin: 20px;
+	padding: 20px;
+	border: 1px solid $error-border-color;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+	border-radius: $border-radius;
+	display: grid;
+	grid-template-rows: 1fr 1fr;
+	grid-template-columns: 3fr 1fr;
+	grid-gap: 10px;
+	justify-items: center;
+	align-items: center;
+	text-align: center;
+}
+
+@mixin flex-center-column {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 2rem;
+	justify-content: space-between;
+	flex-wrap: nowrap;
+
+	.errorText {
+		font-size: 4rem;
+		font-weight: bold;
+		color: $error-text-color;
+		text-transform: uppercase;
+		letter-spacing: 5px;
+		transform: rotate(-5deg);
+		transition: font-size 0.3s;
+	}
+
+	.errorCode {
+		font-size: 2rem;
+		color: $error-border-color;
+		bottom: 0;
+		transition: font-size 0.3s;
+	}
+}
+
+/* Styles */
+.errorContainer {
+	@include common-box;
+
+	.errorMessage {
+		font-size: 1.8rem;
+		text-align: center;
+		color: $error-border-color;
+		max-width: 80%;
+		margin-bottom: 2rem;
+	}
+
+	.homeLink {
+		text-decoration: none;
+	}
+
+	.homeButton {
+		padding: 0.7rem 2rem;
+		font-size: 1.2rem;
+		background-color: $error-button-bg-color;
+		color: #fff;
+		border: none;
+		cursor: pointer;
+		border-radius: 8px;
+		transition: background-color 0.3s, transform 0.2s;
+		margin: 1rem auto;
+		display: block;
+
+		&:hover {
+			background-color: $error-button-hover-bg-color;
+			transform: scale(1.1);
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	.incognitoIcon {
+		font-size: 10rem;
+		color: $error-icon-color;
+		margin-bottom: 1rem;
+		transition: color 0.3s, transform 0.5s;
+		transform-origin: center;
+
+		&:hover {
+			color: $error-icon-hover-color;
+		}
+	}
+
+	&:hover {
+		@include flex-center-column;
+	}
+}

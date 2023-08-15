@@ -3,7 +3,7 @@ import { FaUserSecret } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import styles from './error.module.css';
+import style from './style.module.scss';
 import Footer from '../../components/Footer';
 
 const errorMessages = [
@@ -58,17 +58,21 @@ const ErrorPage = () => {
 
 	return (
 		<>
-			<div className={styles.errorContainer}>
+			<div className={style.errorContainer}>
 				<div
-					className={`${styles.incognitoIcon}`}
+					className={`${style.incognitoIcon}`}
 					style={{ transform: `scale(${iconScale})` }}>
 					<FaUserSecret
 						onMouseEnter={() => {
-							toast.info('Hey, move your cursor away');
+							toast.info('Hey, move your cursor away', {
+								toastId: 'mouseEnter',
+							});
 							setIconScale(iconScale * 0.8);
 						}}
 						onMouseLeave={() => {
-							toast.info('thank god! bach gya');
+							toast.info('thank god! bach gya', {
+								toastId: 'mouseLeave',
+							});
 							setIconScale(iconScale / 0.8);
 						}}
 						onClick={() =>
@@ -78,22 +82,24 @@ const ErrorPage = () => {
 									toast.error("Don't make me angry 😡, move your cursor away");
 									toast.error('Go back Home 🏠');
 								} else {
-									toast.info(getRandomFunnyErrorMessage());
+									toast.info(getRandomFunnyErrorMessage(), {
+										toastId: 'funnyError',
+									});
 								}
 								return c + 1;
 							})
 						}
 					/>
 				</div>
-				<div className={styles.errorHeader}>
-					<div className={styles.errorText}>Oops!!!</div>
-					<div className={styles.errorCode}>404 Not Found</div>
+				<div className={style.errorHeader}>
+					<div className={style.errorText}>Oops!!!</div>
+					<div className={style.errorCode}>404 Not Found</div>
 				</div>
-				<div className={styles.errorMessage}>{errorMessage}</div>
+				<div className={style.errorMessage}>{errorMessage}</div>
 				<Link
 					to='/'
-					className={styles.homeLink}>
-					<button className={styles.homeButton}>Go Back to Home</button>
+					className={style.homeLink}>
+					<button className={style.homeButton}>Go Back to Home</button>
 				</Link>
 			</div>
 			<Footer />

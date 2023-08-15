@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 
 //Styles
-import style from './app.module.css';
+import style from './global.module.scss';
 
 //Components
 import PrivateRoute from './components/PrivateRoute';

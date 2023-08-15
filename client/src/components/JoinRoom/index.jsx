@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Button from '../Button';
-import Style from './joinroom.module.css';
+import style from './style.module.scss';
 import * as api from '../../api/index.js';
 import { toast } from 'react-toastify';
 const JoinRoom = () => {
@@ -20,13 +20,13 @@ const JoinRoom = () => {
 		);
 	};
 	return (
-		<div className={Style.wrapper}>
-			<h1 className={Style.heading}>Join Room</h1>
+		<div className={style.wrapper}>
+			<h1 className={style.heading}>Join Room</h1>
 			<form
 				action=''
 				onSubmit={joinRoom}
-				className={Style.form}>
-				<div className={Style.inputContainer}>
+				className={style.form}>
+				<div className={style.inputContainer}>
 					<input
 						name='roomId'
 						onChange={(e) => setRoomId(e.target.value)}
@@ -34,7 +34,7 @@ const JoinRoom = () => {
 						type='text'
 					/>
 				</div>
-				<div className={Style.actoinContainer}>
+				<div className={style.actoinContainer}>
 					<Button>Join Room</Button>
 				</div>
 			</form>

@@ -2,7 +2,7 @@ import React from 'react';
 import Signin from '../Signin';
 import Signup from '../Signup';
 import PopUp from '../PopUp';
-import Style from './sign.module.css';
+import style from './style.module.scss';
 import { useGlobalContext } from '../../context';
 
 const Sign = ({ closeSign, page }) => {
@@ -33,7 +33,7 @@ const Sign = ({ closeSign, page }) => {
 				/>
 			</PopUp>
 		);
-	return <div className={Style.sign}>Error</div>;
+	return <div className={style.sign}>Error</div>;
 };
 
 export default Sign;

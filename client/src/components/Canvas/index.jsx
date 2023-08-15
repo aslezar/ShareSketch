@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import Style from './canvas.module.css';
+import style from './style.module.scss';
 
 import drawCanvas from '../../utils/drawCanvas';
 
@@ -44,7 +44,7 @@ const Canvas = ({ elements, canvasRef }) => {
 
 	return (
 		<canvas
-			className={Style.canvas}
+			className={style.canvas}
 			ref={canvasRef}
 		/>
 	);

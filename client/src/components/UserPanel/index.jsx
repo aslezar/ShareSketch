@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useGlobalContext } from '../../context';
 import { FaEdit, FaRegUser } from 'react-icons/fa';
-import styles from './userpanel.module.css'; // Import styles from the module CSS file
+import style from './style.module.scss'; // Import styles from the module CSS file
 import { toast } from 'react-toastify';
 import * as api from '../../api/index.js';
 const UserPanel = () => {
 	return (
-		<div className={styles['panel']}>
+		<div className={style['panel']}>
 			<UserProfile />
 			<Bio />
 		</div>
@@ -53,21 +53,21 @@ const UserProfile = () => {
 	};
 
 	return (
-		<div className={styles['profile']}>
+		<div className={style['profile']}>
 			<div
-				className={styles['user-image-container']}
+				className={style['user-image-container']}
 				onMouseEnter={() => setHoveringImage(true)}
 				onMouseLeave={() => setHoveringImage(false)}>
 				<img
-					className={`${styles['user-image']} ${
-						hoveringImage ? styles['hovered'] : ''
+					className={`${style['user-image']} ${
+						hoveringImage ? style['hovered'] : ''
 					}`}
 					src={profileImage}
 					alt={name}
 				/>
 				{hoveringImage && <ProfileImageUpload />}
 			</div>
-			<div className={styles['user-details']}>
+			<div className={style['user-details']}>
 				{editingName ? (
 					<input
 						type='text'
@@ -79,26 +79,28 @@ const UserProfile = () => {
 								handleNameSaveClick();
 							}
 						}}
-						className={styles['edit-input']}
+						className={style['edit-input']}
 					/>
 				) : (
 					<div
-						className={`${styles['user-name']} ${
-							hoveringName ? styles['hovered'] : ''
+						className={`${style['user-name']} ${
+							hoveringName ? style['hovered'] : ''
 						}`}
 						onMouseEnter={() => setHoveringName(true)}
 						onMouseLeave={() => setHoveringName(false)}>
 						{name}
 						{hoveringName && (
 							<div
-								className={styles['edit-icon']}
+								className={style['edit-icon']}
 								onClick={handleNameEditClick}>
-								<FaEdit />
+								<FaEdit className={style.icon} />
 							</div>
 						)}
 					</div>
 				)}
-				<div className={styles['user-email']}>{email}</div>
+				<hr />
+				<div className={style['user-email']}>{email}</div>
+				<hr />
 			</div>
 		</div>
 	);
@@ -156,7 +158,7 @@ const Bio = () => {
 					event.target.blur();
 				}
 			}}
-			className={`${styles.bio} ${focused ? '' : styles.italic}`}
+			className={`${style.bio} ${focused ? '' : style.italic}`}
 			placeholder='Write something about yourself'
 			rows={4}
 		/>
@@ -184,9 +186,9 @@ function ProfileImageUpload() {
 		}
 		api.handler(
 			api.updateImage,
-			(data) => {
+			() => {
 				// updateUser({ profileImage: data.profileImage });
-				toast.success(data.msg);
+				// toast.success(data.msg);
 				setTimeout(() => {
 					window.location.reload();
 				}, 3000);
@@ -196,10 +198,8 @@ function ProfileImageUpload() {
 	};
 
 	return (
-		<div
-			className={styles['edit-icon']}
-			onClick={handleFileClick}>
-			<FaEdit />
+		<div onClick={handleFileClick}>
+			<FaEdit className={style.icon} />
 			<input
 				type='file'
 				accept='image/*'

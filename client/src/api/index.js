@@ -90,7 +90,9 @@ export const handler = async (task, onSucess, data, onFailure) => {
 		console.log(res.data);
 		if (res.data.success) {
 			onSucess(res.data?.data);
-			toast.success(res.data.msg);
+			toast.success(res.data.msg, {
+				toastId: res.data.msg,
+			});
 		} else {
 			toast.error(res.data.msg);
 			if (onFailure) onFailure(res.data.msg);

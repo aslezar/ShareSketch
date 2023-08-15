@@ -1,7 +1,6 @@
 import React from 'react';
 //Style
-// import Style from './home.module.css';
-import Style from './home.module.sass';
+import style from './style.module.scss';
 //Components
 import Sign from '../../components/Sign';
 import Button from '../../components/Button';
@@ -61,20 +60,18 @@ const Homepage = () => {
 					page='signup'
 				/>
 			)}
-			<div className={Style.homepage}>
-				<div className={Style.container}>
-					<div className={Style.about}>
-						<header className={Style.header}>
-							<div className={Style.headerContent}>
+			<div className={style.homepage}>
+				<div className={style.container}>
+					<div className={style.about}>
+						<header className={style.header}>
+							<div className={style.headerContent}>
 								<h1>
 									Welcome to <b>ShareSketch</b>
-								</h1>
-								<p>
 									<i>
 										An online whiteboard for you and your friends to draw
 										together
 									</i>
-								</p>
+								</h1>
 								<p>
 									Introducing ShareSketch: your hub for collaborative drawing
 									and brainstorming. Harness artistic potential with our
@@ -85,77 +82,68 @@ const Homepage = () => {
 								</p>
 							</div>
 						</header>
-						<section className={Style.features}>
+						<ul className={style.features}>
 							{features.map((feature, index) => (
-								<div
-									className={Style.feature}
+								<li
+									className={style.feature}
 									key={index}>
 									<h2>{feature.title}</h2>
 									<p>{feature.description}</p>
-								</div>
+								</li>
 							))}
-						</section>
+						</ul>
 					</div>
 
-					<section className={Style.cta}>
-						<span className={Style.text}>
-							<h2>Ready to Revolutionize Collaboration?</h2>
-							{isSignedIn ? (
-								<p>
-									Join a room now and start collaborating with your friends.
-								</p>
-							) : (
-								<p>
-									SignUp for ShareSketch now and unlock the power of
-									collaborative whiteboarding and efficient group chatting.
-								</p>
-							)}
-						</span>
-						{!isSignedIn && (
-							<div onClick={() => setSignup(true)}>
-								<Button>
-									<AiOutlineUserAdd />
-									Sign Up
-								</Button>
-							</div>
+					<section className={style.cta}>
+						<h2>Ready to Revolutionize Collaboration?</h2>
+						{isSignedIn ? (
+							<p>
+								Join a room now and start collaborating with your friends.
+								<DemoButton />
+							</p>
+						) : (
+							<p>
+								SignUp now and unlock power of collaborative whiteboarding with
+								group chatting.
+								{!isSignedIn && (
+									<Button onClick={() => setSignup(true)}>
+										<AiOutlineUserAdd />
+										Sign Up
+									</Button>
+								)}
+							</p>
 						)}
 					</section>
 				</div>
 				{isSignedIn ? (
-					<div className={Style.user}>
+					<div className={style.user}>
 						<img
 							src={profileImage ? profileImage : image}
 							alt='profile'
-							className={Style.profileImage}
+							className={style.profileImage}
 						/>
-						<span>
-							<h2>
-								<i>Hi, </i>
-								{name}
-							</h2>
-							<p>{bio}</p>
-						</span>
-						{/* <h2>user name</h2>
-						<p>user bio and image</p> */}
+						<h2>
+							<i>Hi, </i>
+							{name}
+						</h2>
+						<p>{bio}</p>
 					</div>
 				) : (
-					<div className={Style.demo}>
+					<div className={style.demo}>
 						<h2>Demo</h2>
 						<p>
-							Sign in to join a room or create a new room. You can also join a
-							room as a guest.
+							<i>Sign in</i>
+							to join a room or create a new room. You can also join a room as a
+							guest.
 						</p>
-						<Button>
-							<MdEmojiEmotions />
-							Join Demo Room
-						</Button>
+						<DemoButton />
 					</div>
 				)}
 
-				<div className={Style.joinroom}>
+				<div className={style.joinroom}>
 					<JoinRoom />
 				</div>
-				<div className={Style.imageDiv}>
+				<div className={style.imageDiv}>
 					{/* <img
 						src={image}
 						alt='sharesketch'
@@ -166,11 +154,11 @@ const Homepage = () => {
 						}}
 						className={image}
 					/> */}
-					<ul className={Style.points}>
+					<ul className={style.points}>
 						{points.map((point, index) => (
 							<li
 								key={index}
-								className={Style.point}>
+								className={style.point}>
 								{point}
 							</li>
 						))}
@@ -179,6 +167,18 @@ const Homepage = () => {
 			</div>
 			<Footer />
 		</>
+	);
+};
+
+const DemoButton = () => {
+	return (
+		<Button
+			onClick={() => {
+				console.log('hello');
+			}}>
+			<MdEmojiEmotions />
+			Join Demo Room
+		</Button>
 	);
 };
 

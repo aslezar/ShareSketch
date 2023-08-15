@@ -1,0 +1,116 @@
+/* Variables */
+@import 'variables';
+
+/* Styles */
+.nav {
+	@include flex-center;
+	justify-content: space-between;
+
+	max-width: 100vw;
+	max-height: 8vh;
+
+	background: $nabBarColor;
+	box-shadow: $navBorderShadow;
+	border-radius: $navBarBorderRadius;
+	padding: 0px 1rem;
+}
+.navHeader {
+	@include flex-center;
+
+	h1 {
+		font-style: italic;
+		font-size: $navheadingsize;
+		color: $navHeadingColor;
+		&:hover {
+			color: $navHeadingColorHover;
+		}
+	}
+
+	.navToggle {
+		color: $navHeadingColor;
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		transition: $transition;
+
+		&:hover {
+			color: $navHeadingColorHover;
+			transform: rotate(90deg);
+		}
+		@media screen and (min-width: 800px) {
+			display: none;
+		}
+	}
+}
+
+.action {
+	@include flex-center;
+	align-items: center;
+}
+
+.logo {
+	height: 40px;
+}
+
+.links {
+	@include flex-center;
+	justify-content: space-between;
+	height: 0;
+	display: none;
+	transition: $transition;
+
+	@media screen and (min-width: 800px) {
+		height: auto;
+		display: flex;
+	}
+
+	li {
+		font-size: $navLinkFontSize;
+		color: $navLinkColor;
+		text-transform: capitalize;
+		letter-spacing: $spacing;
+		padding: 0.5rem 0.5rem;
+		border-radius: $border-radius;
+		transition: $transition;
+		//do not break words
+		white-space: nowrap;
+
+		&:hover {
+			background: $navLinkBackgroundColorHover;
+			color: $navLinkColorHover;
+			box-shadow: $box-shadow;
+		}
+	}
+}
+
+.icon {
+	@include icon;
+}
+
+.user {
+	@include common-box;
+	@include flex-center;
+	background-color: $navUserBackgroundColor;
+	gap: 5px;
+	padding: 1px 0.5rem;
+	span {
+		p {
+			text-align: center;
+			font-size: $navUserNameSize;
+			color: $navUserNameColor;
+		}
+	}
+
+	.profileImage {
+		width: 2rem;
+		height: 2rem;
+		border-radius: 50%;
+	}
+
+	.signOutButton {
+		@include button-main;
+		padding-top: 1px;
+		padding-bottom: 1px;
+		white-space: nowrap;
+	}
+}

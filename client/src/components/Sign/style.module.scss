@@ -1,9 +1,13 @@
+/* Variables */
+@import 'variables';
+
+/* Styles */
 .sign {
 	min-height: 50vh;
 	width: 80vw;
 	max-width: 400px;
-	background-color: rgba(0, 0, 0, 0.7);
-	border-radius: 10px;
+	background-color: $sign-bg-color;
+	border-radius: $border-radius;
 	display: flex;
 	flex-direction: column;
 	position: absolute;

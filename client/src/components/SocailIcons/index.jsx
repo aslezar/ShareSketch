@@ -1,4 +1,4 @@
-import Style from './socialIcons.module.css';
+import style from './style.module.scss';
 import {
 	FaTwitter,
 	FaFacebook,
@@ -10,39 +10,39 @@ import data from '../../../data';
 function SocailIcons() {
 	const socials = data.socials;
 	return (
-		<ul className={Style.socialIcons}>
+		<ul className={style.socialIcons}>
 			{socials.twitter && (
 				<li>
 					<a href={socials.twitter}>
-						<FaTwitter />
+						<FaTwitter className={style.icon} />
 					</a>
 				</li>
 			)}
 			{socials.facebook && (
 				<li>
 					<a href={socials.facebook}>
-						<FaFacebook />
+						<FaFacebook className={style.icon} />
 					</a>
 				</li>
 			)}
 			{socials.instagram && (
 				<li>
 					<a href={socials.instagram}>
-						<FaInstagram />
+						<FaInstagram className={style.icon} />
 					</a>
 				</li>
 			)}
 			{socials.linkedin && (
 				<li>
 					<a href={socials.linkedin}>
-						<FaLinkedin />
+						<FaLinkedin className={style.icon} />
 					</a>
 				</li>
 			)}
 			{socials.github && (
 				<li>
 					<a href={socials.github}>
-						<FaGithub />
+						<FaGithub className={style.icon} />
 					</a>
 				</li>
 			)}

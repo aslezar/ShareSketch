@@ -1,3 +1,6 @@
+@import 'variables';
+
+/* Styles */
 .wrapper {
 	display: flex;
 	flex-direction: column;
@@ -18,21 +21,22 @@
 
 .inputContainer {
 	margin: 10px;
+
+	input {
+		width: 100%;
+		background-color: $input-bg-color;
+		color: black;
+		padding: 10px;
+		border-radius: $border-radius;
+		display: block;
+		border: none;
+	}
 }
 
-.inputContainer input {
-	width: 100%;
-	background-color: #e8f0fe;
-	color: black;
-	padding: 10px;
-	border-radius: 0.5rem;
-	display: block;
-	border: 0px none;
-}
-.actoinContainer {
+.actionContainer {
 	text-align: right;
-}
 
-.actoinContainer a {
-	color: black;
+	a {
+		color: black;
+	}
 }

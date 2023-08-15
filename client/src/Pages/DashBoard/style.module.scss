@@ -1,0 +1,60 @@
+@import 'variables';
+
+/* Dashboard */
+.dashbaord {
+	@include flex-center;
+	padding: 20px;
+	height: 90vh;
+	width: 100vw;
+}
+/* User section */
+.user {
+	flex-grow: 1;
+	max-width: 400px;
+	height: 100%;
+	@include common-box;
+	padding: 20px;
+}
+
+/* Rooms section */
+.rooms {
+	flex-grow: 3;
+
+	@include common-box;
+	background-color: $homePageBackgroundColor;
+	box-shadow: 5px 5px 5px $shadowColor;
+	margin: 0px $gap;
+
+	@include flex-center;
+	justify-content: space-evenly;
+	// max-width: 1000px;
+	height: 100%;
+
+	.join {
+		@include common-box;
+		@include flex-center;
+		height: 100%;
+
+		flex-direction: column;
+		justify-content: space-evenly;
+		gap: 20px;
+		flex-grow: 1;
+		max-width: 400px;
+	}
+
+	.room {
+		flex-grow: 1;
+
+		@include common-box;
+		height: 100%;
+		padding-top: 20px;
+		max-width: 400px;
+		overflow-y: auto;
+		h2 {
+			text-align: center;
+			font-size: 1.5rem;
+		}
+	}
+}
+
+/* Heading */
