@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useGlobalContext } from '../../context';
 import { useNavigate } from 'react-router-dom';
@@ -228,7 +228,6 @@ const WhiteBoard = () => {
 	};
 	const toogleConnection = () => {
 		if (isConnected === true) {
-			toast.info('Disconnecting from server...');
 			socket.disconnect();
 		} else {
 			toast.info('Connecting to server...');
@@ -259,22 +258,20 @@ const WhiteBoard = () => {
 		});
 	};
 
-	const sendMessage = useCallback(() => {
-		(message) => {
-			if (!isSignedIn)
-				return toast.error('You must be signed in to send messages');
-			setMessages((previous) => [...previous, { userId, userName, message }]);
-			socket.emit(
-				'chat:message',
-				{ roomId, userId, userName, message },
-				(response) => {
-					if (!response.success) {
-						toast.error(response.msg);
-					}
+	const sendMessage = (message) => {
+		if (!isSignedIn)
+			return toast.error('You must be signed in to send messages');
+		setMessages((previous) => [...previous, { userId, userName, message }]);
+		socket.emit(
+			'chat:message',
+			{ roomId, userId, userName, message },
+			(response) => {
+				if (!response.success) {
+					toast.error(response.msg);
 				}
-			);
-		};
-	});
+			}
+		);
+	};
 
 	return (
 		<div className={style.container}>

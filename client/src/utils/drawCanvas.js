@@ -14,6 +14,7 @@ const drawElement = (canvas, element) => {
 			ctx.stroke();
 			break;
 		case 'line':
+			ctx.beginPath();
 			ctx.moveTo(element.x, element.y);
 			ctx.lineTo(element.x2, element.y2);
 			ctx.stroke();

@@ -13,6 +13,7 @@ const Chat = ({ isConnected, messages, sendMessage }) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		// console.log(message);
 		if (message) {
 			sendMessage(message);
 			setMessage('');

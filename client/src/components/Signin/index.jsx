@@ -40,7 +40,10 @@ const Signin = ({ toogleSignIn, closeSign }) => {
 			return;
 		}
 		const data = { email, password };
-		api.handler(
+		toast.info('Login in, Please wait...', {
+			toastId: 'login',
+		});
+		await api.handler(
 			api.signIn,
 			(data) => {
 				signIn(data);
