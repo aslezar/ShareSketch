@@ -5,11 +5,11 @@
 .chat {
 	@include flex-center;
 	flex-direction: column;
-	border: 1px solid #ccc;
+	justify-content: flex-end;
 
-	@include common-box;
-	border-radius: 10px 0 0 0;
-	padding: 10px;
+	@include main-box;
+	box-shadow: -5px 0px 10px $shadowColor;
+	border-radius: $border-radius 0 0 0;
 
 	min-width: 200px;
 	max-width: 300px;
@@ -25,67 +25,42 @@
 
 	max-width: 100%;
 	width: 100%;
-	// flex-grow: 0;
-	// flex: 1;
+	flex: 1;
 	list-style-type: none;
 	overflow-y: auto;
 }
 
 .userMessage,
 .otherMessage {
+	@include info;
 	max-width: 90%;
-	padding: 5px 10px;
-	margin-bottom: 5px;
-	border-radius: 10px;
 	overflow-wrap: break-word;
 }
 
 .userMessage {
 	margin-left: auto;
 	color: black;
-	background: #ddd;
+	background: #ccc;
 }
 
 .otherMessage {
 	margin-right: auto;
-	color: #ddd;
-	background: $blue1;
 }
 
 .form {
 	display: flex;
+	justify-content: space-between;
 	max-width: 100%;
 	width: 100%;
-	justify-content: space-between;
-	margin-top: 10px;
 	backdrop-filter: blur(10px);
 }
 
 .input {
+	@include input;
 	width: 70%;
-	padding: 5px;
-	border: 1px solid $input-border-color;
-	border-radius: $border-radius;
-
-	&:focus {
-		outline: none;
-	}
 }
 
 .btn {
+	@include buttons;
 	width: 25%;
-	background-color: $primary-color;
-	color: #fff;
-	border: none;
-	border-radius: $border-radius;
-	padding: $btn-padding;
-	cursor: pointer;
-
-	&:disabled {
-		background-color: $secondary-color;
-	}
-
-	&:not(:disabled):hover {
-		background-color: darken($primary-color, 10%);
-	}
 }

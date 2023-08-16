@@ -42,13 +42,7 @@
 	margin: 10px;
 
 	input {
-		width: 100%;
-		background-color: $input-bg-color;
-		color: $text-black;
-		padding: 10px;
-		border-radius: $border-radius;
-		display: block;
-		border: none;
+		@include input;
 	}
 }
 
@@ -56,7 +50,7 @@
 	text-align: right;
 
 	a {
-		color: $text-black;
+		color: $textColor2;
 
 		&:hover {
 			text-decoration: underline;

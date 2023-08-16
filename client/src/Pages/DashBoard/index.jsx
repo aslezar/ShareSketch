@@ -28,28 +28,24 @@ const DashBoard = () => {
 	};
 	useEffect(() => {
 		// console.log(userId);
-		fetchRooms();
-	}, [userId]);
+		if (isSignedIn) fetchRooms();
+	}, [userId, isSignedIn]);
 
 	// if (!isSignedIn) return <h1>Sign In to view your dashboard</h1>;
 	if (!isSignedIn)
 		return (
-			<div className={`${style.dashbaord}`}>
-				<p
-					style={{
-						fontSize: '2rem',
-					}}>
-					<i>Sign In to view your dashboard.</i>
-					<Link
-						to='/'
+			<>
+				<div className={`${style.dashbaord}`}>
+					<p
 						style={{
-							color: 'black',
+							fontSize: '2rem',
 						}}>
-						{' '}
-						Home
-					</Link>
-				</p>
-			</div>
+						<i>Sign In to view your dashboard.</i>
+						<Link to='/'> Home</Link>
+					</p>
+				</div>
+				<Footer />
+			</>
 		);
 
 	return (

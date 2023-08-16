@@ -1,170 +1,71 @@
 // @import 'variables';
 
-//Variables
 :root {
-	// --ls: 0 5px 15px rgba(0, 0, 0, 0.1);
-	// --ds: 0 5px 15px rgba(0, 0, 0, 0.2);
-
-	// --bs1: 0 0 5px rgba(0, 0, 0, 0.2);
-	// --br: 10px;
-	// --bp: 20px;
-	// --brd: 10px;
-
-	// --bs2: 0 2px 4px rgba(0, 0, 0, 0.1);
-	// --gap: 20px;
-
-	// --bp: 15px;
-	// --bt: all 0.4s;
-	// --bgap: 10px;
-
-	// --cbs: 5px 20px 20px rgba(19, 17, 146, 0.2);
-
-	// --fp: 10px;
-	// --fbs: 0 -1px 5px rgba(0, 0, 0, 0.2);
-	// --ffs: 1.2rem;
-	// --fbr: 10px 10px 0;
-
-	// --ic: var(--icon-color);
-	// --sp: var(--spacing);
-
-	// --pp: 50px;
-
-	// --sihc: var(--social-icons-hover-color);
-	// --sit: var(--t);
-
-	// --bbs: 0 0 5px rgba(0, 0, 0, 0.2);
-	// --bs: 0 0 5px rgba(0, 0, 0, 0.2);
-
-	// --p1: hsl(205, 86%, 17%);
-	// --p5: hsl(205, 78%, 60%);
-	// --p8: hsl(205, 86%, 81%);
-	// --g3: hsl(209, 34%, 30%);
-	// --ctc: rgba(0, 0, 0, 0);
-	// --rgb: rgba(0, 0, 0, 0.5);
-	// --pb: rgba(0, 0, 0, 0.8);
-	// --sb: rgba(0, 0, 0, 0.7);
-	// --white: #ffffff;
-	// --sec: #cccccc;
-	// --cbg: #f9f9f9;
-	// --mbg: #d1d0d0;
-	// --ibg: #e8f0fe;
-	// --rbge: #bdbbbb;
-	// --ebg: #f1f6fa;
-	// --fbg: #333;
-	// --black: #000000;
-	// --bbd: red;
-	// --dc: #dc3545;
-	// --eihc: #ef5a5a;
-	// --pri: #007bff;
-	// --ebd: #69a3e3;
-	// --etc: #1e4fd8;
-	// --ebbg: #3e5eff;
-	// --eic: #1e66b5;
-	// --mobg: #1323ad;
-	// --rbgh: #1322adc9;
-	// --hc: #1322adc7;
-
-	//3 shades of white
-	//3 shades of black
-	//3 shades of red for button
-	//3 shades of blue as primary color
-
-	--primary1: #ddd;
-	--primary2: #fff;
-	--primary3: #ccc;
-
-	--invert1: #444;
-	--invert2: #000;
-	--invert3: #333;
-
-	--white: #ccc;
-	--black: #333;
-
-	--blue1: #063251;
-	--blue2: #1323ad;
-	--blue3: #3e5eff;
-
-	--red1: #ff0000;
-	--red2: #dc3545;
-	--red3: #d11717;
-
-	--transition: all 0.3s linear;
+	--themeColor: #000;
+	--themeInverseColor: #000;
+	--textColor2: #fff;
+	--textColor3: #ccc;
+	--canvasColor: #141414;
 }
 
-//Color
-$primaryColor: var(--primary1);
-$primaryColor2: var(--primary2);
-$primaryColor3: var(--primary3);
+$themeColor: var(--themeColor);
+$themeInverseColor: var(--themeInverseColor);
 
-$invertColor1: var(--invert1);
-$invertColor2: var(--invert2);
-$invertColor3: var(--invert3);
+$primaryColor: #1323ad;
+$primaryColor2: #063251;
+$primaryColor3: #007bff;
+$primaryColor4: #1322ad;
 
-$textColor1: var(--invert1);
-$textColor2: var(--invert2);
-$textColor3: var(--invert3);
+$red: red;
+$green: green;
+$white: white;
+$black: black;
 
-$blue1: var(--blue1);
-$blue2: var(--blue2);
-$blue3: var(--blue3);
+$textColor1: $primaryColor;
+$textColor2: var(--textColor2);
+$textColor3: var(--textColor3);
+$textInverse: var(--themeInverseColor);
 
-$red1: var(--red1);
-$red2: var(--red2);
-$red3: var(--red3);
+$shadowColor: $primaryColor2;
+$canvasColor: var(--canvasColor);
 
-$shadowColor: var(--blue1);
-
-$colorIcon: var(--invert1);
-$colorIconHover: var(--invert2);
-
-$border-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 $border-radius: 10px;
 $border-padding: 20px;
 $gap: 20px;
+$spacing: 5;
 
-$transition: var(--transition);
+$transition: all 0.3s linear;
 
 //NavBar
-$nabBarColor: $primaryColor;
-$navHeadingColor: $textColor1;
 $navheadingsize: 1.5rem;
-$navHeadingColorHover: $textColor2;
-$navBorderShadow: 0px 5px 5px $shadowColor;
+$navBorderShadow: 5px 5px 10px $shadowColor;
 $navBarBorderRadius: 0px 0px 10px 10px;
-$navUserNameSize: 0.8rem;
-$navUserBackgroundColor: $invertColor1;
-$navUserNameColor: $primaryColor;
-$navLinkFontSize: $textColor2;
-$navLinkColor: $textColor2;
-$navLinkColorHover: $primaryColor2;
-$navLinkBackgroundColorHover: $blue1;
-
-// HomePage
-// $homePageBackgroundColor: $primaryColor;
-$homePageBackgroundColor: $primaryColor2;
-$headerFontSize: 2rem;
-$paragraphFontSize: 1rem;
-$headingColor: $textColor1;
-$headingDescColor: $textColor2;
-$paragraphColor: $textColor3;
 
 //Footer
-$footerBackgroundColor: $primaryColor;
-$footerTextColor: $textColor1;
-$footerCenterColor: $textColor2;
 $footerBorderRadius: 10px 10px 0px 0px;
-$footerBorderShadow: 5px 0px 5px $shadowColor;
-$footerFontSize: 1rem;
+$footerBorderShadow: 5px -5px 10px $shadowColor;
 
-//Mixins
-@mixin common-box {
-	background-color: $primaryColor;
-	// background-color: $primaryColor2;
-	// background-color: white;
+@mixin box {
 	padding: $border-padding;
-	color: $textColor1;
 	border-radius: $border-radius;
-	box-shadow: $border-shadow;
+}
+//Mixins
+@mixin main-box {
+	@include box;
+	box-shadow: 5px 5px 10px $shadowColor;
+	border: 1px solid $shadowColor;
+	margin: 0px $gap;
+}
+@mixin common-box {
+	@include box;
+	$border-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+	border: 1px solid $themeInverseColor;
+	color: $textColor2;
+	font-size: 1.2rem;
+	p {
+		font-size: 1rem;
+		color: $textColor2;
+	}
 }
 
 @mixin flex-center {
@@ -177,12 +78,11 @@ $footerFontSize: 1rem;
 @mixin icon {
 	display: flex;
 	font-size: 1.5rem;
-	color: $colorIcon;
+	color: $textColor2;
 	transition: var(--transition);
 
 	&:hover {
 		font-size: 1.7rem;
-		color: $colorIconHover;
 	}
 }
 
@@ -193,153 +93,72 @@ $footerFontSize: 1rem;
 	cursor: pointer;
 
 	border-radius: $border-radius;
-	padding: $btn-padding;
-	transition: $btn-transition;
+	border-color: $themeInverseColor;
+	padding: 5px 10px;
+	transition: all 0.4s;
 
 	&:disabled {
 		cursor: not-allowed;
+	}
+	&:focus {
+		outline: none;
 	}
 }
 
 @mixin button-main {
 	@include button;
-	background-color: $btn-bg-color;
-	color: $btn-text-color;
+	background-color: $red;
+	color: $textColor2;
 
 	&:hover {
-		background-color: $btn-hover-bg-color;
-		border: 1px solid $btn-hover-border-color;
-		color: $btn-hover-text-color;
+		background-color: darken($red, 10%);
+		color: $textInverse;
 	}
 }
 @mixin buttons {
 	@include button;
-	background-color: $primary-color;
+	// background-color: #007bff;
+	background-color: $primaryColor3;
 	color: white;
-
-	&:hover {
-		background-color: $secondary-color;
-		border: 1px solid $btn-hover-border-color;
-		color: $btn-hover-text-color;
+	&:not(:disabled):hover {
+		background-color: darken($primaryColor3, 10%);
 	}
 
 	&:disabled {
-		background-color: #ccc;
+		background-color: $textColor3;
+		color: $textInverse;
 	}
 }
 
-//Button
-$btn-bg-color: red;
-$btn-hover-bg-color: white;
-$btn-border-color: red;
-$btn-hover-border-color: black;
-$btn-text-color: white;
-$btn-hover-text-color: black;
-$btn-padding: 15px;
-$btn-transition: all 0.4s;
-$btn-gap: 10px;
-
-//Canvas
-$canvas-bg-color: #f9f9f9;
-$canvas-box-shadow: 5px 20px 20px rgba(19, 17, 146, 0.2);
-
-//Canvas Upper
-$canvas-text-color: rgba(0, 0, 0, 0);
-
-//Chat
-$primary-color: #007bff;
-$secondary-color: #ccc;
-$message-bg-color: #d1d0d0;
-$message-bg-other: #1323ad;
-$message-color-other: #ccc;
-$input-border-color: #ccc;
-$btn-padding: 5px 10px;
-
-//CreateRoom
-$input-bg-color: #e8f0fe;
-
-//Footer
-$footer-bg-color: #333;
-$footer-border-color: #ccc;
-$footer-padding: 10px;
-$footer-box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
-$footer-font-size: 1.2rem;
-$footer-border-radius: 10px 10px 0px 0px;
-
-// Join Room
-$input-bg-color: #e8f0fe;
-
-//Navbar
-$clr-white: #fff;
-$clr-primary: var(--color-primary);
-$clr-primary-1: hsl(205, 86%, 17%);
-$clr-primary-5: hsl(205, 78%, 60%);
-$clr-primary-8: hsl(205, 86%, 81%);
-$clr-grey-3: hsl(209, 34%, 30%);
-$transition: var(--transition);
-$clr-icon: var(--icon-color);
-$spacing: var(--spacing);
-
-//PopUp
-$popup-bg-color: rgba(0, 0, 0, 0.8);
-$popup-color: white;
-$popup-padding: 50px;
-$close-color: white;
-$close-bg-color: white;
-
-//Rooms
-$room-bg-color: #d1d0d0;
-$room-bg-color-other: #1323ad;
-$room-color-other: #ccc;
-$room-bg-hover: #1322adc9;
-$room-bg-color-even: #bdbbbb;
-$room-color-hover: #000;
-$room-color-even: #fff;
-
-//Sign
-$sign-bg-color: rgba(0, 0, 0, 0.7);
-
-//Signin
-$input-bg-color: #e8f0fe;
-$text-black: black;
-
-//Signup
-$input-bg-color: #e8f0fe;
-$text-black: black;
-
-//Social Icons
-$social-icons-color: var(--social-icons-color);
-// $social-icons-color: #007bff;
-$social-icons-hover-color: var(--social-icons-hover-color);
-$social-icons-transition: var(--transition);
-
-//StyleBox
-$box-border-color: #ccc;
-$box-box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-
-//ToolBox
-$border-color: #ccc;
-$box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-$primary-color: #007bff;
-$secondary-color: #0069d9;
-$danger-color: #dc3545;
-$connected-color: green;
-$disconnected-color: red;
-$selected-color: white;
-$select-bg-color: black;
-$select-hover-color: white;
-$range-bg-color: rgba(0, 0, 0, 0.5);
-$tool-bg-color: #1322adc7;
-
-//User Panel
-$primary-color: #007bff;
-$hover-color: #1322adc7;
-
-//ErrorPage
-$error-bg-color: #f1f6fa;
-$error-border-color: #69a3e3;
-$error-text-color: #1e4fd8;
-$error-button-bg-color: #3e5eff;
-$error-button-hover-bg-color: #1e4fd8;
-$error-icon-color: #1e66b5;
-$error-icon-hover-color: #ef5a5a;
+@mixin info {
+	@include flex-center;
+	justify-content: space-between;
+	padding: 5px 10px;
+	margin-bottom: 5px;
+	background-color: $primaryColor4;
+	border-radius: $border-radius;
+	width: 100%;
+	color: $textColor2;
+	font-size: 1rem;
+	:nth-child(1) {
+		font-style: bold;
+	}
+	:nth-child(2) {
+		font-style: italic;
+	}
+	&:hover {
+		background-color: lighten($primaryColor4, 10%);
+	}
+}
+@mixin input {
+	width: 100%;
+	background-color: $white;
+	// color: $textColor2;
+	padding: 10px;
+	border-radius: $border-radius;
+	display: block;
+	border: 2px solid $themeInverseColor;
+	&:focus {
+		outline: none;
+	}
+}

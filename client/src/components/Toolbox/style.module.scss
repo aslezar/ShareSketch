@@ -6,76 +6,48 @@
 	@include flex-center;
 	flex-direction: column;
 
-	@include common-box;
-	border: 1px solid $shadowColor;
-	border-radius: 0 10px 0 0;
+	@include main-box;
+	border-radius: 0 $border-radius 0 0;
 
 	min-width: 200px;
 	max-width: 300px;
 	height: 100%;
-	overflow: auto;
+
+	font-size: 1rem;
 
 	.heading {
+		@include common-box;
 		@include flex-center;
-		box-shadow: $box-shadow;
-		border: 1px solid $border-color;
-		border-radius: $border-radius;
-		flex-direction: column;
-		align-items: center;
-		gap: 10px;
-		flex-wrap: 1;
+		justify-content: space-between;
 		padding: 10px;
+		flex-direction: column;
+		gap: 5px;
+		// flex-wrap: 1;
 	}
 
 	.button {
-		background-color: $primary-color;
-		border-radius: 5px;
+		@include buttons;
 		padding: 5px 10px;
 		color: white;
-		border: none;
 		cursor: pointer;
 		width: 100%;
 		transition: background-color 0.3s ease;
-		display: flex;
-		justify-content: center;
-		align-items: center;
 		gap: 5px;
-
-		&:hover {
-			background-color: $secondary-color;
-		}
-
-		&:disabled {
-			background-color: #ccc;
-			cursor: not-allowed;
-		}
 	}
 
 	.connected {
-		background-color: $connected-color;
+		background-color: $green;
 		font-weight: bold;
 	}
 
 	.disconnected {
-		background-color: $disconnected-color;
+		background-color: $red;
 		font-weight: bold;
 	}
 
-	.connected:hover {
-		background-color: $secondary-color;
-	}
-
-	.disconnected:hover {
-		background-color: $danger-color;
-	}
-
 	.roomName {
-		text-align: center;
-		background-color: $border-color;
-		border: none;
-		border-radius: 5px;
-		padding: 5px;
-		width: 90%;
+		@include info;
+		margin: 0px;
 	}
 
 	.share {
@@ -83,137 +55,82 @@
 		gap: 5px;
 		width: 100%;
 	}
-
-	.toolbox {
+	.buttonsSection {
 		display: flex;
 		flex-direction: column;
-		padding: 10px;
-		gap: 10px;
+		gap: 5px;
+	}
+
+	.toolbox {
+		@include common-box;
+		@include flex-center;
+		border: none;
+		flex-direction: column;
+		align-items: stretch;
+		width: 100%;
 
 		.tools {
 			flex-grow: 5;
-			display: flex;
+
+			@include flex-center;
 			flex-direction: column;
-			justify-content: space-evenly;
-			gap: 5px;
+			align-items: left;
+			// justify-content: space-evenly;
 
-			div {
-				display: flex;
-				border: 1px solid black;
-				justify-content: space-evenly;
-				border-radius: $border-radius;
-				padding: 10px;
-				box-shadow: $box-shadow;
-				height: 3.5rem;
-				flex-grow: 1;
+			.tool {
+				@include flex-center;
+				max-width: 100%;
+				gap: 5px;
 
-				:nth-child(1) {
-					margin-bottom: auto;
-					text-align: left;
-					font-weight: bold;
-				}
-
-				:nth-child(2) {
-					margin-top: auto;
+				.active {
+					background-color: rgb(49, 49, 245);
 				}
 			}
 		}
 
-		.buttons {
-			display: flex;
-			flex-direction: column;
-			gap: 5px;
-		}
-
-		.tool {
-			display: flex;
-			gap: 5px;
-		}
-
-		select,
-		input {
-			border-radius: 5px;
-			font-size: 0.8rem;
-			background-color: $select-bg-color;
-			color: $selected-color;
-			min-width: 50%;
-			cursor: pointer;
-			text-align: center;
-			height: 1.5rem;
-			line-height: 1.5rem;
-
-			&:hover {
-				box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-				background-color: $select-hover-color;
-				color: $selected-color;
-			}
-
-			&:focus {
-				box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-				background-color: $select-hover-color;
-				color: $selected-color;
-			}
-		}
-
-		input[type='range'] {
-			flex-grow: 4;
+		.lineWidth {
+			@include flex-center;
+			justify-content: space-between;
 			width: 100%;
-		}
+			// border: 2px solid white;
 
-		input[type='color'] {
-			padding: 0px;
-			border: 2px solid black;
+			input {
+				padding: 5px;
+				border: 1px solid #ccc;
+				border-radius: $border-radius;
+				font-size: 1rem;
+				max-width: 30%;
+			}
+		}
+		.color {
+			display: flex;
+			justify-content: space-between;
+			width: 100%;
+			input {
+				max-width: 30%;
+			}
 		}
 	}
 }
 .userdiv {
+	@include common-box;
 	flex-grow: 5;
-	border: 1px solid $border-color;
-	padding: 10px;
-	box-shadow: $box-shadow;
-	border-radius: $border-radius;
+	width: 100%;
 	overflow: auto;
 
 	.users {
 		display: flex;
 		flex-direction: column;
-		padding: 10px;
 		justify-content: space-evenly;
 		list-style-type: none;
+		width: 100%;
 
 		li {
-			padding: 10px;
-			font-size: 0.8rem;
-			margin-bottom: 5px;
-			background-color: $tool-bg-color;
-			border-radius: 5px;
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-
-			&:hover {
-				text-decoration: underline;
-			}
-
-			:nth-child(odd) {
-				background: $secondary-color;
-				color: $selected-color;
-			}
-
-			:nth-child(even) {
-				background: $tool-bg-color;
-				color: $selected-color;
-			}
-
-			:nth-child(odd):hover {
-				background: $secondary-color + c9;
-				color: $selected-color;
-			}
-
-			:nth-child(even):hover {
-				background: $tool-bg-color;
-				color: $selected-color;
-			}
+			@include info;
 		}
 	}
+}
+
+.icon {
+	@include icon;
 }

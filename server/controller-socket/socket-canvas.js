@@ -71,7 +71,8 @@ const clearCanvas = async (data, cb, socket) => {
 			});
 			return;
 		}
-		room.elements.slice(0, room.elements.length);
+		room.elements = [];
+		// room.elements.slice(0, room.elements.length);
 		await room.save();
 		socket.broadcast.to(roomId).emit('canvas:clear');
 		cb({ msg: 'Server: Canvas Cleared', success: true });

@@ -3,6 +3,8 @@ import style from './style.module.scss';
 import { useGlobalContext } from '../../context';
 
 const Chat = ({ isConnected, messages, sendMessage }) => {
+	console.log('chat');
+
 	const [message, setMessage] = useState('');
 
 	const messageRef = useRef(null);

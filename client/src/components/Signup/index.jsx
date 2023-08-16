@@ -1,5 +1,4 @@
 import style from './style.module.scss';
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { AiOutlineUserAdd } from 'react-icons/ai';
 import { toast } from 'react-toastify';
@@ -21,7 +20,6 @@ function Signup({ toogleSignIn, closeSign }) {
 
 	const { signIn } = useGlobalContext();
 
-	const navigate = useNavigate();
 
 	const handleChange = (e) =>
 		setsForm({

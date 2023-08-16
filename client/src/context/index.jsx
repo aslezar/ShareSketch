@@ -19,7 +19,7 @@ export const userInitialState = {
 const AppProvider = ({ children }) => {
 	const [user, dispatch] = useReducer(reducer, userInitialState);
 	// const [roomId, setRoomId] = React.useState(''); //roomId is used to join room
-	const [colorMode, setColorMode] = React.useState('light'); //dark, light
+	const [colorMode, setColorMode] = React.useState('dark'); //dark, light
 
 	const initialFromLocalStorage = async (tokenValue) => {
 		api.handler(

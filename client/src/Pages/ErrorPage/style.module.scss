@@ -1,32 +1,47 @@
 /* Variables */
 @import 'variables';
 
-/* Mixins */
-@mixin common-box {
-	background-color: $error-bg-color;
+$error-border-color: #69a3e3;
+$error-text-color: #1e4fd8;
+$error-button-bg-color: #3e5eff;
+$error-button-hover-bg-color: #1e4fd8;
+$error-icon-color: #1e66b5;
+$error-icon-hover-color: #ef5a5a;
+
+.errorContainer {
 	flex-grow: 1;
-	margin: 20px;
-	padding: 20px;
-	border: 1px solid $error-border-color;
-	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-	border-radius: $border-radius;
+
+	max-width: 100%;
+	max-height: 84vh;
+
+	@include main-box;
+
 	display: grid;
 	grid-template-rows: 1fr 1fr;
 	grid-template-columns: 3fr 1fr;
-	grid-gap: 10px;
+	gap: $gap;
+
 	justify-items: center;
 	align-items: center;
 	text-align: center;
 }
 
-@mixin flex-center-column {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin-bottom: 2rem;
-	justify-content: space-between;
-	flex-wrap: nowrap;
+.incognitoIcon {
+	@include flex-center;
+	font-size: 15rem;
+	// align-items: center;
+	// width: 100%;
+	// height: 100%;
+	// border: 1px solid red;
+	color: $error-icon-color;
+	transition: color 0.3s, transform 0.5s;
+	transform-origin: center;
 
+	&:hover {
+		color: $error-icon-hover-color;
+	}
+}
+.errorHeader {
 	.errorText {
 		font-size: 4rem;
 		font-weight: bold;
@@ -35,67 +50,50 @@
 		letter-spacing: 5px;
 		transform: rotate(-5deg);
 		transition: font-size 0.3s;
+		&:hover {
+			font-size: 2rem;
+		}
 	}
-
 	.errorCode {
 		font-size: 2rem;
 		color: $error-border-color;
-		bottom: 0;
 		transition: font-size 0.3s;
+		flex-wrap: nowrap;
+	}
+	&:hover {
+		.errorText {
+			font-size: 2rem;
+		}
+		.errorCode {
+			font-size: 4rem;
+		}
+	}
+}
+.errorMessage {
+	font-size: 1.8rem;
+	text-align: center;
+	color: $error-border-color;
+	transition: all 0.3s;
+	&:hover {
+		font-size: 2rem;
 	}
 }
 
-/* Styles */
-.errorContainer {
-	@include common-box;
-
-	.errorMessage {
-		font-size: 1.8rem;
-		text-align: center;
-		color: $error-border-color;
-		max-width: 80%;
-		margin-bottom: 2rem;
-	}
-
-	.homeLink {
-		text-decoration: none;
-	}
-
-	.homeButton {
-		padding: 0.7rem 2rem;
-		font-size: 1.2rem;
-		background-color: $error-button-bg-color;
-		color: #fff;
-		border: none;
-		cursor: pointer;
-		border-radius: 8px;
-		transition: background-color 0.3s, transform 0.2s;
-		margin: 1rem auto;
-		display: block;
-
-		&:hover {
-			background-color: $error-button-hover-bg-color;
-			transform: scale(1.1);
-		}
-
-		&:focus {
-			outline: none;
-		}
-	}
-
-	.incognitoIcon {
-		font-size: 10rem;
-		color: $error-icon-color;
-		margin-bottom: 1rem;
-		transition: color 0.3s, transform 0.5s;
-		transform-origin: center;
-
-		&:hover {
-			color: $error-icon-hover-color;
-		}
-	}
+.homeButton {
+	@include button;
+	padding: 0.7rem 2rem;
+	font-size: 1.2rem;
+	background-color: $error-button-bg-color;
+	color: $textColor2;
+	cursor: pointer;
+	transition: background-color 0.3s, transform 0.2s;
 
 	&:hover {
-		@include flex-center-column;
+		background-color: $error-button-hover-bg-color;
+		transform: scale(1.1);
+	}
+
+	&:focus {
+		outline: none;
 	}
 }

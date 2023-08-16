@@ -2,8 +2,14 @@ import style from './style.module.scss';
 import { IoIosUndo, IoIosRedo } from 'react-icons/io';
 import { GrClearOption } from 'react-icons/gr';
 import { MdContentCopy } from 'react-icons/md';
-import { FaShareAlt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import {
+	FaShareAlt,
+	FaPencilAlt,
+	FaSlash,
+	FaRegSquare,
+	FaRegCircle,
+} from 'react-icons/fa';
 const Toolbox = ({
 	isConnected,
 	toogleConnection,
@@ -17,10 +23,10 @@ const Toolbox = ({
 	roomId,
 	roomName,
 	roomUsers,
-	roomAdmin,
 	curUser,
 }) => {
 	const handleChange = (e) => {
+		console.log('toolbox');
 		setToolbox((prevState) => ({
 			...prevState,
 			[e.target.name]: e.target.value,
@@ -44,47 +50,24 @@ const Toolbox = ({
 					onClick={toogleConnection}>
 					{isConnected ? 'Connected' : 'Disconnected'}
 				</button>
-				<p className={style.roomName}>
-					Room:{' '}
-					{roomName ? (
-						<i>
-							<b>{roomName}</b>{' '}
-						</i>
-					) : (
-						'Unknown'
-					)}
-				</p>
-				<p className={style.roomName}>
-					Name:{' '}
-					{curUser.name ? (
-						<i>
-							<b>{curUser.name}</b>{' '}
-						</i>
-					) : (
-						'Unknown'
-					)}
-				</p>
+				<span className={style.roomName}>
+					<p>Room: </p>
+					{roomName ? <b>{roomName}</b> : 'Unknown'}
+				</span>
+				<span className={style.roomName}>
+					<p>Name: </p>
+					<p>{curUser.name ? <b>{curUser.name}</b> : 'Unknown'}</p>
+				</span>
 				<div className={style.share}>
 					<button
 						className={style.button}
 						onClick={handleCopy}>
-						<MdContentCopy
-							style={{
-								width: '1rem',
-								height: '1rem',
-							}}
-						/>{' '}
-						Copy RoomID
+						<MdContentCopy className={style.icon} /> Copy RoomID
 					</button>
 					<button
 						className={style.button}
 						onClick={handleShare}>
-						<FaShareAlt
-							style={{
-								width: '1rem',
-								height: '1rem',
-							}}
-						/>
+						<FaShareAlt className={style.icon} />
 						Share Link
 					</button>
 				</div>
@@ -92,36 +75,54 @@ const Toolbox = ({
 			<div className={style.toolbox}>
 				<section className={style.tools}>
 					<div className={style.tool}>
-						<label htmlFor='tool'>Tool: </label>
-						<select
+						<label htmlFor='tool'>Tools: </label>
+						<button
+							className={`${style.button} ${
+								toolbox.tool === 'pencil' ? style.active : ''
+							}`}
 							name='tool'
-							onChange={handleChange}>
-							<option value='pencil'>Pencil</option>
-							<option value='line'>Line</option>
-							<option value='rectangle'>Rectangle</option>
-							<option value='circle'>Circle</option>
-						</select>
+							value='pencil'
+							onClick={handleChange}>
+							<FaPencilAlt />
+						</button>
+						<button
+							className={`${style.button} ${
+								toolbox.tool === 'line' ? style.active : ''
+							}`}
+							name='tool'
+							value='line'
+							onClick={handleChange}>
+							<FaSlash />
+						</button>
+						<button
+							className={`${style.button} ${
+								toolbox.tool === 'rectangle' ? style.active : ''
+							}`}
+							name='tool'
+							value='rectangle'
+							onClick={handleChange}>
+							<FaRegSquare />
+						</button>
+						<button
+							className={`${style.button} ${
+								toolbox.tool === 'circle' ? style.active : ''
+							}`}
+							name='tool'
+							value='circle'
+							onClick={handleChange}>
+							<FaRegCircle />
+						</button>
 					</div>
 					<div className={style.lineWidth}>
-						<label htmlFor='lineWidth'>Line Width:</label>
-						<section>
-							<input
-								type='number'
-								name={'lineWidth'}
-								value={toolbox.lineWidth}
-								min={1}
-								max={100}
-								onChange={handleChange}
-							/>
-							<input
-								type='range'
-								min={1}
-								max={100}
-								value={toolbox.lineWidth}
-								name='lineWidth'
-								onChange={handleChange}
-							/>
-						</section>
+						<label htmlFor='lineWidth'>LineWidth:</label>
+						<input
+							type='number'
+							name={'lineWidth'}
+							value={toolbox.lineWidth}
+							min={1}
+							max={100}
+							onChange={handleChange}
+						/>
 					</div>
 					<div className={style.color}>
 						<label htmlFor='color'>Color:</label>
@@ -131,7 +132,7 @@ const Toolbox = ({
 							onChange={handleChange}
 						/>
 					</div>
-					<div className={style.fillStyle}>
+					<div className={style.color}>
 						<label htmlFor='fillStyle'>Fill Color:</label>
 						<input
 							type='color'
@@ -140,7 +141,7 @@ const Toolbox = ({
 						/>
 					</div>
 				</section>
-				<section className={style.buttons}>
+				<section className={style.buttonsSection}>
 					<button
 						type='button'
 						className={style.button}
@@ -182,15 +183,19 @@ const Users = ({ users, curUser }) => {
 			<ul className={style.users}>
 				{users.map((user) => (
 					<li key={`${user.userId} ${user.name}`}>
-						{user.name}
-						{user.userId === curUser.userId ? ' (You)' : ''}
-						{user.isGuest ? (
-							<span> (Guest) </span>
-						) : user.isAdmin ? (
-							<span> (Admin) </span>
-						) : (
-							''
-						)}
+						<p>
+							{user.name}
+							{user.userId === curUser.userId ? ' (You)' : ''}
+						</p>
+						<p>
+							{user.isGuest ? (
+								<span> (Guest) </span>
+							) : user.isAdmin ? (
+								<span> (Admin) </span>
+							) : (
+								''
+							)}
+						</p>
 					</li>
 				))}
 			</ul>

@@ -1,4 +1,4 @@
-import { GrFormClose } from 'react-icons/gr';
+import { IoCloseCircle } from 'react-icons/io5';
 import style from './style.module.scss';
 
 const PopUp = ({ closeSign, children }) => {
@@ -20,7 +20,7 @@ const PopUp = ({ closeSign, children }) => {
 				backgroundColor: 'rgba(0,0,0,0.1)',
 			}}>
 			<div className={style.popup}>
-				<GrFormClose
+				<IoCloseCircle
 					onClick={closeSign}
 					className={style.close}
 				/>

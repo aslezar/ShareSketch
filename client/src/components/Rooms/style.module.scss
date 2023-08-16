@@ -1,44 +1,23 @@
 /* Variables */
 @import 'variables';
 
+$room-bg-color: #d1d0d0;
+$room-bg-color-other: #1323ad;
+$room-color-other: #ccc;
+$room-bg-hover: #1322adc9;
+$room-bg-color-even: #bdbbbb;
+$room-color-hover: #000;
+$room-color-even: #fff;
+
 /* Styles */
 .room {
 	display: flex;
 	flex-direction: column;
-	padding: 10px;
-	justify-content: space-evenly;
 	list-style-type: none;
-	flex: 1; /* Take remaining vertical space */
-	flex-wrap: wrap;
 
 	li {
+		@include info;
 		padding: 10px;
-		font-size: 0.8rem;
-		margin-bottom: 5px;
-		background-color: $room-bg-color;
-		border-radius: 5px;
-		display: flex;
 		flex-wrap: wrap;
-		justify-content: space-between;
-		align-items: center;
-
-		&:hover {
-			text-decoration: underline;
-		}
-	}
-
-	li:nth-child(odd) {
-		background: $room-bg-color-other;
-		color: $room-color-other;
-
-		&:hover {
-			background: $room-bg-hover;
-			color: $room-color-hover;
-		}
-	}
-
-	li:nth-child(even):hover {
-		background: $room-bg-color-even;
-		color: $room-color-even;
 	}
 }

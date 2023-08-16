@@ -1,9 +1,12 @@
+@import 'variables';
+
 .app {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
 	height: 100vh;
 	width: 100vw;
+	background-color: $themeColor;
 }
 
 //* Basic CSS Reset */

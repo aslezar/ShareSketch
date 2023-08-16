@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import style from './style.module.scss';
 
 import drawCanvas from '../../utils/drawCanvas';
 
 const CanvasUpper = ({ canvasRef, toolbox, addElement }) => {
+	console.log('canvas upper');
 	const [isDrawing, setIsDrawing] = useState(false);
 
 	const [curElement, setCurElement] = useState({});
@@ -135,7 +135,6 @@ const CanvasUpper = ({ canvasRef, toolbox, addElement }) => {
 
 	return (
 		<canvas
-			className={style.canvas}
 			ref={canvasUpperRef}
 			onMouseDown={handleMouseDown}
 			onMouseUp={handleMouseUp}

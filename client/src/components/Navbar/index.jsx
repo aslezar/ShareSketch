@@ -74,9 +74,7 @@ const User = () => {
 	return (
 		<>
 			{isSignedIn ? (
-				<div
-					action=''
-					className={style.user}>
+				<>
 					<img
 						src={profileImage}
 						alt={name}
@@ -90,7 +88,7 @@ const User = () => {
 							Sign Out
 						</button>
 					</span>
-				</div>
+				</>
 			) : (
 				<>
 					{showSign && (
@@ -100,16 +98,13 @@ const User = () => {
 							}}
 						/>
 					)}
-					<div
-						action=''
+					<Button
 						onClick={() => {
 							setShowSign(!showSign);
 						}}>
-						<Button>
-							<AiOutlineUserAdd />
-							Sign Up/Sign In
-						</Button>
-					</div>
+						<AiOutlineUserAdd />
+						Sign Up/Sign In
+					</Button>
 				</>
 			)}
 		</>

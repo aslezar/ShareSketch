@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaUserSecret } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -56,6 +56,12 @@ const ErrorPage = () => {
 	const [click, setClick] = useState(0);
 	const [iconScale, setIconScale] = useState(1);
 
+	useEffect(() => {
+		toast.info('Chla Jaa, yha se', {
+			toastId: 'msg',
+		});
+	}, []);
+
 	return (
 		<>
 			<div className={style.errorContainer}>
@@ -70,6 +76,8 @@ const ErrorPage = () => {
 							setIconScale(iconScale * 0.8);
 						}}
 						onMouseLeave={() => {
+							//Remove mouseEnter Message
+							toast.dismiss('mouseEnter');
 							toast.info('thank god! bach gya', {
 								toastId: 'mouseLeave',
 							});
@@ -96,9 +104,7 @@ const ErrorPage = () => {
 					<div className={style.errorCode}>404 Not Found</div>
 				</div>
 				<div className={style.errorMessage}>{errorMessage}</div>
-				<Link
-					to='/'
-					className={style.homeLink}>
+				<Link to='/'>
 					<button className={style.homeButton}>Go Back to Home</button>
 				</Link>
 			</div>

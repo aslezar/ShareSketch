@@ -15,7 +15,7 @@ const Rooms = ({ rooms }) => {
 		);
 	return (
 		<ul className={style.room}>
-			{rooms.map((room, index) => {
+			{rooms.map((room) => {
 				return (
 					<li
 						key={room._id}

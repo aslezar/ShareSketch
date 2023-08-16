@@ -6,6 +6,7 @@ import drawCanvas from '../../utils/drawCanvas';
 import config from '../../../config';
 
 const Canvas = ({ elements, canvasRef }) => {
+	console.log('canvas');
 	const ctx = useRef(null);
 
 	useEffect(() => {

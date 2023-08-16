@@ -13,6 +13,11 @@ const Footer = () => {
 					Source Code
 				</a>
 			</b>
+			<a
+				href='http://www.freepik.com'
+				target='_blank'>
+				Image Credits
+			</a>
 			<SocaialIcons />
 		</footer>
 	);

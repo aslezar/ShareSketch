@@ -1,13 +1,14 @@
 import React from 'react';
-//Style
 import style from './style.module.scss';
+import { useNavigate } from 'react-router-dom';
 //Components
 import Sign from '../../components/Sign';
 import Button from '../../components/Button';
 import Footer from '../../components/Footer';
 import JoinRoom from '../../components/JoinRoom';
 //Images
-import image from '../../../public/ShareSketch3.png';
+import image from '../../assets/ShareSketch.png';
+import image2 from '../../assets/bg1.png';
 //Icons
 import { useGlobalContext } from '../../context';
 import { MdEmojiEmotions } from 'react-icons/md';
@@ -72,14 +73,10 @@ const Homepage = () => {
 										together
 									</i>
 								</h1>
-								<p>
-									Introducing ShareSketch: your hub for collaborative drawing
-									and brainstorming. Harness artistic potential with our
-									versatile canvas and drawing tools. Connect in real time via
-									Socket.io for seamless collaboration. Engage in lively
-									discussions with integrated group chat. Experience boundless
-									creativity with dark and light modes.
-								</p>
+								<img
+									src={image2}
+									alt='shareSketch'
+								/>
 							</div>
 						</header>
 						<ul className={style.features}>
@@ -132,7 +129,7 @@ const Homepage = () => {
 					<div className={style.demo}>
 						<h2>Demo</h2>
 						<p>
-							<i>Sign in</i>
+							<i>Sign in </i>
 							to join a room or create a new room. You can also join a room as a
 							guest.
 						</p>
@@ -144,25 +141,10 @@ const Homepage = () => {
 					<JoinRoom />
 				</div>
 				<div className={style.imageDiv}>
-					{/* <img
+					<img
 						src={image}
 						alt='sharesketch'
-						style={{
-							maxWidth: '100%',
-							height: 'auto',
-							maxHeight: '100%',
-						}}
-						className={image}
-					/> */}
-					<ul className={style.points}>
-						{points.map((point, index) => (
-							<li
-								key={index}
-								className={style.point}>
-								{point}
-							</li>
-						))}
-					</ul>
+					/>
 				</div>
 			</div>
 			<Footer />
@@ -171,10 +153,11 @@ const Homepage = () => {
 };
 
 const DemoButton = () => {
+	const navigate = useNavigate();
 	return (
 		<Button
 			onClick={() => {
-				console.log('hello');
+				navigate('/room/64dc8e8b7ff034b6f54e7067');
 			}}>
 			<MdEmojiEmotions />
 			Join Demo Room
