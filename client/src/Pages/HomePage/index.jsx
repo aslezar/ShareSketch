@@ -146,7 +146,7 @@ const DemoButton = () => {
 	return (
 		<Button
 			onClick={() => {
-				navigate('/room/64dc8e8b7ff034b6f54e7067');
+				navigate('/room/64de0eb4b88c8ea0be3b02ef');
 			}}>
 			<MdEmojiEmotions />
 			Join Demo Room
