@@ -26,19 +26,38 @@ const DashBoard = () => {
 			userId
 		);
 	};
+
+	const handleDeleteMyRoom = async (roomId) => {
+		api.handler(
+			api.deleteRoom,
+			() => {
+				setMyRooms((prev) => prev.filter((room) => room.roomId !== roomId));
+			},
+			roomId
+		);
+	};
+	const handleDeleteOtherRoom = async (roomId) => {
+		api.handler(
+			api.deleteRoom,
+			() => {
+				setOtherRooms((prev) => prev.filter((room) => room.roomId !== roomId));
+			},
+			roomId
+		);
+	};
+	
 	useEffect(() => {
 		// console.log(userId);
 		if (isSignedIn) fetchRooms();
 	}, [userId, isSignedIn]);
 
-	// if (!isSignedIn) return <h1>Sign In to view your dashboard</h1>;
 	if (!isSignedIn)
 		return (
 			<>
 				<div className={`${style.dashbaord}`}>
 					<p
 						style={{
-							fontSize: '2rem',
+							fontSize: '2vw',
 						}}>
 						<i>Sign In to view your dashboard.</i>
 						<Link to='/'> Home</Link>
@@ -59,13 +78,19 @@ const DashBoard = () => {
 						<CreateRoom />
 						<JoinRoom />
 					</div>
-					<section className={style.room}>
+					<section className={style.myroom}>
 						<h2>My Rooms</h2>
-						<Rooms rooms={myRooms} />
+						<Rooms
+							rooms={myRooms}
+							deleteRoom={handleDeleteMyRoom}
+						/>
 					</section>
-					<section className={style.room}>
+					<section className={style.otherroom}>
 						<h2>Other Rooms</h2>
-						<Rooms rooms={otherRooms} />
+						<Rooms
+							rooms={otherRooms}
+							deleteRoom={handleDeleteOtherRoom}
+						/>
 					</section>
 				</div>
 			</div>

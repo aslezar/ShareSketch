@@ -3,48 +3,6 @@ const Room = require('../models/room');
 const { StatusCodes } = require('http-status-codes');
 const { BadRequestError, UnauthenticatedError } = require('../errors');
 
-// const createRoom = async (data, cb, socket) => {
-// 	//give
-// 	//data = {userId}
-
-// 	//get
-// 	//two response: sucuess true with roomid else false with msg
-
-// 	const { userId, roomName } = data;
-// 	if (!mongoose.Types.ObjectId.isValid(userId)) {
-// 		cb({ msg: 'Invalid User ID', success: false });
-// 		return;
-// 	}
-
-// 	try {
-// 		const user = await User.findById(userId).select('-password');
-// 		if (!user) {
-// 			cb({ msg: `User not found ${userId}`, success: false });
-// 			return;
-// 		}
-// 		//create new Room
-// 		const room = await Room.create({
-// 			name: roomName,
-// 			users: [{ userId: user._id, name: user.name, admin: true }],
-// 		});
-// 		if (!room) {
-// 			cb({ msg: 'Error creating room', success: false });
-// 			return;
-// 		}
-// 		user.myRooms.push({ roomId: room._id, name: room.name });
-// 		await user.save();
-// 		await room.save();
-
-// 		cb({
-// 			msg: `Successfully created room ${room.name}`,
-// 			success: true,
-// 			data: { roomId: room._id },
-// 		});
-// 	} catch (error) {
-// 		console.log(error);
-// 		cb({ msg: 'Server: Error creating room', success: false });
-// 	}
-// };
 const getRooms = async (req, res) => {
 	const user = await User.findById(req.user.userId);
 	if (!user) {
@@ -87,6 +45,50 @@ const createRoom = async (req, res) => {
 	});
 };
 
+const deleteRoom = async (req, res) => {
+	const { userId } = req.user;
+	const { roomId } = req.body;
+	if (!roomId) {
+		throw new BadRequestError('Room Id is required');
+	}
+
+	const user = await User.findById(userId);
+	if (!user) {
+		throw new UnauthenticatedError('User Not Found');
+	}
+
+	const isAdmin = user.myRooms.filter(
+		(room) => room.roomId.toString() === roomId.toString()
+	)[0];
+
+	if (!isAdmin) {
+		throw new BadRequestError('You are not the admin of this room');
+	}
+
+	const room = await Room.findById(roomId);
+	if (!room) {
+		throw new BadRequestError('Room Not Found');
+	}
+	for (let i = 0; i < room.users.length; i++) {
+		const user = await User.findById(room.users[i].userId);
+		if (!user) {
+			continue;
+		}
+		user.rooms = user.rooms.filter(
+			(room) => room.roomId.toString() !== roomId.toString()
+		);
+		await user.save();
+	}
+	user.myRooms = user.myRooms.filter(
+		(room) => room.roomId.toString() !== roomId.toString()
+	);
+	await user.save();
+	await room.deleteOne();
+	res.status(StatusCodes.OK).json({
+		success: true,
+		msg: `Successfully deleted room ${room.name}`,
+	});
+};
 const updateUser = async (userId, key, value) => {
 	const user = await User.findById(userId);
 	if (!user) {
@@ -163,6 +165,7 @@ const updateImage = async (req, res) => {
 module.exports = {
 	getRooms,
 	createRoom,
+	deleteRoom,
 	updateName,
 	updateBio,
 	updateImage,

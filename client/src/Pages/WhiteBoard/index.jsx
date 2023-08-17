@@ -17,6 +17,7 @@ import style from './style.module.scss';
 const WhiteBoard = () => {
 	console.log('whiteboard');
 	const [toolbox, setToolbox] = useState(defaultToolbox);
+	const [orientation, setOrientation] = useState('landscape'); //landscape or portrait
 
 	//RoomInfo
 	const [roomName, setRoomName] = useState('');
@@ -45,6 +46,52 @@ const WhiteBoard = () => {
 	} = useGlobalContext();
 
 	const navigate = useNavigate();
+
+	const handleOrientation = (event) => {
+		// if (event.target.screen.orientation.angle === 90) {
+		// 	setOrientation('landscape');
+		// } else {
+		// 	setOrientation('portrait');
+
+		// 	toast.info('Please use landscape mode.', {
+		// 		toastId: 'orientation',
+		// 	});
+		// }
+		switch (screen.orientation.type) {
+			case 'landscape-primary':
+			case 'landscape-secondary':
+				setOrientation('landscape');
+				console.log('That looks good.');
+				document.documentElement.requestFullscreen();
+				break;
+			case 'portrait-secondary':
+			case 'portrait-primary':
+				setOrientation('portrait');
+				// toast.info('Please use landscape mode.', {
+				// 	toastId: 'orientation',
+				// });
+				break;
+			default:
+				console.log("The orientation API isn't supported in this browser :(");
+		}
+	};
+
+	useEffect(() => {
+		screen.orientation
+			.lock('landscape')
+			.then(() => {
+				console.log('Orientation is locked to landscape');
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+		handleOrientation();
+		screen.orientation.addEventListener('change', handleOrientation);
+		return () => {
+			screen.orientation.removeEventListener('change', handleOrientation);
+			screen.orientation.unlock();
+		};
+	}, []);
 
 	useEffect(() => {
 		function joinRoom() {
@@ -180,7 +227,9 @@ const WhiteBoard = () => {
 	const handleUndo = () => {
 		// console.log('undo');
 		if (isSignedIn === false)
-			return toast.error('You must be signed in to edit canvas');
+			return toast.error('You must be signed in to edit canvas', {
+				toastId: 'signIntoedit',
+			});
 		if (elements.length === 0) return;
 		const lastElement = elements[elements.length - 1];
 		setHistory((prevState) => [...prevState, lastElement]); // add last element from elements
@@ -198,7 +247,9 @@ const WhiteBoard = () => {
 	const handleRedo = () => {
 		// console.log('redo');
 		if (isSignedIn === false)
-			return toast.error('You must be signed in to edit canvas');
+			return toast.error('You must be signed in to edit canvas', {
+				toastId: 'signIntoedit',
+			});
 		if (history.length === 0) return;
 		const lastElement = history[history.length - 1];
 		setElements((prevState) => [...prevState, lastElement]); // add last element from history
@@ -217,7 +268,9 @@ const WhiteBoard = () => {
 	};
 	const clearCanvas = () => {
 		if (isSignedIn === false)
-			return toast.error('You must be signed in to edit canvas');
+			return toast.error('You must be signed in to edit canvas', {
+				toastId: 'signIntoedit',
+			});
 		setElements([]);
 		setHistory([]);
 		socket.emit('canvas:clear', null, (response) => {
@@ -245,7 +298,9 @@ const WhiteBoard = () => {
 	}
 	const addElement = (ele) => {
 		if (isSignedIn === false)
-			return toast.error('You must be signed in to draw');
+			return toast.error('You must be signed in to draw', {
+				toastId: 'signIntoedit',
+			});
 		// const elementId = uuidv4();
 		// console.log(elementId);
 		const element = { elementId: uuidv4(), ...ele };
@@ -260,7 +315,15 @@ const WhiteBoard = () => {
 
 	const sendMessage = (message) => {
 		if (!isSignedIn)
-			return toast.error('You must be signed in to send messages');
+			return toast.error(
+				'You must be signed in to send messages',
+				{
+					toastId: 'signIntoedit',
+				},
+				{
+					toastId: 'signIntoedit',
+				}
+			);
 		setMessages((previous) => [...previous, { userId, userName, message }]);
 		socket.emit(
 			'chat:message',
@@ -273,6 +336,15 @@ const WhiteBoard = () => {
 		);
 	};
 
+	if (orientation === 'portrait') {
+		return (
+			<div
+				id={style.orientationMessage}
+				className={style.container}>
+				<p>Please rotate your device to landscape mode to view this page.</p>
+			</div>
+		);
+	}
 	return (
 		<div className={style.container}>
 			<Toolbox

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import style from './style.module.scss';
 import { Link } from 'react-router-dom';
 import { useGlobalContext } from '../../context';
@@ -14,13 +14,26 @@ import { MdDarkMode, MdLightMode } from 'react-icons/md';
 
 const Navbar = () => {
 	const [joinRoom, setJoinRoom] = React.useState(false);
+	const [rotation, setRotation] = React.useState(0);
+	const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+	const updateScreenWidth = () => {
+		setScreenWidth(window.innerWidth);
+	};
 
-	const { isSignedIn, colorMode, toggleColorMode } = useGlobalContext();
 	useEffect(() => {
+		window.addEventListener('resize', updateScreenWidth);
 		return () => {
-			setJoinRoom(false);
+			window.removeEventListener('resize', updateScreenWidth);
 		};
 	}, []);
+
+	const { isSignedIn, name, bio, profileImage, colorMode, toggleColorMode } =
+		useGlobalContext();
+
+	const toggleNavBar = () => {
+		document.getElementById('navbox').classList.toggle(style.show);
+		setRotation(rotation === 0 ? 90 : 0);
+	};
 
 	return (
 		<>
@@ -34,8 +47,13 @@ const Navbar = () => {
 			)}
 			<nav className={style.nav}>
 				<div className={style.navHeader}>
-					<button className={style.navToggle}>
-						<FaBars className={style.icon} />
+					<button
+						className={style.navToggle}
+						onClick={toggleNavBar}>
+						<FaBars
+							className={style.icon}
+							style={{ transform: `rotate(${rotation}deg)` }}
+						/>
 					</button>
 					<h1>ShareSketch</h1>
 				</div>
@@ -47,18 +65,66 @@ const Navbar = () => {
 							<MdDarkMode className={style.icon} />
 						)}
 					</div>
-					<ul className={style.links}>
-						<li>
-							<Link to='/'>Home</Link>
-						</li>
-						<li>
-							<Link to='/dashboard'>DashBoard</Link>
-						</li>
-						<li onClick={() => setJoinRoom((prev) => !prev)}>Join Room</li>
-						<li>
-							<Link to='/about'>About Us</Link>
-						</li>
-					</ul>
+
+					{screenWidth < 768 ? (
+						<div
+							id='navbox'
+							className={style.navCon}
+							onClick={() =>
+								document.getElementById('navbox').classList.remove(style.show)
+							}>
+							<div className={style.user}>
+								{isSignedIn ? (
+									<>
+										<img
+											src={profileImage ? profileImage : image}
+											alt='profile'
+											className={style.profileImage}
+										/>
+										<span>
+											<h2>{name}</h2>
+											<p>
+												{bio.length > 100 ? `${bio.slice(0, 100)}...` : bio}
+											</p>
+										</span>
+									</>
+								) : (
+									<>
+										<Button onClick={() => setSignup(true)}>
+											<AiOutlineUserAdd />
+											Sign Up
+										</Button>
+									</>
+								)}
+							</div>
+							<ul className={style.links}>
+								<li>
+									<Link to='/'>Home</Link>
+								</li>
+								<li>
+									<Link to='/dashboard'>DashBoard</Link>
+								</li>
+								<li onClick={() => setJoinRoom((prev) => !prev)}>Join Room</li>
+								<li>
+									<Link to='/about'>About Us</Link>
+								</li>
+							</ul>
+						</div>
+					) : (
+						<ul className={style.links}>
+							<li>
+								<Link to='/'>Home</Link>
+							</li>
+							<li>
+								<Link to='/dashboard'>DashBoard</Link>
+							</li>
+							<li onClick={() => setJoinRoom((prev) => !prev)}>Join Room</li>
+							<li>
+								<Link to='/about'>About Us</Link>
+							</li>
+						</ul>
+					)}
+
 					<User />
 				</div>
 			</nav>

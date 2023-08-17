@@ -7,7 +7,7 @@ import Button from '../../components/Button';
 import Footer from '../../components/Footer';
 import JoinRoom from '../../components/JoinRoom';
 //Images
-import image from '../../assets/ShareSketch.png';
+import image from '../../assets/ShareSketch2.png';
 import image2 from '../../assets/bg1.png';
 //Icons
 import { useGlobalContext } from '../../context';
@@ -62,80 +62,69 @@ const Homepage = () => {
 				/>
 			)}
 			<div className={style.homepage}>
-				<div className={style.container}>
-					<div className={style.about}>
-						<header className={style.header}>
-							<div className={style.headerContent}>
-								<h1>
-									Welcome to <b>ShareSketch</b>
-									<i>
-										An online whiteboard for you and your friends to draw
-										together
-									</i>
-								</h1>
-								<img
-									src={image2}
-									alt='shareSketch'
-								/>
-							</div>
-						</header>
-						<ul className={style.features}>
-							{features.map((feature, index) => (
-								<li
-									className={style.feature}
-									key={index}>
-									<h2>{feature.title}</h2>
-									<p>{feature.description}</p>
-								</li>
-							))}
-						</ul>
-					</div>
-
-					<section className={style.cta}>
-						<h2>Ready to Revolutionize Collaboration?</h2>
-						{isSignedIn ? (
-							<p>
-								Join a room now and start collaborating with your friends.
-								<DemoButton />
-							</p>
-						) : (
-							<p>
-								SignUp now and unlock power of collaborative whiteboarding with
-								group chatting.
-								{!isSignedIn && (
-									<Button onClick={() => setSignup(true)}>
-										<AiOutlineUserAdd />
-										Sign Up
-									</Button>
-								)}
-							</p>
-						)}
-					</section>
-				</div>
-				{isSignedIn ? (
-					<div className={style.user}>
+				<header className={style.header}>
+					<div className={style.headerContent}>
+						<h1>
+							Welcome to <b>ShareSketch</b>
+							<i>
+								An online whiteboard for you and your friends to draw together
+							</i>
+						</h1>
 						<img
-							src={profileImage ? profileImage : image}
-							alt='profile'
-							className={style.profileImage}
+							src={image2}
+							alt='shareSketch'
 						/>
-						<h2>
-							<i>Hi, </i>
-							{name}
-						</h2>
-						<p>{bio}</p>
 					</div>
-				) : (
-					<div className={style.demo}>
-						<h2>Demo</h2>
-						<p>
-							<i>Sign in </i>
-							to join a room or create a new room. You can also join a room as a
-							guest.
-						</p>
-						<DemoButton />
-					</div>
-				)}
+				</header>
+				<ul className={style.features}>
+					{features.map((feature, index) => (
+						<li
+							className={style.feature}
+							key={index}>
+							<h2>{feature.title}</h2>
+							<p>{feature.description}</p>
+						</li>
+					))}
+				</ul>
+				<div className={style.user}>
+					{isSignedIn ? (
+						<>
+							<img
+								src={profileImage ? profileImage : image}
+								alt='profile'
+								className={style.profileImage}
+							/>
+							<h2>
+								<i>Hi, </i>
+								{name}
+							</h2>
+							<p>{bio.length > 100 ? `${bio.slice(0, 100)}...` : bio}</p>
+						</>
+					) : (
+						<>
+							<h2>Join Us</h2>
+							<p>
+								Sign up now to unleash the collaborative power of whiteboarding
+								and group chatting!
+								<Button onClick={() => setSignup(true)}>
+									<AiOutlineUserAdd />
+									Sign Up
+								</Button>
+							</p>
+						</>
+					)}
+				</div>
+				<section className={style.cta}>
+					<h2>Ready to Revolutionize Collaboration?</h2>
+				</section>
+				<div className={style.demo}>
+					{isSignedIn ? (
+						<p>Join a room now and start collaborating with your friends.</p>
+					) : (
+						<p>Join a demo room now to see how it works.</p>
+					)}
+					<DemoButton />
+				</div>
 
 				<div className={style.joinroom}>
 					<JoinRoom />

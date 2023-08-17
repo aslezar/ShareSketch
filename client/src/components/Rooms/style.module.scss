@@ -17,7 +17,15 @@ $room-color-even: #fff;
 
 	li {
 		@include info;
-		padding: 10px;
+		padding: calc($border-padding / 2);
 		flex-wrap: wrap;
+	}
+}
+.icon {
+	font-size: $fontSize3;
+	color: $textColor2;
+	transition: var(--transition);
+	&:hover {
+		font-size: $fontSize2;
 	}
 }

@@ -6,6 +6,8 @@
 	--textColor2: #fff;
 	--textColor3: #ccc;
 	--canvasColor: #141414;
+	--transition: all 0.3s linear;
+	// --zoom: '1';
 }
 
 $themeColor: var(--themeColor);
@@ -30,19 +32,24 @@ $shadowColor: $primaryColor2;
 $canvasColor: var(--canvasColor);
 
 $border-radius: 10px;
-$border-padding: 20px;
-$gap: 20px;
+$border-padding: 1vmax;
+$gap: 1vw;
 $spacing: 5;
+
+$fontSize1: calc(var(--zoom) * 1.5vmax);
+$fontSize2: calc(var(--zoom) * 1vmax);
+$fontSize3: calc(var(--zoom) * 0.8vmax);
+$iconSize: calc(var(--zoom) * 1.5vmax);
+$iconSizeHover: calc(var(--zoom) * 1.7vmax);
 
 $transition: all 0.3s linear;
 
 //NavBar
-$navheadingsize: 1.5rem;
 $navBorderShadow: 5px 5px 10px $shadowColor;
-$navBarBorderRadius: 0px 0px 10px 10px;
+$navBarBorderRadius: 0px 0px $border-radius $border-radius;
 
 //Footer
-$footerBorderRadius: 10px 10px 0px 0px;
+$footerBorderRadius: $border-radius $border-radius 0px 0px;
 $footerBorderShadow: 5px -5px 10px $shadowColor;
 
 @mixin box {
@@ -55,15 +62,16 @@ $footerBorderShadow: 5px -5px 10px $shadowColor;
 	box-shadow: 5px 5px 10px $shadowColor;
 	border: 1px solid $shadowColor;
 	margin: 0px $gap;
+	font-size: $fontSize2;
 }
 @mixin common-box {
 	@include box;
 	$border-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
 	border: 1px solid $themeInverseColor;
 	color: $textColor2;
-	font-size: 1.2rem;
+	font-size: $fontSize2;
 	p {
-		font-size: 1rem;
+		font-size: $fontSize3;
 		color: $textColor2;
 	}
 }
@@ -77,25 +85,26 @@ $footerBorderShadow: 5px -5px 10px $shadowColor;
 
 @mixin icon {
 	display: flex;
-	font-size: 1.5rem;
+	font-size: $iconSize;
 	color: $textColor2;
 	transition: var(--transition);
 
 	&:hover {
-		font-size: 1.7rem;
+		font-size: $iconSizeHover;
 	}
 }
 
 @mixin button {
 	@include flex-center;
-	gap: 0.8rem;
+	gap: 0.8vw;
 	width: 100%;
 	cursor: pointer;
 
 	border-radius: $border-radius;
-	border-color: $themeInverseColor;
-	padding: 5px 10px;
+	border: 0.2vw solid $themeInverseColor;
+	padding: 0.2vw 0.7vw;
 	transition: all 0.4s;
+	font-size: $fontSize2;
 
 	&:disabled {
 		cursor: not-allowed;
@@ -139,7 +148,7 @@ $footerBorderShadow: 5px -5px 10px $shadowColor;
 	border-radius: $border-radius;
 	width: 100%;
 	color: $textColor2;
-	font-size: 1rem;
+	font-size: $fontSize2;
 	:nth-child(1) {
 		font-style: bold;
 	}
@@ -154,7 +163,7 @@ $footerBorderShadow: 5px -5px 10px $shadowColor;
 	width: 100%;
 	background-color: $white;
 	// color: $textColor2;
-	padding: 10px;
+	padding: calc($border-padding / 2);
 	border-radius: $border-radius;
 	display: block;
 	border: 2px solid $themeInverseColor;
@@ -162,3 +171,10 @@ $footerBorderShadow: 5px -5px 10px $shadowColor;
 		outline: none;
 	}
 }
+// @media (max-width: 768px) {
+// 	$fontSize1: 5vmax;
+// 	$fontSize2: 5vmax;
+// 	$fontSize3: 5vmax;
+// 	$iconSize: 1.5vmax;
+// 	$iconSizeHover: 1.7vmax;
+// }

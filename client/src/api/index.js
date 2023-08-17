@@ -2,9 +2,9 @@ import axios from 'axios';
 import config from '../../config';
 import { toast } from 'react-toastify';
 
-const URL =
-	process.env.NODE_ENV === 'production' ? '/api' : config.serverAPIURL;
-const API = axios.create({ baseURL: URL });
+// const URL =
+// 	process.env.NODE_ENV === 'production' ? '/api' : config.serverAPIURL;
+const API = axios.create({ baseURL: '/api' });
 
 export const signIn = (data) => API.post('/auth/signin', data);
 export const signUp = (data) => API.post('/auth/signup', data);
@@ -27,6 +27,18 @@ export const createRoom = (roomName) => {
 	return API.post(
 		'/user/createroom',
 		{ roomName },
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}
+	);
+};
+export const deleteRoom = (roomId) => {
+	const token = JSON.parse(localStorage.getItem('token')) || null;
+	return API.post(
+		'/user/deleteroom',
+		{ roomId },
 		{
 			headers: {
 				Authorization: `Bearer ${token}`,

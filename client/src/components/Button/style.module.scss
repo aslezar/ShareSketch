@@ -4,4 +4,5 @@
 /* Styles */
 .btn {
 	@include button-main;
+	font-size: $fontSize2	;
 }

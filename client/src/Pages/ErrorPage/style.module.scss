@@ -23,12 +23,16 @@ $error-icon-hover-color: #ef5a5a;
 
 	justify-items: center;
 	align-items: center;
-	text-align: center;
+
+	@media screen and (max-width: 768px) {
+		grid-template-rows: 1fr 1fr 1fr 1fr;
+		grid-template-columns: 1fr;
+	}
 }
 
 .incognitoIcon {
 	@include flex-center;
-	font-size: 15rem;
+	font-size: calc($fontSize2 * 10);
 	// align-items: center;
 	// width: 100%;
 	// height: 100%;
@@ -43,7 +47,7 @@ $error-icon-hover-color: #ef5a5a;
 }
 .errorHeader {
 	.errorText {
-		font-size: 4rem;
+		font-size: calc($fontSize2 * 2.5);
 		font-weight: bold;
 		color: $error-text-color;
 		text-transform: uppercase;
@@ -51,38 +55,38 @@ $error-icon-hover-color: #ef5a5a;
 		transform: rotate(-5deg);
 		transition: font-size 0.3s;
 		&:hover {
-			font-size: 2rem;
+			font-size: calc($fontSize2 * 2);
 		}
 	}
 	.errorCode {
-		font-size: 2rem;
+		font-size: calc($fontSize2 * 2);
 		color: $error-border-color;
 		transition: font-size 0.3s;
 		flex-wrap: nowrap;
 	}
 	&:hover {
 		.errorText {
-			font-size: 2rem;
+			font-size: calc($fontSize2 * 2);
 		}
 		.errorCode {
-			font-size: 4rem;
+			font-size: calc($fontSize2 * 4);
 		}
 	}
 }
 .errorMessage {
-	font-size: 1.8rem;
+	font-size: calc($fontSize2 * 1.8);
 	text-align: center;
 	color: $error-border-color;
 	transition: all 0.3s;
 	&:hover {
-		font-size: 2rem;
+		font-size: calc($fontSize2 * 2.5);
 	}
 }
 
 .homeButton {
 	@include button;
-	padding: 0.7rem 2rem;
-	font-size: 1.2rem;
+	padding: 0.7vw 2vw;
+	font-size: $fontSize1;
 	background-color: $error-button-bg-color;
 	color: $textColor2;
 	cursor: pointer;

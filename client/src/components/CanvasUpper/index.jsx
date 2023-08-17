@@ -139,6 +139,9 @@ const CanvasUpper = ({ canvasRef, toolbox, addElement }) => {
 			onMouseDown={handleMouseDown}
 			onMouseUp={handleMouseUp}
 			onMouseMove={handleMouseMove}
+			onTouchStart={handleMouseDown}
+			onTouchEnd={handleMouseUp}
+			onTouchMove={handleMouseMove}
 		/>
 	);
 };

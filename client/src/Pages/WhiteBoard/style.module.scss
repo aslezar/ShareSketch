@@ -1,3 +1,5 @@
+@import 'variables';
+
 .container {
 	display: flex;
 	width: 100vw;
@@ -5,4 +7,16 @@
 	justify-content: space-between;
 	align-items: center;
 	padding-top: 5px;
+
+	@media (max-width: 768px) {
+		justify-content: center;
+	}
+}
+
+#orientationMessage {
+	justify-content: center;
+	p {
+		color: $textInverse;
+		font-size: $fontSize2;
+	}
 }

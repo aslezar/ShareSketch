@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import style from './style.module.scss';
 import { useGlobalContext } from '../../context';
+import { HiOutlineChat } from 'react-icons/hi';
 
 const Chat = ({ isConnected, messages, sendMessage }) => {
 	console.log('chat');
@@ -26,42 +27,51 @@ const Chat = ({ isConnected, messages, sendMessage }) => {
 	}, [messages]);
 
 	return (
-		<div className={style.chat}>
-			<ul
-				className={style.messages}
+		<>
+			<HiOutlineChat
+				className={style.msgicon}
+				onClick={() => {
+					document.getElementById('chat').classList.toggle(style.show);
+				}}
+			/>
+			<div
+				id='chat'
+				className={style.chat}
 				ref={messageRef}>
-				{messages.map((msg, index) => (
-					<li
-						key={index}
-						className={
-							msg.userId === userId ? style.userMessage : style.otherMessage
-						}>
-						{msg.userId !== userId && (
-							<i>{msg.userName.split(' ')[0] + ': '}</i>
-						)}
-						{msg.message}
-					</li>
-				))}
-			</ul>
-			<form
-				className={style.form}
-				onSubmit={handleSubmit}>
-				<input
-					className={style.input}
-					placeholder={isSignedIn ? 'Type your message' : 'Sign in to chat'}
-					value={message}
-					onChange={(e) => setMessage(e.target.value)}
-					autoComplete='off'
-					disabled={!isConnected || !isSignedIn}
-				/>
-				<button
-					className={style.btn}
-					disabled={!isConnected || !isSignedIn}
-					type='submit'>
-					Send
-				</button>
-			</form>
-		</div>
+				<ul className={style.messages}>
+					{messages.map((msg, index) => (
+						<li
+							key={index}
+							className={
+								msg.userId === userId ? style.userMessage : style.otherMessage
+							}>
+							{msg.userId !== userId && (
+								<i>{msg.userName.split(' ')[0] + ': '}</i>
+							)}
+							{msg.message}
+						</li>
+					))}
+				</ul>
+				<form
+					className={style.form}
+					onSubmit={handleSubmit}>
+					<input
+						className={style.input}
+						placeholder={isSignedIn ? 'Type your message' : 'Sign in to chat'}
+						value={message}
+						onChange={(e) => setMessage(e.target.value)}
+						autoComplete='off'
+						disabled={!isConnected || !isSignedIn}
+					/>
+					<button
+						className={style.btn}
+						disabled={!isConnected || !isSignedIn}
+						type='submit'>
+						Send
+					</button>
+				</form>
+			</div>
+		</>
 	);
 };
 

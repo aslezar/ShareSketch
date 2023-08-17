@@ -1,10 +1,13 @@
 import React from 'react';
 import style from './style.module.scss';
 import { useNavigate } from 'react-router-dom';
+//delete icon
+import { FaTrash } from 'react-icons/fa';
 
-const Rooms = ({ rooms }) => {
+const Rooms = ({ rooms, deleteRoom }) => {
 	// console.log(rooms);
 	const navigate = useNavigate();
+
 	if (rooms.length === 0)
 		return (
 			<div
@@ -23,7 +26,16 @@ const Rooms = ({ rooms }) => {
 							navigate(`/room/${room.roomId}`);
 						}}>
 						<p className={style.name}>{room.name}</p>
-						<p className={style.id}>{room.roomId}</p>
+						<p className={style.id}>
+							{room.roomId}{' '}
+							<FaTrash
+								className={style.icon}
+								onClick={(e) => {
+									e.stopPropagation();
+									deleteRoom(room.roomId);
+								}}
+							/>
+						</p>
 					</li>
 				);
 			})}

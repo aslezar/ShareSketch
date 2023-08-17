@@ -10,7 +10,7 @@
 
 .heading {
 	text-align: center;
-	font-size: 1.5rem;
+	font-size: $fontSize1;
 }
 
 .form {
@@ -20,7 +20,7 @@
 }
 
 .inputContainer {
-	margin: 10px;
+	margin: calc($border-padding / 2);
 
 	input {
 		@include input;

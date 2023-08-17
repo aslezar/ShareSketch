@@ -1,3 +1,4 @@
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 //Styles
@@ -12,7 +13,16 @@ import Homepage from './Pages/HomePage';
 import WhiteBoard from './Pages/WhiteBoard';
 import DashBooard from './Pages/DashBoard';
 import ErrorPage from './Pages/ErrorPage';
+
+import { useGlobalContext } from './context';
+
 function App() {
+	const { zoom } = useGlobalContext();
+
+	React.useEffect(() => {
+		document.documentElement.style.setProperty('--zoom', `${zoom}`);
+	}, [zoom]);
+
 	return (
 		<div className={style.app}>
 			<Navbar />

@@ -126,6 +126,7 @@ const Bio = () => {
 
 	const handleBlur = async () => {
 		setFocused(false);
+		setInputBio(bio);
 		if (inputBio === bio) return;
 		if (!inputBio) {
 			toast.error('Bio cannot be empty');

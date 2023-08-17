@@ -1,8 +1,7 @@
 /* Variables */
 @import 'variables';
 
-/* Styles */
-.container {
+.wrapper {
 	@include flex-center;
 	flex-direction: column;
 
@@ -12,8 +11,26 @@
 	min-width: 200px;
 	max-width: 300px;
 	height: 100%;
+	@media (max-width: 768px) {
+		display: none;
+	}
+}
 
-	font-size: 1rem;
+/* Styles */
+.container {
+	max-width: 100%;
+	font-size: $fontSize2;
+	@media (max-width: 768px) {
+		display: none;
+		position: fixed;
+		left: 0;
+		top: 10vh;
+		bottom: 0vh;
+		height: auto;
+		max-width: 300px;
+		max-height: 30%;
+		flex-direction: column;
+	}
 
 	.heading {
 		@include common-box;
@@ -22,6 +39,8 @@
 		padding: 10px;
 		flex-direction: column;
 		gap: 5px;
+		width: 100%;
+
 		// flex-wrap: 1;
 	}
 
@@ -68,6 +87,7 @@
 		flex-direction: column;
 		align-items: stretch;
 		width: 100%;
+		max-width: 100%;
 
 		.tools {
 			flex-grow: 5;
@@ -98,7 +118,7 @@
 				padding: 5px;
 				border: 1px solid #ccc;
 				border-radius: $border-radius;
-				font-size: 1rem;
+				font-size: $fontSize2;
 				max-width: 30%;
 			}
 		}
@@ -129,8 +149,39 @@
 			@include info;
 		}
 	}
+	@media (max-width: 768px) {
+		display: none;
+		position: fixed;
+		left: 0;
+		top: 10vh;
+		bottom: 0vh;
+		height: auto;
+		max-width: 300px;
+	}
 }
 
 .icon {
 	@include icon;
+}
+.toolicon,
+.usericon {
+	color: $themeInverseColor;
+	font-size: calc($fontSize2 * 2.5);
+	display: none;
+	z-index: 2;
+	position: fixed;
+	left: 0;
+	@media (max-width: 768px) {
+		// default display
+		display: block;
+	}
+}
+.toolicon {
+	top: 10vh;
+}
+.usericon {
+	top: 15vh;
+}
+.show {
+	display: flex;
 }

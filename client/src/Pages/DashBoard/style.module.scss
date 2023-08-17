@@ -3,17 +3,27 @@
 /* Dashboard */
 .dashbaord {
 	@include flex-center;
-	padding: 20px;
+	padding: $border-padding;
 	height: 90vh;
 	width: 100vw;
+	color: $textColor2;
+
+	@media screen and (max-width: 768px) {
+		flex-direction: column;
+		height: 80vh;
+	}
 }
 /* User section */
 .user {
-	flex-grow: 1;
-	max-width: 400px;
+	max-width: 20vw;
 	height: 100%;
 	@include main-box;
-	padding: 20px;
+	padding: $border-padding;
+	@media screen and (max-width: 768px) {
+		max-width: none;
+		width: 100%;
+		max-height: 20vh;
+	}
 }
 
 /* Rooms section */
@@ -21,37 +31,66 @@
 	flex-grow: 3;
 
 	@include main-box;
-	@include flex-center;
-	justify-content: space-evenly;
-	// max-width: 1000px;
 	height: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 1fr;
+	gap: $gap;
+	grid-template-areas: 'join myroom otherroom';
 
 	.join {
+		grid-area: join;
+
 		@include common-box;
 		@include flex-center;
 		height: 100%;
 
 		flex-direction: column;
 		justify-content: space-evenly;
-		gap: 20px;
+		gap: $gap;
 		flex-grow: 1;
-		max-width: 400px;
+		max-width: 20vw;
+		@media screen and (max-width: 768px) {
+			flex-direction: row;
+			max-width: none;
+			// max-height: 20vh;
+		}
+	}
+	.myroom {
+		grid-area: myroom;
+	}
+	.otherroom {
+		grid-area: otherroom;
 	}
 
-	.room {
+	.myroom,
+	.otherroom {
 		flex-grow: 1;
 
 		@include common-box;
 		height: 100%;
-		padding-top: 20px;
-		max-width: 400px;
+		padding-top: $border-padding;
+		max-width: 20vw;
 		overflow-y: auto;
 		h2 {
 			text-align: center;
-			font-size: 1.5rem;
+			font-size: $fontSize1;
 			margin-bottom: $border-padding;
 		}
+		@media screen and (max-width: 768px) {
+			flex-direction: row;
+			max-width: none;
+			// max-height: 20vh;
+		}
+	}
+	@media screen and (max-width: 768px) {
+		// max-width: 30%;
+		// max-height: 20vh;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: 1fr 1fr 1fr;
+		grid-template-areas:
+			'join join'
+			'myroom otherroom'
+			'myroom otherroom';
 	}
 }
-
-/* Heading */

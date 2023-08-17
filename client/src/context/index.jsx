@@ -18,8 +18,9 @@ export const userInitialState = {
 
 const AppProvider = ({ children }) => {
 	const [user, dispatch] = useReducer(reducer, userInitialState);
-	// const [roomId, setRoomId] = React.useState(''); //roomId is used to join room
+
 	const [colorMode, setColorMode] = React.useState('dark'); //dark, light
+	const [zoom, setZoom] = React.useState(1);
 
 	const initialFromLocalStorage = async (tokenValue) => {
 		api.handler(
@@ -74,20 +75,7 @@ const AppProvider = ({ children }) => {
 		const res = await api.signOut();
 		dispatch({ type: 'SIGN_OUT' });
 	};
-	// const updateRoomId = (newRoomId) => {
-	// 	setRoomId(newRoomId);
-	// };
 	const toggleColorMode = () => {
-		// toast.info('pagal bnaya bda mza aaya 😂'),
-		// 	{
-		// 		toastId: 'colorMode',
-		// 	};
-		// setTimeout(() => {
-		// 	toast.info('rhta h abhi ye'),
-		// 		{
-		// 			toastId: 'colorMode2',
-		// 		};
-		// }, 2000);
 		setColorMode((prevMode) => {
 			if (prevMode === 'dark') setCSSValues('light');
 			else setCSSValues('dark');
@@ -111,6 +99,8 @@ const AppProvider = ({ children }) => {
 				signIn,
 				signOut,
 				updateUser,
+				zoom,
+				setZoom,
 				// getRoomId,
 				// updateRoomId,
 			}}>
