@@ -114,6 +114,12 @@ const Homepage = () => {
 						</>
 					)}
 				</div>
+				<div className={style.imageDiv}>
+					<img
+						src={image}
+						alt='sharesketch'
+					/>
+				</div>
 				<section className={style.cta}>
 					<h2>Ready to Revolutionize Collaboration?</h2>
 				</section>
@@ -128,12 +134,6 @@ const Homepage = () => {
 
 				<div className={style.joinroom}>
 					<JoinRoom />
-				</div>
-				<div className={style.imageDiv}>
-					<img
-						src={image}
-						alt='sharesketch'
-					/>
 				</div>
 			</div>
 			<Footer />

@@ -27,8 +27,8 @@ const Toolbox = ({
 	roomUsers,
 	curUser,
 }) => {
+	// console.log('toolbox');
 	const handleChange = (e) => {
-		console.log('toolbox');
 		setToolbox((prevState) => ({
 			...prevState,
 			[e.target.name]: e.target.value,
@@ -209,7 +209,9 @@ const Users = ({ users, curUser }) => {
 				<h3>Users</h3>
 				<ul className={style.users}>
 					{users.map((user) => (
-						<li key={`${user.userId} ${user.name}`}>
+						<li
+							key={user.userId}
+							className={user.isOnline ? style.green : style.red}>
 							<p>
 								{user.name}
 								{user.userId === curUser.userId ? ' (You)' : ''}

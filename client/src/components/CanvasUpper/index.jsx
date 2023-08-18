@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import drawCanvas from '../../utils/drawCanvas';
 
 const CanvasUpper = ({ canvasRef, toolbox, addElement }) => {
-	console.log('canvas upper');
+	// console.log('canvas upper');
 	const [isDrawing, setIsDrawing] = useState(false);
 
 	const [curElement, setCurElement] = useState({});

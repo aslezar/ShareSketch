@@ -12,28 +12,15 @@ const {
 const { createMessage } = require('../controller-socket/socket-chat');
 
 module.exports = (io) => {
-	function getGuestUsers(roomId) {
+	function getActiveUsers(roomId) {
 		const room = io.sockets.adapter.rooms.get(roomId);
-
 		if (room) {
-			// Initialize an array to store userNames
-			const guestUsers = [];
-
-			// Iterate through the sockets in the room
+			const users = [];
 			for (const socketId of room) {
 				const socket = io.sockets.sockets.get(socketId);
-
-				if (socket && socket.isGuest) {
-					guestUsers.push({
-						userId: socket.userId,
-						name: socket.userName,
-						admin: false,
-						isGuest: true,
-					});
-				}
+				users.push(socket.userData);
 			}
-
-			return guestUsers;
+			return users;
 		} else {
 			return [];
 		}
@@ -57,6 +44,6 @@ module.exports = (io) => {
 		// socket.on('disconnect', () => {
 		// 	console.log('A user disconnected');
 		// });
-		socket.getGuestUsers = getGuestUsers;
+		socket.getActiveUsers = getActiveUsers;
 	});
 };

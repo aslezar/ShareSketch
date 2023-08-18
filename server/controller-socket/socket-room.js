@@ -3,19 +3,55 @@ const User = require('../models/user');
 const Room = require('../models/room');
 const jwt = require('jsonwebtoken');
 const uuuidv4 = require('uuid').v4;
-const joinRoom = async (data, cb, socket) => {
-	const { roomId, token, guestUser } = data;
-	if (!mongoose.Types.ObjectId.isValid(roomId)) {
-		cb({ msg: 'Invalid Room ID', success: false });
-		return;
-	}
+const _ = require('lodash');
 
-	try {
+const rooms = new Map();
+
+// setInterval(() => {
+// 	console.log('Rooms:', rooms.size);
+// }, 5000);
+
+async function getRoom(roomId) {
+	if (!rooms.has(roomId)) {
 		const room = await Room.findById(roomId);
 		if (!room) {
-			cb({ msg: `Room not found with room ID ${roomId}`, success: false });
+			throw new Error(`Room not found with room ID ${roomId}`);
+			// cb({ msg: `Room not found with room ID ${roomId}`, success: false });
+			// return;
+		}
+
+		const updateRoom = _.debounce(async () => {
+			try {
+				await room.save();
+				console.log('Room changes saved:', roomId);
+			} catch (error) {
+				console.error('Error saving Room changes:', error);
+			}
+		}, 5000);
+
+		rooms.set(roomId, { room, updateRoom });
+	}
+
+	return rooms.get(roomId);
+}
+
+const joinRoom = async (data, cb, socket) => {
+	try {
+		const { roomId, token, guestUser } = data;
+		if (!mongoose.Types.ObjectId.isValid(roomId)) {
+			cb({ msg: 'Invalid Room ID', success: false });
 			return;
 		}
+
+		socket.room = await getRoom(roomId);
+		const room = socket.room.room;
+
+		// to get room id
+		// socket.room.room._id;
+		// to get bounce fn
+		// socket.room.updateRoom
+		// to get room instance
+		// socket.room.room;
 
 		if (token) {
 			try {
@@ -31,96 +67,117 @@ const joinRoom = async (data, cb, socket) => {
 				if (!userInRoom) {
 					room.users.push({ userId, name: user.name });
 					user.rooms.push({ roomId: room._id, name: room.name });
+
+					await user.save();
+					socket.room.updateRoom();
 				}
 
-				socket.userId = userId;
-				socket.userName = user.name;
-				socket.isGuest = false;
-
-				await user.save();
-				await room.save();
+				socket.userData = {
+					userId: user._id,
+					name: user.name,
+					isGuest: false,
+					isAdmin: userInRoom.admin === true,
+				};
 			} catch (error) {
 				cb({ msg: 'Invalid Token', success: false });
 				console.log(error);
 				return;
 			}
 		} else if (guestUser) {
-			socket.userName = guestUser.name;
-			socket.userId = guestUser.userId;
-			socket.isGuest = true;
+			socket.userData = {
+				userId: guestUser.userId,
+				name: guestUser.name,
+				isGuest: true,
+				isAdmin: false,
+			};
 		} else {
-			//generate random name
 			const randomName = `Guest ${Math.floor(Math.random() * 100000)}`;
-			socket.userName = randomName;
-			socket.userId = uuuidv4();
-			socket.isGuest = true;
+			socket.userData = {
+				userId: uuuidv4(),
+				name: randomName,
+				isGuest: true,
+				isAdmin: false,
+			};
 		}
 
-		socket.roomId = roomId;
-		socket.join(roomId);
+		socket.join(room._id);
+		socket.broadcast.to(room._id).emit('room:userJoined', socket.userData);
+
 		console.log(
-			`${socket.id} joined room: ${data.roomId} ${room._id} ${
-				socket.userId ? `signed in as ${socket.userName}` : 'not signed in'
-			}`
+			`${socket.id} joined room: ${roomId}, name: ${socket.userData.name}`
 		);
-		socket.broadcast.to(roomId).emit('room:userJoined', {
-			userId: socket?.userId || null,
-			name: socket.userName,
-		});
-		const guestUsers = socket.getGuestUsers(roomId);
+
+		const activeUsers = socket.getActiveUsers(room._id);
+		const users = room.users.map((u) => ({
+			userId: u.userId,
+			name: u.name,
+			isAdmin: u.admin === true,
+			isGuest: false,
+		}));
+
 		cb({
 			msg: `Successfully joined room ${room.name}`,
 			success: true,
 			data: {
 				roomId: room._id,
 				name: room.name,
-				users: [...room.users, ...guestUsers],
+				users: users,
+				userActive: activeUsers,
 				elements: room.elements,
 				messages: room.chat,
-				userName: socket.userName,
-				curUser: {
-					userId: socket.userId,
-					name: socket.userName,
-					isGuest: socket.isGuest,
-				},
+				curUser: socket.userData,
 			},
 		});
 	} catch (error) {
 		console.log(error);
 		cb({ msg: 'Server: Error joining room', success: false });
 	}
+	// console.log('joinRoom', rooms);
 };
 
 const leaveRoom = async (data, cb, socket) => {
-	const { roomId, userName } = socket; // Include userName from socket context
-
-	if (!mongoose.Types.ObjectId.isValid(roomId)) {
-		cb({ msg: 'Invalid Room ID', success: false });
-		return;
-	}
-
 	try {
-		socket.leave(roomId);
-		console.log(`${socket.id} left room: ${roomId}`);
-		socket.broadcast.to(roomId).emit('room:userLeft', {
-			userId: socket?.userId || null,
-			userName: userName, // Use the userName from socket context
-		});
+		const { userData } = socket;
+
+		if (!socket.room) return;
+		const { room, updateRoom } = socket.room;
+
+		socket.leave(room._id);
+
+		if (socket.getActiveUsers(room._id).length === 0) {
+			console.log('hello3');
+			rooms.delete(room._id.toString());
+		} else {
+			console.log('hello4');
+			socket.broadcast.to(room._id).emit('room:userLeft', userData);
+		}
 		cb({ msg: 'Room Left', success: true });
+
+		console.log(`${socket.id} left room: ${room._id}`);
 	} catch (error) {
 		console.log(error);
 		cb({ msg: 'Server: Error leaving room', success: false });
 	}
 };
 const disconnect = (socket) => {
-	console.log(`${socket.id} disconnected`);
-	const { roomId, userId, userName } = socket;
-	if (roomId) {
-		socket.leave(roomId);
-		socket.broadcast.to(roomId).emit('room:userLeft', {
-			userId: userId || null,
-			userName: userName || null,
-		});
+	try {
+		console.log(`${socket.id} disconnected`);
+
+		if (!socket.room) return;
+		const { userData } = socket;
+		const { room, updateRoom } = socket.room;
+
+		socket.leave(room._id);
+
+		if (socket.getActiveUsers(room._id).length === 0) {
+			console.log('hello1');
+			rooms.delete(room._id.toString());
+		} else {
+			console.log('hello2');
+			socket.broadcast.to(room._id).emit('room:userLeft', userData);
+		}
+	} catch (error) {
+		console.log(error);
 	}
 };
 

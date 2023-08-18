@@ -4,7 +4,7 @@ import { useGlobalContext } from '../../context';
 import { HiOutlineChat } from 'react-icons/hi';
 
 const Chat = ({ isConnected, messages, sendMessage }) => {
-	console.log('chat');
+	// console.log('chat');
 
 	const [message, setMessage] = useState('');
 
@@ -20,6 +20,7 @@ const Chat = ({ isConnected, messages, sendMessage }) => {
 			setMessage('');
 		}
 	};
+
 	useEffect(() => {
 		if (messageRef.current) {
 			messageRef.current.scrollTop = messageRef.current.scrollHeight;

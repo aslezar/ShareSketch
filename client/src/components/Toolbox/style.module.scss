@@ -7,9 +7,10 @@
 
 	@include main-box;
 	border-radius: 0 $border-radius 0 0;
+	margin: 0px;
 
-	min-width: 200px;
-	max-width: 300px;
+	min-width: 15vw;
+	max-width: 18vw;
 	height: 100%;
 	@media (max-width: 768px) {
 		display: none;
@@ -27,7 +28,7 @@
 		top: 10vh;
 		bottom: 0vh;
 		height: auto;
-		max-width: 300px;
+		max-width: 20px;
 		max-height: 30%;
 		flex-direction: column;
 	}
@@ -90,7 +91,7 @@
 		max-width: 100%;
 
 		.tools {
-			flex-grow: 5;
+			flex-grow: 4;
 
 			@include flex-center;
 			flex-direction: column;
@@ -99,6 +100,7 @@
 
 			.tool {
 				@include flex-center;
+				// flex-wrap: wrap;
 				max-width: 100%;
 				gap: 5px;
 
@@ -134,9 +136,10 @@
 }
 .userdiv {
 	@include common-box;
-	flex-grow: 5;
+	flex-grow: 10;
 	width: 100%;
 	overflow: auto;
+	// min-height: 50%;
 
 	.users {
 		display: flex;
@@ -145,8 +148,17 @@
 		list-style-type: none;
 		width: 100%;
 
-		li {
+		.green {
 			@include info;
+			p {
+				color: $green;
+			}
+		}
+		.red {
+			@include info;
+			p {
+				color: $red;
+			}
 		}
 	}
 	@media (max-width: 768px) {

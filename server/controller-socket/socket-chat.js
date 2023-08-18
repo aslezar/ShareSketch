@@ -1,20 +1,11 @@
-const mongoose = require('mongoose');
-const Room = require('../models/room');
-
+// Desc: Socket controller for chat
 const createMessage = async (data, cb, socket) => {
 	try {
 		const { message } = data;
-		const { userId, userName, roomId } = socket;
-		if (socket.isGuest) {
+		const { userId, name: userName, isGuest } = socket.userData;
+		const { room, updateRoom } = socket.room;
+		if (isGuest) {
 			cb({ msg: 'You must be login to chat, Server', success: false });
-			return;
-		}
-		if (!mongoose.Types.ObjectId.isValid(roomId)) {
-			cb({ msg: 'Invalid Room ID', success: false });
-			return;
-		}
-		if (!mongoose.Types.ObjectId.isValid(userId)) {
-			cb({ msg: 'Invalid User ID', success: false });
 			return;
 		}
 		if (!userName) {
@@ -25,23 +16,18 @@ const createMessage = async (data, cb, socket) => {
 			cb({ msg: 'Empty Message', success: false });
 			return;
 		}
-		const room = await Room.findById(data.roomId);
-		if (!room) {
-			cb({
-				message: `Room not found with room ID ${roomid}`,
-				success: false,
-			});
-			return;
-		}
+
 		room.chat.push({ userId, userName, message });
-		room.save();
+		updateRoom();
 
 		socket.broadcast
-			.to(data.roomId)
+			.to(room._id)
 			.emit('chat:message', { userId, userName, message });
+
 		cb({ msg: 'Server: Message created', success: true });
+
 		console.log(
-			`User ${userName} sent message on room ${data.roomId} with message ${data.message}`
+			`User ${userName} sent message on room ${room._id} with message ${message}`
 		);
 	} catch (error) {
 		console.log(error);

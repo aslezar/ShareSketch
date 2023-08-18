@@ -121,11 +121,11 @@ function Signup({ toogleSignIn, closeSign }) {
 				</div>
 
 				<div className={style.actoinContainer}>
-					<span
-						onClick={() => toogleSignIn('signup')}
-						className={style.hoverUnderline}>
-						Forgot Password?
-					</span>
+						{/* <span
+							onClick={() => toogleSignIn('signup')}
+							className={style.hoverUnderline}>
+							Forgot Password?
+						</span> */}
 					<Button>
 						<AiOutlineUserAdd />
 						REGISTER

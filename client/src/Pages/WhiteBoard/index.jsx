@@ -15,14 +15,13 @@ import Chat from '../../components/Chat';
 import style from './style.module.scss';
 
 const WhiteBoard = () => {
-	console.log('whiteboard');
+	// console.log('whiteboard');
 	const [toolbox, setToolbox] = useState(defaultToolbox);
 	const [orientation, setOrientation] = useState('landscape'); //landscape or portrait
 
 	//RoomInfo
 	const [roomName, setRoomName] = useState('');
 	const [roomUsers, setRoomUsers] = useState([]); // [{userId,name}
-	const [roomAdmin, setRoomAdmin] = useState(''); //userId
 
 	const [curUser, setCurUser] = useState(''); //name of the user
 
@@ -57,22 +56,26 @@ const WhiteBoard = () => {
 		// 		toastId: 'orientation',
 		// 	});
 		// }
-		switch (screen.orientation.type) {
-			case 'landscape-primary':
-			case 'landscape-secondary':
-				setOrientation('landscape');
-				console.log('That looks good.');
-				document.documentElement.requestFullscreen();
-				break;
-			case 'portrait-secondary':
-			case 'portrait-primary':
-				setOrientation('portrait');
-				// toast.info('Please use landscape mode.', {
-				// 	toastId: 'orientation',
-				// });
-				break;
-			default:
-				console.log("The orientation API isn't supported in this browser :(");
+		try {
+			switch (screen.orientation.type) {
+				case 'landscape-primary':
+				case 'landscape-secondary':
+					setOrientation('landscape');
+					// console.log('That looks good.');
+					document.documentElement.requestFullscreen();
+					break;
+				case 'portrait-secondary':
+				case 'portrait-primary':
+					setOrientation('portrait');
+					// toast.info('Please use landscape mode.', {
+					// 	toastId: 'orientation',
+					// });
+					break;
+				default:
+					console.log("The orientation API isn't supported in this browser :(");
+			}
+		} catch (error) {
+			console.log(error);
 		}
 	};
 
@@ -94,29 +97,64 @@ const WhiteBoard = () => {
 	}, []);
 
 	useEffect(() => {
+		// console.log('hello from whiteboard');
 		function joinRoom() {
-			toast.info('Joining room...');
+			console.log(token, isSignedIn);
+			if (!isSignedIn) {
+				if (localStorage.getItem('token')) {
+					return;
+				}
+			}
+			toast.info('Joining room...', {
+				toastId: 'join',
+			});
 			const guestUser = JSON.parse(localStorage.getItem('guestUser'));
 			socket.emit('room:join', { roomId, token, guestUser }, (response) => {
 				if (response.success) {
-					toast.success(response.msg);
+					toast.dismiss('join');
+					toast.success(response.msg),
+						{
+							toastId: 'join',
+						};
+
+					const {
+						roomId,
+						name,
+						users,
+						userActive,
+						elements,
+						messages,
+						curUser,
+					} = response.data;
+
+					// console.log(users);
+					// console.log(userActive);
+
+					const userMap = new Map(); // Map to store user IDs and their status
+					// Process userActive array first
+					for (const user of userActive) {
+						userMap.set(user.userId, { ...user, isOnline: true });
+					}
+					// Process users array
+					for (const user of users) {
+						if (!userMap.has(user.userId)) {
+							userMap.set(user.userId, { ...user, isOnline: false });
+						}
+					}
+					// Convert the userMap values (objects) back to an array
+					const resultUsers = Array.from(userMap.values());
+					// console.log(resultUsers);
+
 					// console.log(response.data);
-					setRoomName(response.data.name);
-					setRoomUsers(response.data.users);
-					setRoomAdmin(response.data.admin);
-
-					setElements(response.data.elements);
-					setMessages(response.data.messages);
-
+					setRoomName(name);
+					setRoomUsers(resultUsers);
+					setElements(elements);
+					setMessages(messages);
+					setCurUser(curUser);
 					setIsConnected(true);
 
-					setCurUser(response.data.curUser);
-
-					if (response.data.curUser.isGuest) {
-						localStorage.setItem(
-							'guestUser',
-							JSON.stringify(response.data.curUser)
-						);
+					if (curUser.isGuest) {
+						localStorage.setItem('guestUser', JSON.stringify(curUser));
 					}
 				} else {
 					console.log(response);
@@ -140,22 +178,36 @@ const WhiteBoard = () => {
 			toast.error('Server disconnected.');
 		}
 		function userJoin(user) {
-			setRoomUsers((prevUsers) => [...prevUsers, user]);
+			//if roomusers conatin users with id from user than chagne status to online else add it to array list
+			console.log(user);
+			if (user.isGuest) {
+				setRoomUsers((prevUsers) => [
+					...prevUsers,
+					{ ...user, isOnline: true },
+				]);
+			} else {
+				const newUsers = roomUsers.filter((roomUser) => {
+					roomUser.userId !== user.userId;
+				});
+				setRoomUsers([...newUsers, { ...user, isOnline: true }]);
+			}
+			// setRoomUsers((prevUsers) => [...prevUsers, user]);
 			toast.info(`${user.name} joined the room`);
 		}
 		function userLeft(user) {
-			setRoomUsers((prevUsers) => {
-				if (user.userId)
-					return prevUsers.filter(
-						(prevUser) => prevUser.userId !== user.userId
-					);
-				else {
-					return prevUsers.filter(
-						(prevUser) => prevUser.userName !== user.userName
-					);
-				}
-			});
-			toast.info(`${user.userName} left the room`);
+			console.log(user);
+			const newUsers = roomUsers
+				.map((roomUser) => {
+					if (roomUser.userId === user.userId) {
+						if (!user.isGuest) return { ...roomUser, isOnline: false };
+						else return null;
+					}
+					return roomUser;
+				})
+				.filter((item) => item !== null);
+			console.log(newUsers);
+			setRoomUsers(newUsers);
+			toast.info(`${user.name} left the room`);
 		}
 
 		function canvasDraw(newElements) {
@@ -271,6 +323,8 @@ const WhiteBoard = () => {
 			return toast.error('You must be signed in to edit canvas', {
 				toastId: 'signIntoedit',
 			});
+		//confirm if user want to clear canvas
+		if (!window.confirm('Are you sure you want to clear canvas?')) return;
 		setElements([]);
 		setHistory([]);
 		socket.emit('canvas:clear', null, (response) => {
@@ -360,7 +414,6 @@ const WhiteBoard = () => {
 				roomId={roomId}
 				roomName={roomName}
 				roomUsers={roomUsers}
-				roomAdmin={roomAdmin}
 				curUser={curUser}
 			/>
 

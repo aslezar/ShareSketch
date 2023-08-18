@@ -23,16 +23,18 @@ const AppProvider = ({ children }) => {
 	const [zoom, setZoom] = React.useState(1);
 
 	const initialFromLocalStorage = async (tokenValue) => {
-		api.handler(
+		// console.log('hello from api');
+		await api.handler(
 			api.signinToken,
 			(data) => {
 				signIn(data);
 			},
 			tokenValue,
-			(error) => {
+			() => {
 				localStorage.removeItem('token');
 			}
 		);
+		// console.log('hello from api2');
 	};
 
 	useEffect(() => {
@@ -82,6 +84,8 @@ const AppProvider = ({ children }) => {
 			return prevMode === 'dark' ? 'light' : 'dark';
 		});
 	};
+
+	// console.log('hello from context');
 
 	return (
 		<AppContext.Provider
