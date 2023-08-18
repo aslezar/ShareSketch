@@ -84,7 +84,10 @@ const Navbar = () => {
 										<span>
 											<h2>{name}</h2>
 											<p>
-												{bio.length > 100 ? `${bio.slice(0, 100)}...` : bio}
+												{bio &&
+													(bio?.length > 100
+														? `${bio?.slice(0, 100)}...`
+														: bio)}
 											</p>
 										</span>
 									</>

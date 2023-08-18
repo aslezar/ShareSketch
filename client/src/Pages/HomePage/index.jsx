@@ -98,7 +98,7 @@ const Homepage = () => {
 								<i>Hi, </i>
 								{name}
 							</h2>
-							<p>{bio.length > 100 ? `${bio.slice(0, 100)}...` : bio}</p>
+							<p>{bio && bio?.length > 100 ? `${bio?.slice(0, 100)}...` : bio}</p>
 						</>
 					) : (
 						<>
