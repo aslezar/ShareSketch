@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import drawCanvas from '../../utils/drawCanvas';
 
+import { toast } from 'react-toastify';
+
 const CanvasUpper = ({ canvasRef, toolbox, addElement }) => {
 	// console.log('canvas upper');
 	const [isDrawing, setIsDrawing] = useState(false);
@@ -49,6 +51,15 @@ const CanvasUpper = ({ canvasRef, toolbox, addElement }) => {
 
 	//Helper function
 	const getCoordinatedFromEvent = (e) => {
+		e.preventDefault();
+		console.log(e.type);
+		if (e.type.startsWith('touch')) {
+			const { pageX, pageY } = e.changedTouches[0];
+			const rect = canvasUpperRef.current.getBoundingClientRect();
+			const x = (pageX - rect.left) * scaleRef.current;
+			const y = (pageY - rect.top) * scaleRef.current;
+			return [x, y];
+		}
 		const { clientX, clientY } = e;
 		const rect = canvasUpperRef.current.getBoundingClientRect();
 		const x = (clientX - rect.left) * scaleRef.current;
@@ -132,6 +143,28 @@ const CanvasUpper = ({ canvasRef, toolbox, addElement }) => {
 		drawCanvas.clearCanvas(canvasUpperRef.current);
 		setCurElement({});
 	};
+	const handleMouseLeave = (e) => {
+		setIsDrawing(false);
+		drawCanvas.clearCanvas(canvasUpperRef.current);
+		setCurElement({});
+	};
+	const handleTouch = (e) => {
+		// e.preventDefault();
+		// toast.info('You touched');
+		// console.log(e);
+		// console.log(e.changedTouches.TouchList[0]);
+		// console.log(e.clientX, e.clientY);
+		// console.log(e._reactName);
+		// console.log(e.touches);
+		// handleMouseDown(e.touches);
+		e.preventDefault();
+
+		// Get information about the touch event
+		const { pageX, pageY } = e.changedTouches[0]; // Get the first touch in the list
+
+		// You can now use touchX and touchY as needed
+		console.log('Touch started at:', pageX, pageY);
+	};
 
 	return (
 		<canvas
@@ -139,9 +172,11 @@ const CanvasUpper = ({ canvasRef, toolbox, addElement }) => {
 			onMouseDown={handleMouseDown}
 			onMouseUp={handleMouseUp}
 			onMouseMove={handleMouseMove}
+			onMouseLeave={handleMouseLeave}
 			onTouchStart={handleMouseDown}
 			onTouchEnd={handleMouseUp}
 			onTouchMove={handleMouseMove}
+			onTouchCancel={handleMouseLeave}
 		/>
 	);
 };

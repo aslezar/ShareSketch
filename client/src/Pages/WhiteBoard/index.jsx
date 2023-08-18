@@ -62,7 +62,11 @@ const WhiteBoard = () => {
 				case 'landscape-secondary':
 					setOrientation('landscape');
 					// console.log('That looks good.');
-					document.documentElement.requestFullscreen();
+					try {
+						document.documentElement.requestFullscreen();
+					} catch (error) {
+						console.log(error);
+					}
 					break;
 				case 'portrait-secondary':
 				case 'portrait-primary':
@@ -99,7 +103,7 @@ const WhiteBoard = () => {
 	useEffect(() => {
 		// console.log('hello from whiteboard');
 		function joinRoom() {
-			console.log(token, isSignedIn);
+			// console.log(token, isSignedIn);
 			if (!isSignedIn) {
 				if (localStorage.getItem('token')) {
 					return;

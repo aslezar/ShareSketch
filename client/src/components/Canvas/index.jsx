@@ -46,8 +46,9 @@ const Canvas = ({ elements, canvasRef }) => {
 	return (
 		<canvas
 			className={style.canvas}
-			ref={canvasRef}
-		/>
+			ref={canvasRef}>
+			Your browser does not support the HTML5 canvas tag.
+		</canvas>
 	);
 };
 
