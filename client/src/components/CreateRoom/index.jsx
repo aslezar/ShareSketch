@@ -24,7 +24,10 @@ const CreateRoom = () => {
 			api.createRoom,
 			(data) => {
 				//copy room id to clipboard
-				navigator.clipboard.writeText(data.roomId);
+				// navigator.clipboard.writeText(data.roomId);
+				navigator.clipboard.writeText(
+					window.location.origin + `/room/${data.roomId}`
+				);
 				navigate(`/room/${data.roomId}`);
 			},
 			roomName
