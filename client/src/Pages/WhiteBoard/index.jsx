@@ -219,7 +219,8 @@ const WhiteBoard = () => {
 			// console.log('canvas Draw event received', newElements);
 			setElements((previous) => [...previous, newElements]);
 		}
-		function clrCanvas() {
+		function clrCanvas(userName) {
+			toast.info(`${userName} cleared canvas`);
 			setElements([]);
 			setHistory([]);
 		}

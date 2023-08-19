@@ -39,7 +39,7 @@ const clearCanvas = async (data, cb, socket) => {
 		room.elements = [];
 		updateRoom();
 
-		socket.broadcast.to(room._id).emit('canvas:clear');
+		socket.broadcast.to(room._id).emit('canvas:clear', userData.name);
 		cb({ msg: 'Server: Canvas Cleared', success: true });
 
 		console.log(

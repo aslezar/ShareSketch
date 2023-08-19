@@ -3,12 +3,14 @@ import style from './style.module.scss';
 import { useGlobalContext } from '../../context';
 import * as api from '../../api';
 
+import CustomConfirmation from '../../components/CustomConfirmation';
 import CreateRoom from '../../components/CreateRoom';
 import JoinRoom from '../../components/JoinRoom';
 import Rooms from '../../components/Rooms';
 import UserPanel from '../../components/UserPanel';
 import Footer from '../../components/Footer';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const DashBoard = () => {
 	const [myRooms, setMyRooms] = React.useState([]);
@@ -28,24 +30,43 @@ const DashBoard = () => {
 	};
 
 	const handleDeleteMyRoom = async (roomId) => {
-		api.handler(
-			api.deleteRoom,
-			() => {
-				setMyRooms((prev) => prev.filter((room) => room.roomId !== roomId));
-			},
-			roomId
+		toast(
+			<CustomConfirmation
+				message='Are you sure you want to delete this room?'
+				onConfirm={() => {
+					api.handler(
+						api.deleteRoom,
+						() => {
+							setMyRooms((prev) =>
+								prev.filter((room) => room.roomId !== roomId)
+							);
+						},
+						roomId
+					);
+				}}
+				onCancel={() => {
+					toast.dismiss('roomDelete');
+				}}
+			/>,
+			{
+				toastId: 'roomDelete',
+				autoClose: false, // Keep the toast open until confirmed or canceled
+			}
 		);
 	};
-	const handleDeleteOtherRoom = async (roomId) => {
-		api.handler(
-			api.deleteRoom,
-			() => {
-				setOtherRooms((prev) => prev.filter((room) => room.roomId !== roomId));
-			},
-			roomId
-		);
+	const handleDeleteOtherRoom = () => {
+		toast.info('You can only delete rooms created by you.', {
+			toastId: 'roomDelete',
+		});
+		// api.handler(
+		// 	api.deleteRoom,
+		// 	() => {
+		// 		setOtherRooms((prev) => prev.filter((room) => room.roomId !== roomId));
+		// 	},
+		// 	roomId
+		// );
 	};
-	
+
 	useEffect(() => {
 		// console.log(userId);
 		if (isSignedIn) fetchRooms();
