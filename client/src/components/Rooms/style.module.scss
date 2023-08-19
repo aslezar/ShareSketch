@@ -19,6 +19,10 @@ $room-color-even: #fff;
 		@include info;
 		padding: calc($border-padding / 2);
 		flex-wrap: wrap;
+		:nth-child(2) {
+			flex-grow: 1;
+			text-align: right;
+		}
 	}
 }
 .icon {
