@@ -20,8 +20,8 @@ const drawElement = (canvas, element) => {
 			ctx.stroke();
 			break;
 		case 'rectangle':
-			element.fillStyle &&
-				ctx.fillRect(element.x, element.y, element.width, element.height);
+			// element.fillStyle &&
+			ctx.fillRect(element.x, element.y, element.width, element.height);
 			ctx.strokeRect(element.x, element.y, element.width, element.height);
 			break;
 		case 'circle':
@@ -37,7 +37,7 @@ const drawElement = (canvas, element) => {
 
 			ctx.beginPath();
 			ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI);
-			element.fillStyle && ctx.fill();
+			ctx.fill();
 			ctx.stroke();
 			break;
 		default:

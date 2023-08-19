@@ -1,7 +1,6 @@
 about us
 multitouch suppport
 bug: canvas disappear on selecting outside area
-fill color value to null
 
 DONE
 socket io me authentication daalni h
@@ -14,3 +13,6 @@ undo redo not working as expected
 join room ka option dena h
 toolbox me copy/share krne ka option
 clear canvas or undo redo theek krna h
+fill color value to null
+
+supports transparnet color objects

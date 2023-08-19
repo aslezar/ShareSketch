@@ -3,6 +3,7 @@ import { IoIosUndo, IoIosRedo } from 'react-icons/io';
 import { GrClearOption } from 'react-icons/gr';
 import { MdContentCopy } from 'react-icons/md';
 import { toast } from 'react-toastify';
+import ColorPicker from '../ColorPicker';
 // import { FaUserCircle } from 'react-icons/fa';
 import { AiOutlineClear } from 'react-icons/ai';
 import {
@@ -139,19 +140,37 @@ const Toolbox = ({
 						/>
 					</section>
 					<section className={style.color}>
-						<label htmlFor='color'>Color:</label>
-						<input
+						<label htmlFor='strokeStyle'>Color:</label>
+						{/* <input
 							type='color'
 							name='strokeStyle'
 							onChange={handleChange}
+						/> */}
+						<ColorPicker
+							color={toolbox.strokeStyle}
+							changeColor={(color) => {
+								setToolbox((prevState) => ({
+									...prevState,
+									strokeStyle: color,
+								}));
+							}}
 						/>
 					</section>
 					<section className={style.color}>
 						<label htmlFor='fillStyle'>Fill Color:</label>
-						<input
+						{/* <input
 							type='color'
-							name={'fillStyle'}
+							name='fillStyle'
 							onChange={handleChange}
+						/> */}
+						<ColorPicker
+							color={toolbox.fillStyle}
+							changeColor={(color) => {
+								setToolbox((prevState) => ({
+									...prevState,
+									fillStyle: color,
+								}));
+							}}
 						/>
 					</section>
 					<section className={style.buttonsSection}>

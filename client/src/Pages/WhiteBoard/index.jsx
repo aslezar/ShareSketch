@@ -477,9 +477,9 @@ const WhiteBoard = () => {
 
 const defaultToolbox = {
 	tool: 'pencil',
-	strokeStyle: 'black',
+	strokeStyle: 'rgba(0,0,256,1)',
 	lineWidth: 5,
-	fillStyle: null,
+	fillStyle: `rgba(0,0,0,0)`,
 };
 
 export default WhiteBoard;
