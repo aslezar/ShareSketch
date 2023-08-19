@@ -7,7 +7,8 @@ import Button from '../../components/Button';
 import Footer from '../../components/Footer';
 import JoinRoom from '../../components/JoinRoom';
 //Images
-import image from '../../assets/ShareSketch2.png';
+import imageLight from '../../assets/ShareSketchLight.png';
+import imageDark from '../../assets/ShareSketchDark.png';
 import image2 from '../../assets/bg1.png';
 //Icons
 import { useGlobalContext } from '../../context';
@@ -52,7 +53,7 @@ const points = [
 const Homepage = () => {
 	const [signup, setSignup] = React.useState(false);
 
-	const { isSignedIn, name, bio, profileImage } = useGlobalContext();
+	const { isSignedIn, name, bio, profileImage, colorMode } = useGlobalContext();
 	return (
 		<>
 			{signup && (
@@ -98,7 +99,9 @@ const Homepage = () => {
 								<i>Hi, </i>
 								{name}
 							</h2>
-							<p>{bio && bio?.length > 100 ? `${bio?.slice(0, 100)}...` : bio}</p>
+							<p>
+								{bio && bio?.length > 100 ? `${bio?.slice(0, 100)}...` : bio}
+							</p>
 						</>
 					) : (
 						<>
@@ -116,7 +119,7 @@ const Homepage = () => {
 				</div>
 				<div className={style.imageDiv}>
 					<img
-						src={image}
+						src={colorMode === 'dark' ? imageDark : imageLight}
 						alt='sharesketch'
 					/>
 				</div>
