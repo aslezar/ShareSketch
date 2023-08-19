@@ -287,6 +287,10 @@ const WhiteBoard = () => {
 			return toast.error('You must be signed in to edit canvas', {
 				toastId: 'signIntoedit',
 			});
+		if (!isConnected)
+			return toast.error('You must be connected to edit canvas', {
+				toastId: 'connectToedit',
+			});
 		if (elements.length === 0) return;
 		const lastElement = elements[elements.length - 1];
 		setHistory((prevState) => [...prevState, lastElement]); // add last element from elements
@@ -306,6 +310,10 @@ const WhiteBoard = () => {
 		if (isSignedIn === false)
 			return toast.error('You must be signed in to edit canvas', {
 				toastId: 'signIntoedit',
+			});
+		if (!isConnected)
+			return toast.error('You must be connected to edit canvas', {
+				toastId: 'connectToedit',
 			});
 		if (history.length === 0) return;
 		const lastElement = history[history.length - 1];
@@ -328,7 +336,10 @@ const WhiteBoard = () => {
 			return toast.error('You must be signed in to edit canvas', {
 				toastId: 'signIntoedit',
 			});
-
+		if (!isConnected)
+			return toast.error('You must be connected to edit canvas', {
+				toastId: 'connectToedit',
+			});
 		const clearCanvasElement = () => {
 			toast.dismiss('clearCanvas'), setElements([]);
 			setHistory([]);
@@ -381,6 +392,10 @@ const WhiteBoard = () => {
 			return toast.error('You must be signed in to draw', {
 				toastId: 'signIntoedit',
 			});
+		if (!isConnected)
+			return toast.error('You must be connected to edit canvas', {
+				toastId: 'connectToedit',
+			});
 		// const elementId = uuidv4();
 		// console.log(elementId);
 		const element = { elementId: uuidv4(), ...ele };
@@ -395,15 +410,13 @@ const WhiteBoard = () => {
 
 	const sendMessage = (message) => {
 		if (!isSignedIn)
-			return toast.error(
-				'You must be signed in to send messages',
-				{
-					toastId: 'signIntoedit',
-				},
-				{
-					toastId: 'signIntoedit',
-				}
-			);
+			return toast.error('You must be signed in to send messages', {
+				toastId: 'signIntoedit',
+			});
+		if (!isConnected)
+			return toast.error('You must be connected to send message.', {
+				toastId: 'connectToedit',
+			});
 		setMessages((previous) => [...previous, { userId, userName, message }]);
 		socket.emit(
 			'chat:message',
