@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useParams } from 'react-router-dom';
 
 //Components
+import CustomConfirmation from '../../components/CustomConfirmation';
 import Toolbox from '../../components/Toolbox';
 import Canvas from '../../components/Canvas';
 import CanvasUpper from '../../components/CanvasUpper';
@@ -327,15 +328,36 @@ const WhiteBoard = () => {
 			return toast.error('You must be signed in to edit canvas', {
 				toastId: 'signIntoedit',
 			});
-		//confirm if user want to clear canvas
-		// if (!window.confirm('Are you sure you want to clear canvas?')) return;
-		setElements([]);
-		setHistory([]);
-		socket.emit('canvas:clear', null, (response) => {
-			if (!response.success) {
-				toast.error(response.msg);
+
+		const clearCanvasElement = () => {
+			toast.dismiss('clearCanvas'), setElements([]);
+			setHistory([]);
+			socket.emit('canvas:clear', null, (response) => {
+				if (!response.success) {
+					toast.error(response.msg, {
+						toastId: 'clearCanvas',
+					});
+				} else {
+					toast.success(response.msg, {
+						toastId: 'clearCanvas',
+					});
+				}
+			});
+		};
+
+		toast(
+			<CustomConfirmation
+				message="Clearing Canvas. Can't be undone?"
+				onConfirm={clearCanvasElement}
+				onCancel={() => {
+					toast.dismiss('clearCanvas');
+				}}
+			/>,
+			{
+				toastId: 'clearCanvas',
+				autoClose: false, // Keep the toast open until confirmed or canceled
 			}
-		});
+		);
 	};
 	const toogleConnection = () => {
 		if (isConnected === true) {
