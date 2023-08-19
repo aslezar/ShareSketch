@@ -19,7 +19,9 @@ const Canvas = ({ elements, canvasRef }) => {
 
 		function setSize() {
 			// Calculate dimensions based on the viewport
-			const height = window.innerHeight * 0.8;
+			let height = window.innerHeight * 0.8;
+			if (window.innerWidth < height * ratio)
+				height = (window.innerWidth * 0.9) / ratio;
 			const width = height * ratio;
 
 			canvas.height = resolution;

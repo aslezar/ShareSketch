@@ -328,7 +328,7 @@ const WhiteBoard = () => {
 				toastId: 'signIntoedit',
 			});
 		//confirm if user want to clear canvas
-		if (!window.confirm('Are you sure you want to clear canvas?')) return;
+		// if (!window.confirm('Are you sure you want to clear canvas?')) return;
 		setElements([]);
 		setHistory([]);
 		socket.emit('canvas:clear', null, (response) => {

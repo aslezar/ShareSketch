@@ -17,7 +17,7 @@
 
 .heading {
 	text-align: center;
-	font-size: $fontSize1;
+	font-size: calc($fontSize2 * 2);
 }
 
 .dummyLogin {
@@ -25,6 +25,10 @@
 	flex-grow: 1;
 	text-align: right;
 	cursor: pointer;
+
+	i {
+		font-size: $fontSize2;
+	}
 
 	&:hover {
 		text-decoration: underline;

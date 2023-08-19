@@ -29,17 +29,18 @@ const Chat = ({ isConnected, messages, sendMessage }) => {
 
 	return (
 		<>
-			<HiOutlineChat
-				className={style.msgicon}
-				onClick={() => {
-					document.getElementById('chat').classList.toggle(style.show);
-				}}
-			/>
 			<div
 				id='chat'
-				className={style.chat}
-				ref={messageRef}>
-				<ul className={style.messages}>
+				className={style.chat}>
+				<HiOutlineChat
+					className={style.msgicon}
+					onClick={() => {
+						document.getElementById('chat').classList.toggle(style.hide);
+					}}
+				/>
+				<ul
+					className={style.messages}
+					ref={messageRef}>
 					{messages.map((msg, index) => (
 						<li
 							key={index}

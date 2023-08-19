@@ -13,7 +13,7 @@
 	z-index: 9998;
 
 	.popup {
-		min-height: 50vh;
+		// min-height: 40vh;
 		min-width: 20vw;
 		background-color: rgba(0, 0, 0, 1);
 		color: $textInverse;
@@ -35,6 +35,9 @@
 			top: 0.5vw;
 			right: 0.5vw;
 			border-radius: $border-radius;
+		}
+		@media (max-width: 768px) {
+			padding: 20px;
 		}
 	}
 }

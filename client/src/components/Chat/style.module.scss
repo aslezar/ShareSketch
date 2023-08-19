@@ -1,115 +1,124 @@
-/* Variables */
 @import 'variables';
 
-/* Styles */
+/* Define the base styles for the chat container */
 .chat {
-	@include main-box;
+	padding: $border-padding;
+	border-radius: $border-radius 0px 0px 0px;
+	border: 1px solid $shadowColor;
 	box-shadow: -5px 0px 10px $shadowColor;
-	border-radius: $border-radius 0 0 0;
-	margin: 0px;
 
-	min-width: 15vw;
-	max-width: 18vw;
-	height: 100%;
+	// border: 2px solid red;
 
-	@include flex-center;
+	position: absolute;
+	top: 8vh;
+	right: 0;
+	bottom: 0;
+	z-index: 1;
+	max-width: 250px;
+
+	display: flex;
 	flex-direction: column;
-	overflow: auto;
+	justify-content: space-between;
 
-	position: relative;
+	// opacity: 1;
+	transition: all 0.5s ease-in-out;
 
-	@media (max-width: 768px) {
-		position: fixed;
-		right: 0;
-		top: 10vh;
-		bottom: 0;
-		height: auto;
-		max-width: 60%;
-		display: none;
+	.msgicon {
+		position: absolute;
+		top: 1%;
+		left: 0;
+		font-size: 2.5vh;
+		color: $textColor2;
+		transform: translate(-100%, 0);
+		cursor: pointer;
+		transition: var(--transition);
+		&:hover {
+			color: $textColor3;
+			font-size: $iconSizeHover;
+		}
+		@media (max-height: 768px) {
+			font-size: 5vh;
+			&:hover {
+				font-size: 6vh;
+			}
+		}
+	}
+	@media (max-height: 768px) {
+		max-width: 20%;
 	}
 }
-.show {
-	display: flex;
+.hide {
+	transform: translateX(100%);
 }
 
 .messages {
-	flex-grow: 1;
-	@include flex-center;
+	max-height: 92%;
+	overflow: auto;
+	display: flex;
 	flex-direction: column;
-	justify-content: flex-end;
-	gap: 0px;
-	padding: 0;
-	margin: 0;
 
-	max-width: 100%;
-	width: 100%;
-	flex: 1;
-	list-style-type: none;
+	.userMessage,
+	.otherMessage {
+		display: flex;
+		// border: 2px solid red;
+		background-color: $primaryColor;
+		color: $white;
+		border: 2px solid black;
+		max-width: 90%;
+		width: auto;
+		border-radius: $border-radius;
+		padding: calc($border-padding/2);
+		font-size: 12px;
+		overflow-wrap: break-word;
+	}
 
-	margin-bottom: 2vh;
-	// overflow: auto;
+	.userMessage {
+		margin-left: auto;
+		background-color: $white;
+		color: black;
+	}
 
-	// border: 2px solid red;
+	.otherMessage {
+		margin-right: auto;
+	}
 	li + li {
-		margin-top: 0.5vw;
+		margin-top: 0.5vh;
 	}
 }
 
-.userMessage,
-.otherMessage {
-	display: flex;
-	gap: 0.5vw;
-	padding: 5px 10px;
-	background-color: $primaryColor4;
-	border-radius: $border-radius;
-	color: $textColor2;
-	font-size: $fontSize2;
-
-	max-width: 90%;
-	overflow-wrap: break-word;
-}
-
-.userMessage {
-	margin-left: auto;
-	color: black;
-	background: #ccc;
-}
-
-.otherMessage {
-	margin-right: auto;
-}
-
 .form {
-	display: flex;
-	position: sticky;
-	bottom: 0;
-	justify-content: space-between;
-	max-width: 100%;
-	width: 100%;
-	backdrop-filter: blur(10px);
-
+	max-height: 8%;
 	// border: 2px solid red;
-}
+	display: flex;
+	justify-content: space-evenly;
+	padding: calc($border-padding/2) 0px;
 
-.input {
-	@include input;
-	width: 70%;
-}
+	.input {
+		max-width: 70%;
+		border-radius: $border-radius;
+		padding: 2px 0.8vw;
+		// height: 90%;
+		&:disabled {
+			color: $textInverse;
+		}
+	}
 
-.btn {
-	@include buttons;
-	width: 25%;
-}
-.msgicon {
-	color: $themeInverseColor;
-	font-size: calc($fontSize2 * 2.5);
-	position: fixed;
-	right: 0;
-	top: 10vh;
-	display: none;
-	z-index: 2;
-	@media (max-width: 768px) {
-		// default display
-		display: block;
+	.btn {
+		max-width: 25%;
+		border-radius: $border-radius;
+		padding: 2px 0.8vw;
+		transition: all 0.2s ease-in-out;
+		background-color: $primaryColor3;
+		font-size: 12px;
+		cursor: pointer;
+
+		&:hover {
+			background-color: darken($primaryColor3, 10%);
+		}
+
+		&:disabled {
+			background-color: $textColor3;
+			color: $textInverse;
+		}
 	}
 }
