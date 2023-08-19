@@ -1,5 +1,7 @@
 about us
 multitouch suppport
+prompt before signout
+name tag color change on whiteboard
 bug: canvas disappear on selecting outside area
 
 DONE
