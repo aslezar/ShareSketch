@@ -16,8 +16,6 @@ async function getRoom(roomId) {
 		const room = await Room.findById(roomId);
 		if (!room) {
 			throw new Error(`Room not found with room ID ${roomId}`);
-			// cb({ msg: `Room not found with room ID ${roomId}`, success: false });
-			// return;
 		}
 
 		const updateRoom = _.debounce(async () => {

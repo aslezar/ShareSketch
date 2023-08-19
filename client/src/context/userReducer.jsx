@@ -1,3 +1,4 @@
+import profileImage from '../assets/profileImage.png';
 import { userInitialState } from '.';
 const reducer = (state, action) => {
 	try {
@@ -5,7 +6,7 @@ const reducer = (state, action) => {
 			localStorage.setItem('token', JSON.stringify(action.payload.token));
 			const imageURL = action.payload.profileImage
 				? `data:${action.payload.profileImage.contentType};base64,${action.payload.profileImage.base64Image}`
-				: 'https://i.imgur.com/6VBx3io.png';
+				: profileImage;
 			return {
 				signedIn: true,
 				userId: action.payload.userId,
