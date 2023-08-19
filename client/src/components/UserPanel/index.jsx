@@ -190,9 +190,10 @@ function ProfileImageUpload() {
 			() => {
 				// updateUser({ profileImage: data.profileImage });
 				// toast.success(data.msg);
-				setTimeout(() => {
-					window.location.reload();
-				}, 3000);
+				updateUser({ profileImage: URL.createObjectURL(file) });
+				// setTimeout(() => {
+				// 	window.location.reload();
+				// }, 3000);
 			},
 			file
 		);
