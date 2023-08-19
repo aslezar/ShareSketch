@@ -28,6 +28,10 @@ const Canvas = ({ elements, canvasRef }) => {
 			canvas.width = resolution * ratio;
 			canvas.style.width = `${width}px`;
 			canvas.style.height = `${height}px`;
+
+			drawCanvas.clearCanvas(canvasRef.current);
+			drawCanvas.drawAllElement(canvasRef.current, elements);
+			// console.log('resized');
 		}
 
 		// Initial setup

@@ -46,7 +46,7 @@ const CreateRoom = () => {
 						id='roomName'
 						onChange={(e) => setRoomName(e.target.value)}
 						type='text'
-						placeholder='Enter Room Name: '
+						placeholder='Enter room name... '
 						value={roomName}
 					/>
 				</div>
