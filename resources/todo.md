@@ -2,6 +2,8 @@ about us
 multitouch suppport
 google signup
 dashboard image bug
+prompt before signout
+name tag color change on whiteboard
 
 DONE
 bug: canvas disappear on selecting outside area
