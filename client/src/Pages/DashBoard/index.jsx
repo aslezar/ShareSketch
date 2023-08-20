@@ -47,7 +47,7 @@ const DashBoard = () => {
 	const handleDeleteOtherRoom = async (roomId) => {
 		const handler = () => {
 			api.handler(
-				api.leaveRoom,
+				api.removeRoom,
 				() => {
 					setOtherRooms((prev) =>
 						prev.filter((room) => room.roomId !== roomId)
