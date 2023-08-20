@@ -1,6 +1,6 @@
 import React, { useContext, useReducer, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import CustomConfirmation from '../components/CustomConfirmation';
+import customConfirmation from '../components/customConfirmation';
 import * as api from '../api/index.js';
 import reducer from './userReducer.jsx';
 import { socket } from '../socket';
@@ -74,23 +74,17 @@ const AppProvider = ({ children }) => {
 		return true;
 	};
 	const signOut = async () => {
-		toast(
-			<CustomConfirmation
-				message='Are you sure you want to Sign Out?'
-				onConfirm={async () => {
-					if (socket.connected) socket.disconnect();
-					const res = await api.signOut();
-					dispatch({ type: 'SIGN_OUT' });
-				}}
-				onCancel={() => {
-					toast.dismiss('signOut');
-				}}
-			/>,
-			{
-				toastId: 'signOut',
-				autoClose: false, // Keep the toast open until confirmed or canceled
-			}
-		);
+		const _signOut = async () => {
+			if (socket.connected) socket.disconnect();
+			const res = await api.signOut();
+			dispatch({ type: 'SIGN_OUT' });
+		};
+
+		customConfirmation({
+			message: 'Are you sure you want to Sign Out?',
+			onConfirm: _signOut,
+			toastId: 'signOut',
+		});
 	};
 	const toggleColorMode = () => {
 		setColorMode((prevMode) => {

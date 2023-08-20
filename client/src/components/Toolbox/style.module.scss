@@ -131,6 +131,9 @@
 			// width: 100%;
 			color: $white;
 			font-size: $fontSize3;
+			p {
+				color: $white;
+			}
 			:nth-child(1) {
 				font-style: bold;
 			}

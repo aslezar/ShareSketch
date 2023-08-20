@@ -1,11 +1,11 @@
 about us
 multitouch suppport
 google signup
-dashboard image bug
-prompt before signout
-name tag color change on whiteboard
+dashboard image bug with navbar
 
 DONE
+name tag color change on whiteboard
+prompt before signout
 bug: canvas disappear on selecting outside area
 socket io me authentication daalni h
 css achi krni h

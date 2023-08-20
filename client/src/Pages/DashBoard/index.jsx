@@ -3,14 +3,13 @@ import style from './style.module.scss';
 import { useGlobalContext } from '../../context';
 import * as api from '../../api';
 
-import CustomConfirmation from '../../components/CustomConfirmation';
+import customConfirmation from '../../components/customConfirmation';
 import CreateRoom from '../../components/CreateRoom';
 import JoinRoom from '../../components/JoinRoom';
 import Rooms from '../../components/Rooms';
 import UserPanel from '../../components/UserPanel';
 import Footer from '../../components/Footer';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 const DashBoard = () => {
 	const [myRooms, setMyRooms] = React.useState([]);
@@ -30,54 +29,38 @@ const DashBoard = () => {
 	};
 
 	const handleDeleteMyRoom = async (roomId) => {
-		toast(
-			<CustomConfirmation
-				message='Are you sure you want to delete this room?'
-				onConfirm={() => {
-					api.handler(
-						api.deleteRoom,
-						() => {
-							setMyRooms((prev) =>
-								prev.filter((room) => room.roomId !== roomId)
-							);
-						},
-						roomId
-					);
-				}}
-				onCancel={() => {
-					toast.dismiss('roomDelete');
-				}}
-			/>,
-			{
-				toastId: 'roomDelete',
-				autoClose: false, // Keep the toast open until confirmed or canceled
-			}
-		);
+		const handler = () => {
+			api.handler(
+				api.deleteRoom,
+				() => {
+					setMyRooms((prev) => prev.filter((room) => room.roomId !== roomId));
+				},
+				roomId
+			);
+		};
+		customConfirmation({
+			message: 'Are you sure you want to delete this room?',
+			onConfirm: handler,
+			toastId: 'roomDelete',
+		});
 	};
 	const handleDeleteOtherRoom = async (roomId) => {
-		toast(
-			<CustomConfirmation
-				message='Are you sure you want to remove this room?'
-				onConfirm={() => {
-					api.handler(
-						api.removeroom,
-						() => {
-							setOtherRooms((prev) =>
-								prev.filter((room) => room.roomId !== roomId)
-							);
-						},
-						roomId
+		const handler = () => {
+			api.handler(
+				api.leaveRoom,
+				() => {
+					setOtherRooms((prev) =>
+						prev.filter((room) => room.roomId !== roomId)
 					);
-				}}
-				onCancel={() => {
-					toast.dismiss('roomDelete');
-				}}
-			/>,
-			{
-				toastId: 'roomDelete',
-				autoClose: false, // Keep the toast open until confirmed or canceled
-			}
-		);
+				},
+				roomId
+			);
+		};
+		customConfirmation({
+			message: 'Are you sure you want to remove this room?',
+			onConfirm: handler,
+			toastId: 'roomDelete',
+		});
 	};
 
 	useEffect(() => {

@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useParams } from 'react-router-dom';
 
 //Components
-import CustomConfirmation from '../../components/CustomConfirmation';
+import customConfirmation from '../../components/customConfirmation';
 import Toolbox from '../../components/Toolbox';
 import Canvas from '../../components/Canvas';
 import CanvasUpper from '../../components/CanvasUpper';
@@ -357,19 +357,11 @@ const WhiteBoard = () => {
 			});
 		};
 
-		toast(
-			<CustomConfirmation
-				message="Clearing Canvas. Can't be undone?"
-				onConfirm={clearCanvasElement}
-				onCancel={() => {
-					toast.dismiss('clearCanvas');
-				}}
-			/>,
-			{
-				toastId: 'clearCanvas',
-				autoClose: false, // Keep the toast open until confirmed or canceled
-			}
-		);
+		customConfirmation({
+			message: 'Clearing Canvas. Can not be undone?',
+			onConfirm: clearCanvasElement,
+			toastId: 'clearCanvas',
+		});
 	};
 	const toogleConnection = () => {
 		if (isConnected === true) {
