@@ -1,5 +1,4 @@
 import React, { useContext, useReducer, useEffect } from 'react';
-import { toast } from 'react-toastify';
 import customConfirmation from '../components/customConfirmation';
 import * as api from '../api/index.js';
 import reducer from './userReducer.jsx';

@@ -12,7 +12,7 @@ function setCSSValues(mode) {
 			// document.documentElement.style.setProperty('--themeInverseColor', '#fff');
 			// document.documentElement.style.setProperty('--canvasColor', '#141414');
 			document.documentElement.style.setProperty('--themeColor', '#121212');
-			document.documentElement.style.setProperty('--textColor2', '#e4e6eb');
+			document.documentElement.style.setProperty('--textColor2', '#fff');
 			document.documentElement.style.setProperty('--textColor3', '#ccc');
 			document.documentElement.style.setProperty('--themeInverseColor', '#fff');
 			document.documentElement.style.setProperty('--canvasColor', '#141414');
