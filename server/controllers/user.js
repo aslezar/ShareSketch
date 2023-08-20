@@ -89,6 +89,44 @@ const deleteRoom = async (req, res) => {
 		msg: `Successfully deleted room ${room.name}`,
 	});
 };
+const removeRoom = async (req, res) => {
+	const { userId } = req.user;
+	const { roomId } = req.body;
+	if (!roomId) {
+		throw new BadRequestError('Room Id is required');
+	}
+
+	const user = await User.findById(userId);
+	if (!user) {
+		throw new UnauthenticatedError('User Not Found');
+	}
+
+	const isExist = user.rooms.filter(
+		(room) => room.roomId.toString() === roomId.toString()
+	)[0];
+	if (!isExist) {
+		throw new BadRequestError('You are not a member of this room');
+	}
+
+	const room = await Room.findById(roomId);
+	if (!room) {
+		throw new BadRequestError('Room Not Found');
+	}
+
+	user.rooms = user.rooms.filter(
+		(room) => room.roomId.toString() !== roomId.toString()
+	);
+	room.users = room.users.filter(
+		(user) => user.userId.toString() !== userId.toString()
+	);
+	await user.save();
+	await room.save();
+
+	res.status(StatusCodes.OK).json({
+		success: true,
+		msg: `Successfully removed room ${room.name}`,
+	});
+};
 const updateUser = async (userId, key, value) => {
 	const user = await User.findById(userId);
 	if (!user) {
@@ -166,6 +204,7 @@ module.exports = {
 	getRooms,
 	createRoom,
 	deleteRoom,
+	removeRoom,
 	updateName,
 	updateBio,
 	updateImage,

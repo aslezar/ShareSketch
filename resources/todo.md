@@ -1,8 +1,10 @@
 about us
 multitouch suppport
-bug: canvas disappear on selecting outside area
+google signup
+dashboard image bug
 
 DONE
+bug: canvas disappear on selecting outside area
 socket io me authentication daalni h
 css achi krni h
 msg on before dleting room and clearing canvas

@@ -143,10 +143,10 @@ const leaveRoom = async (data, cb, socket) => {
 		socket.leave(room._id);
 
 		if (socket.getActiveUsers(room._id).length === 0) {
-			console.log('hello3');
+			// console.log('hello3');
 			rooms.delete(room._id.toString());
 		} else {
-			console.log('hello4');
+			// console.log('hello4');
 			socket.broadcast.to(room._id).emit('room:userLeft', userData);
 		}
 		cb({ msg: 'Room Left', success: true });
@@ -168,10 +168,10 @@ const disconnect = (socket) => {
 		socket.leave(room._id);
 
 		if (socket.getActiveUsers(room._id).length === 0) {
-			console.log('hello1');
+			// console.log('hello1');
 			rooms.delete(room._id.toString());
 		} else {
-			console.log('hello2');
+			// console.log('hello2');
 			socket.broadcast.to(room._id).emit('room:userLeft', userData);
 		}
 	} catch (error) {

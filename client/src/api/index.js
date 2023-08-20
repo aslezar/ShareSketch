@@ -48,6 +48,18 @@ export const deleteRoom = (roomId) => {
 		}
 	);
 };
+export const removeroom = (roomId) => {
+	const token = JSON.parse(localStorage.getItem('token')) || null;
+	return API.post(
+		'/user/removeroom',
+		{ roomId },
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}
+	);
+};
 
 export const updateName = (name) => {
 	const token = JSON.parse(localStorage.getItem('token')) || null;

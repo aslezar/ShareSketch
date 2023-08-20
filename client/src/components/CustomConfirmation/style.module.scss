@@ -5,10 +5,10 @@
 
 	border-radius: $border-radius;
 	border: 0.2vw solid $themeInverseColor;
-	padding: 0.5vh 0.5vw;
+	padding: 0.2vh 0.2vw;
 	margin-right: 5px;
 	transition: all 0.4s;
-	font-size: $fontSize2;
+	// font-size: $fontSize2;
 
 	&:disabled {
 		cursor: not-allowed;

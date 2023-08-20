@@ -23,6 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 				limit={3}
 				position='top-center'
 				theme='dark'
+				style={{ fontSize: '14px', minHeight: 'auto', padding: '7px 10px' }}
 			/>
 			<App />
 		</BrowserRouter>

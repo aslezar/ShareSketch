@@ -82,7 +82,7 @@ const Toolbox = ({
 						<button
 							className={style.button}
 							onClick={handleShare}>
-							<FaShareAlt className={style.icon} /> Share Link
+							<FaShareAlt className={style.icon} /> Share
 						</button>
 					</div>
 				</div>

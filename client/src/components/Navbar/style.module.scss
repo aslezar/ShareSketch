@@ -12,7 +12,7 @@
 	min-height: 5vh;
 	max-height: 8vh;
 
-	box-shadow: $navBorderShadow;
+	// box-shadow: $navBorderShadow;
 	border-radius: 0px 0px $border-radius $border-radius;
 	padding: $border-padding;
 
@@ -71,7 +71,7 @@
 			white-space: nowrap;
 
 			&:hover {
-				color: $primaryColor2;
+				// color: $primaryColor2;
 				background: $primaryColor;
 			}
 		}
@@ -138,7 +138,7 @@
 			letter-spacing: $spacing;
 
 			font-size: calc($fontSize2 * 1.8);
-			color: $textColor2;
+			// color: $textColor2;
 
 			padding: 0.5vw 0.5vw;
 			border-radius: $border-radius;
@@ -146,7 +146,7 @@
 			white-space: nowrap;
 
 			&:hover {
-				color: $primaryColor2;
+				color: $white;
 				background: $primaryColor;
 			}
 		}

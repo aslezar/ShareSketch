@@ -54,17 +54,30 @@ const DashBoard = () => {
 			}
 		);
 	};
-	const handleDeleteOtherRoom = () => {
-		toast.info('You can only delete rooms created by you.', {
-			toastId: 'roomDelete',
-		});
-		// api.handler(
-		// 	api.deleteRoom,
-		// 	() => {
-		// 		setOtherRooms((prev) => prev.filter((room) => room.roomId !== roomId));
-		// 	},
-		// 	roomId
-		// );
+	const handleDeleteOtherRoom = async (roomId) => {
+		toast(
+			<CustomConfirmation
+				message='Are you sure you want to remove this room?'
+				onConfirm={() => {
+					api.handler(
+						api.removeroom,
+						() => {
+							setOtherRooms((prev) =>
+								prev.filter((room) => room.roomId !== roomId)
+							);
+						},
+						roomId
+					);
+				}}
+				onCancel={() => {
+					toast.dismiss('roomDelete');
+				}}
+			/>,
+			{
+				toastId: 'roomDelete',
+				autoClose: false, // Keep the toast open until confirmed or canceled
+			}
+		);
 	};
 
 	useEffect(() => {

@@ -59,14 +59,14 @@ $footerBorderShadow: 5px -5px 10px $shadowColor;
 //Mixins
 @mixin main-box {
 	@include box;
-	box-shadow: 5px 5px 10px $shadowColor;
+	// box-shadow: 5px 5px 10px $shadowColor;
 	border: 1px solid $shadowColor;
 	margin: 0px $gap;
 	font-size: $fontSize2;
 }
 @mixin common-box {
 	@include box;
-	$border-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+	// $border-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
 	border: 1px solid $themeInverseColor;
 	color: $textColor2;
 	font-size: $fontSize2;
