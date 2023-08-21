@@ -5,19 +5,19 @@
 	flex-grow: 1;
 
 	max-width: 100%;
-	max-height: 84vh;
+	// max-height: 84vh;
 
 	@include main-box;
 
 	display: grid;
-	grid-template-rows: repeat(5, 1fr);
-	grid-template-columns: repeat(5, 1fr);
+	// grid-template-rows: repeat(5, 1fr);
+	// grid-template-columns: repeat(4, 1fr);
 	grid-template-areas:
-		' header header features features user joinRoom'
-		' header header features features user joinRoom'
-		' header header features features imageDiv imageDiv'
-		' header header features features imageDiv imageDiv'
-		' cta cta demo demo imageDiv imageDiv';
+		' header header features features'
+		' header header cta demo'
+		' user user joinRoom joinRoom'
+		' imageDiv imageDiv imageDiv imageDiv'
+		' imageDiv imageDiv imageDiv imageDiv';
 	gap: $gap;
 }
 

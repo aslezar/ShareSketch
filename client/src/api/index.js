@@ -48,7 +48,7 @@ export const deleteRoom = (roomId) => {
 		}
 	);
 };
-export const removeroom = (roomId) => {
+export const removeRoom = (roomId) => {
 	const token = JSON.parse(localStorage.getItem('token')) || null;
 	return API.post(
 		'/user/removeroom',
