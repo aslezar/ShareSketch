@@ -74,7 +74,7 @@ const joinRoom = async (data, cb, socket) => {
 					userId: user._id,
 					name: user.name,
 					isGuest: false,
-					isAdmin: userInRoom.admin === true,
+					isAdmin: userInRoom?.admin === true || false,
 				};
 			} catch (error) {
 				cb({ msg: 'Invalid Token', success: false });

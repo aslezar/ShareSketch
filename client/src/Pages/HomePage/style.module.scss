@@ -150,8 +150,8 @@
 
 @media (max-width: 768px) {
 	.homepage {
-		grid-template-rows: repeat(6, 1fr);
-		grid-template-columns: repeat(2, 1fr);
+		// grid-template-rows: repeat(6, 1fr);
+		// grid-template-columns: repeat(2, 1fr);
 		grid-template-areas:
 			'header header'
 			'features features'
@@ -159,7 +159,7 @@
 			'imageDiv imageDiv'
 			'imageDiv imageDiv'
 			'cta demo';
-		max-height: 100vh;
+		// max-height: 100vh;
 		box-shadow: none;
 		gap: 0px;
 	}
