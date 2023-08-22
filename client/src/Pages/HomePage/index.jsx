@@ -6,6 +6,8 @@ import Sign from '../../components/Sign';
 import Button from '../../components/Button';
 import Footer from '../../components/Footer';
 import JoinRoom from '../../components/JoinRoom';
+import CreateRoom from '../../components/CreateRoom';
+
 //Images
 import imageLight from '../../assets/ShareSketchLight.png';
 import imageDark from '../../assets/ShareSketchDark.png';
@@ -13,7 +15,6 @@ import image2 from '../../assets/bg1.png';
 //Icons
 import { useGlobalContext } from '../../context';
 import { MdEmojiEmotions } from 'react-icons/md';
-import { AiOutlineUserAdd } from 'react-icons/ai';
 
 const features = [
 	{
@@ -77,66 +78,52 @@ const Homepage = () => {
 						/>
 					</div>
 				</header>
-				<ul className={style.features}>
-					{features.map((feature, index) => (
-						<li
-							className={style.feature}
-							key={index}>
-							<h2>{feature.title}</h2>
-							<p>{feature.description}</p>
-						</li>
-					))}
-				</ul>
-				<div className={style.user}>
+
+				<div className={style.featuredBox}>
 					{isSignedIn ? (
 						<>
-							<img
-								src={profileImage ? profileImage : image}
-								alt='profile'
-								className={style.profileImage}
-							/>
-							<h2>
-								<i>Hi, </i>
-								{name}
-							</h2>
-							<p>
-								{bio && bio?.length > 100 ? `${bio?.slice(0, 100)}...` : bio}
-							</p>
+							<div className={style.user}>
+								<img
+									src={profileImage}
+									alt='profile'
+									className={style.profileImage}
+								/>
+								<h2>
+									<i>Hi, </i>
+									{name}
+								</h2>
+								<p>{bio}</p>
+							</div>
+							<div className={style.joinroom}>
+								<JoinRoom />
+								<CreateRoom />
+							</div>
 						</>
 					) : (
-						<>
-							<h2>Join Us</h2>
-							<p>
-								Sign up now to unleash the collaborative power of whiteboarding
-								and group chatting!
-								<Button onClick={() => setSignup(true)}>
-									<AiOutlineUserAdd />
-									Sign Up
-								</Button>
-							</p>
-						</>
+						<ul className={style.features}>
+							{features.map((feature, index) => (
+								<li
+									className={style.feature}
+									key={index}>
+									<h2>{feature.title}</h2>
+									<p>{feature.description}</p>
+								</li>
+							))}
+						</ul>
 					)}
+				</div>
+				<section className={style.cta}>
+					<h2>Ready to Revolutionize Collaboration?</h2>
+				</section>
+				<div className={style.demo}>
+					<p>Join a demo room now to see how it works.</p>
+					<DemoButton />
 				</div>
 				<div className={style.imageDiv}>
 					<img
 						src={colorMode === 'dark' ? imageDark : imageLight}
 						alt='sharesketch'
 					/>
-				</div>
-				<section className={style.cta}>
-					<h2>Ready to Revolutionize Collaboration?</h2>
-				</section>
-				<div className={style.demo}>
-					{isSignedIn ? (
-						<p>Join a room now and start collaborating with your friends.</p>
-					) : (
-						<p>Join a demo room now to see how it works.</p>
-					)}
-					<DemoButton />
-				</div>
-
-				<div className={style.joinroom}>
-					<JoinRoom />
 				</div>
 			</div>
 			<Footer />

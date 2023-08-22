@@ -10,13 +10,9 @@
 	@include main-box;
 
 	display: grid;
-	// grid-template-rows: repeat(5, 1fr);
-	// grid-template-columns: repeat(4, 1fr);
 	grid-template-areas:
-		' header header features features'
+		' header header featuredBox featuredBox'
 		' header header cta demo'
-		' user user joinRoom joinRoom'
-		' imageDiv imageDiv imageDiv imageDiv'
 		' imageDiv imageDiv imageDiv imageDiv';
 	gap: $gap;
 }
@@ -49,12 +45,15 @@
 	}
 }
 // }
+.featuredBox {
+	grid-area: featuredBox;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
 .features {
-	grid-area: features;
-
 	@include flex-center;
 	flex-direction: column;
-	// align-items: center;
 
 	.feature {
 		@include common-box;
@@ -76,8 +75,6 @@
 	}
 }
 
-.joinroom,
-.user,
 .demo {
 	@include common-box;
 	@include flex-center;
@@ -89,28 +86,58 @@
 
 .user {
 	grid-area: user;
+	border-radius: $border-radius;
+	border: 1px solid $themeInverseColor;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: $border-padding;
+	gap: $gap; /* Moved gap declaration here */
+
+	color: $textColor2;
 
 	.profileImage {
 		border-radius: 50%;
-		width: calc($fontSize2 * 5);
-		height: calc($fontSize2 * 5);
+		width: calc(
+			#{$fontSize2} * 5
+		); /* Using interpolation to calculate values */
+		height: calc(#{$fontSize2} * 5);
 		transition: transform 0.3s ease;
 		border: 2px solid $textColor1;
+
 		&:hover {
 			transform: scale(1.1);
 		}
 	}
+
 	h2 {
 		font-size: $fontSize2;
+		i {
+			font-style: italic;
+		}
 	}
+
 	p {
-		@include flex-center;
-		flex-direction: column;
 		font-size: $fontSize3;
 	}
 }
+
 .joinroom {
 	grid-area: joinRoom;
+
+	padding: $border-padding;
+	border-radius: $border-radius;
+	border: 1px solid $themeInverseColor;
+	color: $textColor2;
+	font-size: $fontSize2;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: $gap;
+	padding: $border-padding;
+	$gap: 0px;
 }
 .demo {
 	grid-area: demo;
@@ -144,7 +171,8 @@
 
 	img {
 		width: 100%;
-		// border-radius: 50px;
+		border-radius: 50px;
+		border: 2px solid $themeInverseColor;
 	}
 }
 
@@ -154,7 +182,7 @@
 		// grid-template-columns: repeat(2, 1fr);
 		grid-template-areas:
 			'header header'
-			'features features'
+			'featuredBox featuredBox'
 			'imageDiv imageDiv'
 			'imageDiv imageDiv'
 			'imageDiv imageDiv'
@@ -166,7 +194,7 @@
 	.container {
 		justify-content: space-between;
 	}
-	.features {
+	.featuredBox {
 		padding: $border-padding;
 		.feature {
 			h2 {
@@ -178,9 +206,6 @@
 		}
 	}
 	.user {
-		display: none;
-	}
-	.joinroom {
 		display: none;
 	}
 }
