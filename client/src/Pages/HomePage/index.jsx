@@ -9,8 +9,9 @@ import JoinRoom from '../../components/JoinRoom';
 import CreateRoom from '../../components/CreateRoom';
 
 //Images
-import imageLight from '../../assets/ShareSketchLight.png';
-import imageDark from '../../assets/ShareSketchDark.png';
+// import imageLight from '../../assets/ShareSketchLight.png';
+// import imageDark from '../../assets/ShareSketchDark.png';
+import shareSketch from '../../assets/shareSketch.gif';
 import image2 from '../../assets/bg1.png';
 //Icons
 import { useGlobalContext } from '../../context';
@@ -121,7 +122,8 @@ const Homepage = () => {
 				</div>
 				<div className={style.imageDiv}>
 					<img
-						src={colorMode === 'dark' ? imageDark : imageLight}
+						// src={colorMode === 'dark' ? imageDark : imageLight}
+						src={shareSketch}
 						alt='sharesketch'
 					/>
 				</div>
