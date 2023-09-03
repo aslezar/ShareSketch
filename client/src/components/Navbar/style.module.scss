@@ -9,7 +9,7 @@
 	max-width: 100vw;
 	position: sticky;
 	top: 0px;
-	min-height: 8vh;
+	min-height: 6vh;
 	max-height: 10vh;
 
 	// box-shadow: $navBorderShadow;
@@ -20,7 +20,7 @@
 	@media screen and (min-width: 768px) {
 		position: static;
 		padding: 0px $border-padding;
-		min-height: 6vh;
+		min-height: 8vh;
 	}
 }
 .navHeader {
