@@ -30,9 +30,9 @@
 
 		color: $textColor2;
 
-		font-size: calc($fontSize2 * 2);
+		font-size: calc($fontSize2 * 2.5);
 		b {
-			font-size: calc($fontSize2 * 2.5);
+			font-size: calc($fontSize2 * 3);
 			color: $textColor1;
 		}
 		i {
@@ -40,8 +40,9 @@
 		}
 	}
 	img {
-		width: 100%;
+		width: 80%;
 		object-fit: cover;
+		margin: 0 10%;
 	}
 }
 // }
