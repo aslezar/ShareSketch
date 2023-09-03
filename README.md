@@ -1,5 +1,7 @@
 # ShareSketch - Collaborative Drawing and Idea Sharing Platform
 
+![ShareSketch Banner](resources/output.gif)
+
 ShareSketch is a feature-rich collaborative drawing and idea sharing platform built on the MERN (MongoDB, Express.js, React, Node.js) stack. It enables groups of people to unleash their creativity through real-time drawing collaboration, interactive chat, and seamless sharing of ideas. The project leverages the power of **Socket.IO** to provide a dynamic and engaging environment for users to connect, communicate, and create together.
 
 ![ShareSketch Banner](resources/Homepage.png)
